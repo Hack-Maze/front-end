@@ -78,7 +78,7 @@
 
         # install applicaion dependencies
         - name: Install dependencies
-          run: npm install
+          run: npm ci
           
         # build and test the apps
         - name: Run the tests
@@ -91,7 +91,7 @@
           uses: actions/upload-artifact@v3
           with:
             name: react-github-actions-build
-            path: build
+            path: dist
 
 
 
@@ -158,7 +158,7 @@
           uses: actions/download-artifact@v3
           with:
             name: react-github-actions-build
-            path: build
+            path: dist
   
         - name: 'Run Linter'
           run: npx standard -v
