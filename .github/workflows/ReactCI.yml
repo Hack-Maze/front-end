@@ -11,37 +11,62 @@
   jobs:
 
       # env  
-      #secrets.DISCORD_WEBHOOK_URL
+      #secrets.DISCORD_WEBHOOK_URL_URL
       #secrets.DOCKERHUB_TOKEN
       #secrets.DOCKERUSERNAME
       #secrets.DOCKER_REPO
       
+    notify_Discord:
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: notify Frontend CI Workflow started
+          uses: rjstone/discord-webhook-notify@v1
+          with:
+              severity: info
+              color: '#FFFFFF'
+              details: Frontend CI Workflow started!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
       
+
+
+
+
+
+
+
+
+
       
 
     # This workflow contains multiple jobs
     build_test:
+
       # The type of runner that the job will run on
       runs-on: ubuntu-latest
       strategy:
         matrix:
           node-version: [20.x]
 
-      # Steps represent a sequence of tasks that will be executed as part of the job
+
+
+
+   
       steps:
+
+        - name: notify Build-test Stage started
+          uses: rjstone/discord-webhook-notify@v1
+          with:
+              severity: info
+              color: '#FFFFFF'
+              details: Build-test stage Started!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+              
         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
-        - name: Discord notification
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          uses: Ilshidur/action-discord@master
-          with:
-            args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
-    
         - uses: actions/checkout@v3
-
-
-
 
 
         - name: setup node
@@ -68,21 +93,35 @@
 
 
 
-        - name: Notify Discord on success
-          if: ${{ success() }}
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          uses: Ilshidur/action-discord@master
+
+        - name: notify Frontend Discord Build-test Stage Succeeded
+          uses: rjstone/discord-webhook-notify@v1
+          if: success()
           with:
-            args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
-    
-        - name: Notify Discord on failure
-          if: ${{ failure() }}
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          uses: Ilshidur/action-discord@master
+              severity: info
+              details: Build-test stage Succeeded on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8} !
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+              
+        - name: Test Failure
+          uses: rjstone/discord-webhook-notify@v1
+          if: failure()
           with:
-            args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
+              severity: error
+              details: Build-test stage Failed on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8} !
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+              
+        - name: Test Cancelled
+          uses: rjstone/discord-webhook-notify@v1
+          if: cancelled()
+          with:
+              severity: warn
+              details: Build-test stage Cancelled!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+
+
+
+
 
     lint:
       defaults:
@@ -92,46 +131,61 @@
       runs-on: ubuntu-latest
       steps:    
 
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
+        - name: notify lint started
+          uses: rjstone/discord-webhook-notify@v1
+          with:
+              severity: info
+              color: '#FFFFFF'
+              details:  Lint stage started!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-      - uses: actions/checkout@v3
-
-
-
-      - uses: actions/checkout@v3
-        name: 'Checkout repository'
-
-      - name: Share artifact inside workflow
-        uses: actions/download-artifact@v3
-        with:
-          name: react-github-actions-build
-          path: build
-
-      - name: 'Run Linter'
-        run: npx standard -v
+              
+      
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
 
 
-      - name: Notify Discord on success
-        if: ${{ success() }}
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
+        - uses: actions/checkout@v3
+          name: 'Checkout repository'
+  
+        - name: Share artifact inside workflow
+          uses: actions/download-artifact@v3
+          with:
+            name: react-github-actions-build
+            path: build
+  
+        - name: 'Run Linter'
+          run: npx standard -v
 
-      - name: Notify Discord on failure
-        if: ${{ failure() }}
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
+
+  
+
+        - name: notify Frontend  lint Stage Succeeded
+          uses: rjstone/discord-webhook-notify@v1
+          if: success()
+          with:
+              severity: info
+              details: Lint stage Succeeded on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8} !
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+              
+        - name: Test Failure
+          uses: rjstone/discord-webhook-notify@v1
+          if: failure()
+          with:
+              severity: error
+              details: Lint stage Failed on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8} !
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+              
+        - name: Test Cancelled
+          uses: rjstone/discord-webhook-notify@v1
+          if: cancelled()
+          with:
+              severity: warn
+              details: Lint Cancelled!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+
+
 
           
     analyze:
@@ -153,12 +207,13 @@
       steps:
       
       
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        uses: Ilshidur/action-discord@master
+      - name: notify analyze started
+        uses: rjstone/discord-webhook-notify@v1
         with:
-          args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
+            severity: info
+            color: '#FFFFFF'
+            details: Analyze stage started!
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
   
@@ -195,21 +250,34 @@
 
         
 
-      - name: Notify Discord on success
-        if: ${{ success() }}
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        uses: Ilshidur/action-discord@master
+      - name: notify analyze Stage Succeeded
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
         with:
-          args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
+            severity: info
+            details: Analyze stage Succeeded on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8} !
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+            
+      - name: Test Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+            severity: error
+            details: Analyze stage Failed on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8} !
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+            
+      - name: Test Cancelled
+        uses: rjstone/discord-webhook-notify@v1
+        if: cancelled()
+        with:
+            severity: warn
+            details: Analyze Cancelled!
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-      - name: Notify Discord on failure
-        if: ${{ failure() }}
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
+
+
+
+          
                     
     push_to_Docker_Hub:
 
@@ -220,12 +288,15 @@
       steps:
 
               
-        - name: Discord notification
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          uses: Ilshidur/action-discord@master
+        - name: notify Push to Dockerhub started
+          uses: rjstone/discord-webhook-notify@v1
           with:
-            args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
+              severity: info
+              color: '#FFFFFF'
+              details: Push to Dockerhub stage started!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+
 
         - name: Set up QEMU
           uses: docker/setup-qemu-action@v3
@@ -261,19 +332,29 @@
 
 
 
-        - name: Notify Discord on success
-          if: ${{ success() }}
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          uses: Ilshidur/action-discord@master
+
+
+        - name: notify Push to Dockerhub Stage Succeeded
+          uses: rjstone/discord-webhook-notify@v1
+          if: success()
           with:
-            args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
-    
-        - name: Notify Discord on failure
-          if: ${{ failure() }}
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          uses: Ilshidur/action-discord@master
+              severity: info
+              details: Push to DockerHub stage Succeeded on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8} !
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+              
+        - name: Test Failure
+          uses: rjstone/discord-webhook-notify@v1
+          if: failure()
           with:
-            args: 'The {{ job.name }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
-            
+              severity: error
+              details: Push to DockerHub stage Failed on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8} !
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+              
+        - name: Test Cancelled
+          uses: rjstone/discord-webhook-notify@v1
+          if: cancelled()
+          with:
+              severity: warn
+              details: Push to DockerHub Cancelled!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
