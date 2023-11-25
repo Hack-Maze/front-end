@@ -1,2 +1,2 @@
 // eslint-disable-next-line no-undef
-test("Example test using mock function");
+test.todo("Hello world!");
