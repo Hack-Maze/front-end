@@ -12,7 +12,4 @@ module.exports = {
   // Code coverage report settings
   collectCoverage: true,
   coverageDirectory: "coverage",
-
-  // Add additional setup files before running tests
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 };
