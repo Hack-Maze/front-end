@@ -160,8 +160,16 @@
             name: react-github-actions-build
             path: dist
   
-        - name: 'Run Linter'
-          run: npx standard -v
+        ################################
+        # Run Linter against code base #
+        ################################
+        - name: Lint Code Base
+          uses: super-linter/super-linter@v5
+          env:
+            VALIDATE_ALL_CODEBASE: false
+            DEFAULT_BRANCH: main
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            DISABLE_ERRORS: true
 
 
   
