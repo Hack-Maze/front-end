@@ -27,6 +27,7 @@
               severity: info
               color: '#FFFFFF'
               details: Frontend CI Workflow started!
+              footer: HORRAI.
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       
@@ -62,6 +63,7 @@
               severity: info
               color: '#FFFFFF'
               details: Build-test stage Started!
+              footer: HORRAI.
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -99,7 +101,8 @@
           if: success()
           with:
               severity: info
-              details: Build-test stage Succeeded on Branch ${{ github.head_ref }} With commit hash ${{ github.sha }} !
+              details: Build-test stage Succeeded on Branch ${{ github.head_ref }}!
+              footer: sha ${{ github.sha }} 
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Failure
@@ -107,7 +110,8 @@
           if: failure()
           with:
               severity: error
-              details: Build-test stage Failed on Branch ${{ github.head_ref }} With commit hash ${{ github.sha }} !
+              details: Build-test stage Failed on Branch ${{ github.head_ref }} !
+              footer: sha ${{ github.sha }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Cancelled
@@ -138,6 +142,7 @@
               severity: info
               color: '#FFFFFF'
               details:  Lint stage started!
+              footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
               
@@ -166,7 +171,8 @@
           if: success()
           with:
               severity: info
-              details: Lint stage Succeeded on Branch ${{ github.head_ref }} With commit hash ${{ github.sha }} !
+              details: Lint stage Succeeded on Branch ${{ github.head_ref }}!
+              footer: sha ${{ github.sha }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Failure
@@ -174,7 +180,8 @@
           if: failure()
           with:
               severity: error
-              details: Lint stage Failed on Branch ${{ github.head_ref }} With commit hash ${{ github.sha }} !
+              details: Lint stage Failed on Branch ${{ github.head_ref }}!
+              footer: sha ${{ github.sha }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Cancelled
@@ -183,6 +190,7 @@
           with:
               severity: warn
               details: Lint Cancelled!
+              footer: sha ${{ github.sha }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
@@ -214,6 +222,7 @@
             severity: info
             color: '#FFFFFF'
             details: Analyze stage started!
+            footer: HORRAI!
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
@@ -256,7 +265,8 @@
         if: success()
         with:
             severity: info
-            details: Analyze stage Succeeded on Branch ${{ github.head_ref }} With commit hash ${{ github.sha }} !
+            details: Analyze stage Succeeded on Branch ${{ github.head_ref }}!
+            footer: sha ${{ github.sha }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
             
       - name: Test Failure
@@ -264,7 +274,8 @@
         if: failure()
         with:
             severity: error
-            details: Analyze stage Failed on Branch ${{ github.head_ref }} With commit hash ${{ github.sha }} !
+            details: Analyze stage Failed on Branch ${{ github.head_ref }}!
+            footer: sha ${{ github.sha }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
             
       - name: Test Cancelled
@@ -273,6 +284,7 @@
         with:
             severity: warn
             details: Analyze Cancelled!
+            footer: sha ${{ github.sha }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
@@ -295,6 +307,7 @@
               severity: info
               color: '#FFFFFF'
               details: Push to Dockerhub stage started!
+              footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
@@ -340,7 +353,8 @@
           if: success()
           with:
               severity: info
-              details: Push to DockerHub stage Succeeded on Branch ${{ github.head_ref }} With commit hash ${{ github.sha }} !
+              details: Push to DockerHub stage Succeeded on Branch ${{ github.head_ref }}!
+              footer: sha ${{ github.sha }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Failure
@@ -348,7 +362,8 @@
           if: failure()
           with:
               severity: error
-              details: Push to DockerHub stage Failed on Branch ${{ github.head_ref }} With commit hash ${{ github.sha }} !
+              details: Push to DockerHub stage Failed on Branch ${{ github.head_ref }}!
+              footer: sha ${{ github.sha }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Cancelled
@@ -357,5 +372,6 @@
           with:
               severity: warn
               details: Push to DockerHub Cancelled!
+              footer: sha ${{ github.sha }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
