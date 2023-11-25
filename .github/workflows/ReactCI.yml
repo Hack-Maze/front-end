@@ -36,7 +36,7 @@
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
           uses: Ilshidur/action-discord@master
           with:
-            args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
+            args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
     
         - uses: actions/checkout@v3
 
@@ -74,7 +74,7 @@
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
           uses: Ilshidur/action-discord@master
           with:
-            args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
+            args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
     
         - name: Notify Discord on failure
           if: ${{ failure() }}
@@ -82,7 +82,7 @@
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
           uses: Ilshidur/action-discord@master
           with:
-            args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
+            args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
 
     lint:
       defaults:
@@ -97,7 +97,7 @@
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
+          args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
 
       - uses: actions/checkout@v3
 
@@ -123,7 +123,7 @@
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
+          args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
 
       - name: Notify Discord on failure
         if: ${{ failure() }}
@@ -131,7 +131,7 @@
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
+          args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
 
           
     analyze:
@@ -158,7 +158,7 @@
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
+          args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
 
 
   
@@ -201,7 +201,7 @@
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
+          args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
 
       - name: Notify Discord on failure
         if: ${{ failure() }}
@@ -209,7 +209,7 @@
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
+          args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
                     
     push_to_Docker_Hub:
 
@@ -225,7 +225,7 @@
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
           uses: Ilshidur/action-discord@master
           with:
-            args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
+            args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Started .'
 
         - name: Set up QEMU
           uses: docker/setup-qemu-action@v3
@@ -267,7 +267,7 @@
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
           uses: Ilshidur/action-discord@master
           with:
-            args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
+            args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Succeeded  .'
     
         - name: Notify Discord on failure
           if: ${{ failure() }}
@@ -275,5 +275,5 @@
             DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
           uses: Ilshidur/action-discord@master
           with:
-            args: 'The {{ github.job }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
+            args: 'The {{ GITHUB_JOB_NAME }} Stage {{ EVENT_PAYLOAD.repository.full_name }} on Branch ${{ github.ref_slug }} With commit hash -${GITHUB_SHA::8}  has been Failed  .'
             
