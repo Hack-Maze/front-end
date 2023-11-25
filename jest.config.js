@@ -4,7 +4,7 @@ module.exports = {
   roots: ["<rootDir>/src"],
 
   // Test file patterns
-  testMatch: ["**/__tests__/**/*.test.js", "**/__tests__/**/*.spec.js"],
+  testMatch: ["**/*.test.js", "**/*.spec.js"],
 
   // File extensions for tests
   moduleFileExtensions: ["js", "json", "jsx", "node"],
