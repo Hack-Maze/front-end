@@ -64,7 +64,9 @@
       steps:
         - name: short-sha
           uses: benjlevesque/short-sha@v2.2
-          
+          env:
+            SHA: ${{ steps.short-sha.outputs.sha }}
+            
         - name: notify Build-test Stage started
           uses: rjstone/discord-webhook-notify@v1
           with:
@@ -106,12 +108,18 @@
 
         - name: notify Frontend Discord Build-test Stage Succeeded
           uses: rjstone/discord-webhook-notify@v1
+          
+
+       
           if: success()
           with:
               severity: info
               details: Build-test stage Succeeded on Branch ${{ github.head_ref }}!
               footer: sha ${{ SHA }} 
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          env:
+            SHA: ${{ env.SHA }}
+
               
         - name: Test Failure
           uses: rjstone/discord-webhook-notify@v1
@@ -121,6 +129,8 @@
               details: Build-test stage Failed on Branch ${{ github.head_ref }} !
               footer: sha ${{ SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          env:
+            SHA: ${{ env.SHA }}
               
         - name: Test Cancelled
           uses: rjstone/discord-webhook-notify@v1
@@ -129,7 +139,8 @@
               severity: warn
               details: Build-test stage Cancelled!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+          env:
+            SHA: ${{ env.SHA }}
 
 
 
@@ -146,6 +157,9 @@
       steps:    
         - name: short-sha
           uses: benjlevesque/short-sha@v2.2
+          env:
+            SHA: ${{ steps.short-sha.outputs.sha }}
+            
 
         - name: notify lint started
           uses: rjstone/discord-webhook-notify@v1
@@ -189,6 +203,8 @@
               details: Lint stage Succeeded on Branch ${{ github.head_ref }}!
               footer: sha ${{ SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          env:
+            SHA: ${{ env.SHA }}
               
         - name: Test Failure
           uses: rjstone/discord-webhook-notify@v1
@@ -198,7 +214,9 @@
               details: Lint stage Failed on Branch ${{ github.head_ref }}!
               footer: sha ${{ SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-              
+          env:
+            SHA: ${{ env.SHA }}
+            
         - name: Test Cancelled
           uses: rjstone/discord-webhook-notify@v1
           if: cancelled()
@@ -207,7 +225,8 @@
               details: Lint Cancelled!
               footer: sha ${{ SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+          env:
+            SHA: ${{ env.SHA }}
 
 
 
@@ -233,7 +252,9 @@
       
       - name: short-sha
         uses: benjlevesque/short-sha@v2.2
-
+        env:
+          SHA: ${{ steps.short-sha.outputs.sha }}
+          
       - name: notify analyze started
         uses: rjstone/discord-webhook-notify@v1
         with:
@@ -285,7 +306,8 @@
             details: Analyze stage Succeeded on Branch ${{ github.head_ref }}!
             footer: sha ${{ SHA }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-            
+        env:
+          SHA: ${{ env.SHA }}
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
@@ -294,7 +316,8 @@
             details: Analyze stage Failed on Branch ${{ github.head_ref }}!
             footer: sha ${{ SHA }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-            
+        env:
+          SHA: ${{ env.SHA }}
       - name: Test Cancelled
         uses: rjstone/discord-webhook-notify@v1
         if: cancelled()
@@ -303,7 +326,8 @@
             details: Analyze Cancelled!
             footer: sha ${{ SHA }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+      env:
+          SHA: ${{ env.SHA }}
 
 
 
@@ -319,6 +343,9 @@
       steps:
         - name: short-sha
           uses: benjlevesque/short-sha@v2.2
+          env:
+            SHA: ${{ steps.short-sha.outputs.sha }}
+            
                 
         - name: notify Push to Dockerhub started
           uses: rjstone/discord-webhook-notify@v1
@@ -382,6 +409,8 @@
               details: Push to DockerHub stage Succeeded on Branch ${{ github.head_ref }}!
               footer: sha ${{ SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          env:
+            SHA: ${{ env.SHA }}
               
         - name: Test Failure
           uses: rjstone/discord-webhook-notify@v1
@@ -391,7 +420,8 @@
               details: Push to DockerHub stage Failed on Branch ${{ github.head_ref }}!
               footer: sha ${{ SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-              
+          env:
+            SHA: ${{ env.SHA }}
         - name: Test Cancelled
           uses: rjstone/discord-webhook-notify@v1
           if: cancelled()
@@ -400,4 +430,5 @@
               details: Push to DockerHub Cancelled!
               footer: sha ${{ SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+          env:
+            SHA: ${{ env.SHA }}
