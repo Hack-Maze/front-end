@@ -23,20 +23,16 @@
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
-        - uses: benjlevesque/short-sha@v2.2
-          id: short-sha
-          with:
-            length: 4
-        - run: echo $SHA
-          env:
-            SHA: ${{ steps.short-sha.outputs.sha }}
-
-
-
-        - name: Set env variable
-          run: echo "::set-env name=SHA::$SHA"
-          env:
-            SHA: ${{ steps.short-sha.outputs.sha }}
+        # - uses: benjlevesque/short-sha@v2.2
+        #   id: short-sha
+        #   with:
+        #     length: 4
+        # - run: echo $SHA
+        #   env:
+        #     SHA: ${{ steps.short-sha.outputs.sha }}
+    
+        - name: add short_sha env property with commit short sha
+          run: echo "short_sha=`echo ${github_sha} | cut -c1-8`" >> $github_env
 
           
     notify_Discord:
