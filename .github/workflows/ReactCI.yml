@@ -30,12 +30,14 @@
         - run: echo $SHA
           env:
             SHA: ${{ steps.short-sha.outputs.sha }}
-        - run: echo $SHA
+
+
+
+        - name: Set env variable
+          run: echo "::set-env name=SHA::$SHA"
           env:
-            SHA: ${{ env.SHA }}
-        - name: Set local variable
-          id: setEnv
-          run: echo $SHA >> $GITHUB_ENV
+            SHA: ${{ steps.short-sha.outputs.sha }}
+
           
     notify_Discord:
       if: github.actor!= 'dependabot[bot]'
