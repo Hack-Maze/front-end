@@ -119,7 +119,7 @@
           with:
               severity: info
               details: Build-test stage Succeeded on Branch ${{ github.head_ref }}!
-              footer: sha $SHA
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
@@ -133,7 +133,7 @@
           with:
               severity: error
               details: Build-test stage Failed on Branch ${{ github.head_ref }} !
-              footer: sha $SHA
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
         - name: Test Cancelled
