@@ -8,7 +8,8 @@
     pull_request:
       branches: [main,develop]
 
-
+  env:
+    SHA: "1"
   jobs:
 
       # env  
