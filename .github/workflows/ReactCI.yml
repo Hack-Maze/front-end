@@ -10,7 +10,7 @@
 
   env:
     GITHUB_SHA: ${{ github.sha}}
-    GITHUB_SHA_SHORT: "${{ env.GITHUB_SHA:0:4 }}"
+    GITHUB_SHA_SHORT: "${{ GITHUB_SHA:0:4 }}"
   jobs:
 
       # env  
