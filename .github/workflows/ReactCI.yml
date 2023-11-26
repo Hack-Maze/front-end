@@ -32,7 +32,7 @@
         #     SHA: ${{ steps.short-sha.outputs.sha }}
     
         - name: add short_sha env property with commit short sha
-          run: echo "short_sha=`echo ${github_sha} | cut -c1-8`" >> $github_env
+          run: echo "SHA=`echo ${github_sha} | cut -c1-8`" >> $github_env
 
           
     notify_Discord:
