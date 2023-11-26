@@ -11,4 +11,4 @@ COPY . .
 # Expose port
 EXPOSE 5173
 # Start the app
-CMD [ "npm", "start" ]
+CMD [ "npm", "run","dev" ]
