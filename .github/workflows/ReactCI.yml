@@ -18,7 +18,7 @@
       #secrets.DOCKER_REPO
 
   
-    sha:    
+    sha-edit:    
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
@@ -32,7 +32,10 @@
         - run: echo $SHA
           env:
             SHA: ${{ env.SHA }}
-        
+        - name: Set local variable
+          id: setEnv
+          run: echo $SHA >> $GITHUB_ENV
+          
     notify_Discord:
       if: github.actor!= 'dependabot[bot]'
       # The type of runner that the job will run on
