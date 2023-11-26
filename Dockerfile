@@ -1,5 +1,4 @@
-FROM node:18-alpine AS development
-ENV NODE_ENV development
+FROM node:18-alpine AS builder
 # Add a work directory
 WORKDIR /app
 # Cache and Install dependencieshttps://github.com/Hack-Maze/front-end/blob/develop/Dockerfile
@@ -8,10 +7,10 @@ COPY package-lock.json .
 RUN npm install
 # Copy app files
 COPY . .
-RUN npm run build
+RUN npm run builder
 
 FROM nginx:stable-alpine
-COPY --from=development /app /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx","-g","daemon off;"]
 
