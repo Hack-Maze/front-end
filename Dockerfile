@@ -7,7 +7,7 @@ COPY package-lock.json .
 RUN npm install
 # Copy app files
 COPY . .
-RUN npm run builder
+RUN npm run build
 
 FROM nginx:stable-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
