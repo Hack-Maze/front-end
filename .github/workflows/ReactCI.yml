@@ -107,6 +107,10 @@
 
 
         - name: notify Frontend Discord Build-test Stage Succeeded
+
+          env:
+            SHA: ${{ env.SHA }}
+            
           uses: rjstone/discord-webhook-notify@v1
           
 
@@ -117,11 +121,13 @@
               details: Build-test stage Succeeded on Branch ${{ github.head_ref }}!
               footer: sha $SHA
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          env:
-            SHA: ${{ env.SHA }}
+
 
               
         - name: Test Failure
+          env:
+            SHA: ${{ env.SHA }}
+      
           uses: rjstone/discord-webhook-notify@v1
           if: failure()
           with:
@@ -129,9 +135,7 @@
               details: Build-test stage Failed on Branch ${{ github.head_ref }} !
               footer: sha $SHA
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          env:
-            SHA: ${{ env.SHA }}
-              
+
         - name: Test Cancelled
           uses: rjstone/discord-webhook-notify@v1
           if: cancelled()
@@ -139,8 +143,7 @@
               severity: warn
               details: Build-test stage Cancelled!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          env:
-            SHA: ${{ env.SHA }}
+
 
 
 
