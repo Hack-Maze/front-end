@@ -398,7 +398,7 @@
             run: |
               echo "running the docker image"
               ls -la /usr/share/nginx/html
-              ls -la /var/www/html
+              tree /usr/share/nginx/html
               
 
 
