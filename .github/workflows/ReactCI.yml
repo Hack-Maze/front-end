@@ -22,18 +22,11 @@
     sha-edit:    
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v3
-        # - uses: benjlevesque/short-sha@v2.2
-        #   id: short-sha
-        #   with:
-        #     length: 4
-        # - run: echo $SHA
-        #   env:
-        #     SHA: ${{ steps.short-sha.outputs.sha }}
-    
-        - name: add short_sha env property with commit short sha
-          run: echo "SHA=`echo ${github_sha} | cut -c1-8`" >> $github_env
-
+         - name: short-sha
+           uses: benjlevesque/short-sha@v2.2
+         - run: echo $SHA
+   
+            
           
     notify_Discord:
       if: github.actor!= 'dependabot[bot]'
@@ -65,12 +58,11 @@
     # This workflow contains multiple jobs
     build_test:
       if: github.actor!= 'dependabot[bot]'
-      # The type of runner that the job will run on
+      needs: [notify_Discord]
       runs-on: ubuntu-latest
       strategy:
         matrix:
           node-version: [20.x]
-
 
 
 
