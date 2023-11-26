@@ -332,6 +332,10 @@
             username: ${{ secrets.DOCKERUSERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+        - name: List files in the directory
+          run: |
+            ls -al
+
         - name: Build and push
           uses: docker/build-push-action@v5
           with:
