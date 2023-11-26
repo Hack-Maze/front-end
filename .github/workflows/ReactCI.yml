@@ -17,10 +17,7 @@
       #secrets.DOCKERUSERNAME
       #secrets.DOCKER_REPO
 
-  
 
-         - name: short-sha
-           uses: benjlevesque/short-sha@v2.2
 
    
             
