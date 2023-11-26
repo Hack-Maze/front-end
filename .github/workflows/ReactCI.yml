@@ -6,7 +6,10 @@
     push:
       branches: [main,develop]
     pull_request:
+      branches-ignore: 
+        - dependabot/*
       branches: [main,develop]
+
 
   jobs:
 
