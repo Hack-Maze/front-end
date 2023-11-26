@@ -305,7 +305,7 @@
       runs-on: ubuntu-latest
       # build docker image and push to docker hub
       # only if the app build and test successfully
-      needs: [build_test,analyze]
+      needs: [build_test,analyze,lint]
       steps:
 
               
@@ -335,7 +335,7 @@
         - name: Build and push
           uses: docker/build-push-action@v5
           with:
-            context: ./
+            context: .
             file: ./Dockerfile
             push: true
             tags: |
