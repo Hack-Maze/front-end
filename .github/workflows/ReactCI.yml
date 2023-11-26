@@ -346,10 +346,10 @@
             file: ./Dockerfile
             push: true
             tags: |
-              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}/frontend-react:latest
-              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}/frontend-react:${{ github.head_ref }}${{ github.sha }}
+              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:${{ github.head_ref }}${{ github.sha }}
 
-
+    
         - name: Run the image in a container
           uses: addnab/docker-run-action@v3
           with:
