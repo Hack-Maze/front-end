@@ -6,8 +6,6 @@
     push:
       branches: [main,develop]
     pull_request:
-      branches-ignore: 
-        - dependabot/*
       branches: [main,develop]
 
 
@@ -20,6 +18,7 @@
       #secrets.DOCKER_REPO
       
     notify_Discord:
+      if: github.actor!= 'dependabot[bot]'
       # The type of runner that the job will run on
       runs-on: ubuntu-latest
 
@@ -47,7 +46,7 @@
 
     # This workflow contains multiple jobs
     build_test:
-
+      if: github.actor!= 'dependabot[bot]'
       # The type of runner that the job will run on
       runs-on: ubuntu-latest
       strategy:
@@ -131,6 +130,7 @@
 
 
     lint:
+      if: github.actor!= 'dependabot[bot]'
       defaults:
         run:
           shell: bash
@@ -205,6 +205,7 @@
 
           
     analyze:
+      if: github.actor!= 'dependabot[bot]'
       name: Analyze code
       runs-on: ubuntu-latest
       needs: [build_test]
@@ -299,7 +300,8 @@
           
                     
     push_to_Docker_Hub:
-
+      
+      if: github.actor!= 'dependabot[bot]'
       runs-on: ubuntu-latest
       # build docker image and push to docker hub
       # only if the app build and test successfully
