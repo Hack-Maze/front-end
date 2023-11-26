@@ -8,7 +8,8 @@
     pull_request:
       branches: [main,develop]
 
-
+  env:
+    GITHUB_SHA: ${{ github.sha}}
   jobs:
 
       # env  
@@ -104,7 +105,7 @@
           with:
               severity: info
               details: Build-test stage Succeeded on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha:4 }} 
+              footer: sha ${GITHUB_SHA::4} 
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Failure
@@ -113,7 +114,7 @@
           with:
               severity: error
               details: Build-test stage Failed on Branch ${{ github.head_ref }} !
-              footer: sha ${{ github.sha:4 }}
+              footer: sha ${GITHUB_SHA::4}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Cancelled
@@ -179,7 +180,7 @@
           with:
               severity: info
               details: Lint stage Succeeded on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha:4 }}
+              footer: sha ${GITHUB_SHA::4}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Failure
@@ -188,7 +189,7 @@
           with:
               severity: error
               details: Lint stage Failed on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha:4 }}
+              footer: sha ${GITHUB_SHA::4}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Cancelled
@@ -197,7 +198,7 @@
           with:
               severity: warn
               details: Lint Cancelled!
-              footer: sha ${{ github.sha:4 }}
+              footer: sha ${GITHUB_SHA::4}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
@@ -273,7 +274,7 @@
         with:
             severity: info
             details: Analyze stage Succeeded on Branch ${{ github.head_ref }}!
-            footer: sha ${{ github.sha:4 }}
+            footer: sha ${GITHUB_SHA::4}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
             
       - name: Test Failure
@@ -282,7 +283,7 @@
         with:
             severity: error
             details: Analyze stage Failed on Branch ${{ github.head_ref }}!
-            footer: sha ${{ github.sha:4 }}
+            footer: sha ${GITHUB_SHA::4}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
             
       - name: Test Cancelled
@@ -291,7 +292,7 @@
         with:
             severity: warn
             details: Analyze Cancelled!
-            footer: sha ${{ github.sha:4 }}
+            footer: sha ${GITHUB_SHA::4}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
@@ -347,13 +348,13 @@
             push: true
             tags: |
               ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
-              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:${{ github.head_ref }}${{ github.sha:4 }}
+              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:${{ github.head_ref }}${GITHUB_SHA::4}
 
     
         - name: Run the image in a container
           uses: addnab/docker-run-action@v3
           with:
-            image: ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}/frontend-react:latest
+            image: ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
             run: |
               echo "running the docker image"
 
@@ -369,7 +370,7 @@
           with:
               severity: info
               details: Push to DockerHub stage Succeeded on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha:4 }}
+              footer: sha ${GITHUB_SHA::4}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Failure
@@ -378,7 +379,7 @@
           with:
               severity: error
               details: Push to DockerHub stage Failed on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha:4 }}
+              footer: sha ${GITHUB_SHA::4}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
         - name: Test Cancelled
@@ -387,6 +388,6 @@
           with:
               severity: warn
               details: Push to DockerHub Cancelled!
-              footer: sha ${{ github.sha:4 }}
+              footer: sha ${GITHUB_SHA::4}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
