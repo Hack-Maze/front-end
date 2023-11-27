@@ -93,6 +93,8 @@
         # build and test the apps
         - name: Run the tests
           run: npm test
+
+          
           
         - name: Build
           run: npm run build
@@ -103,8 +105,9 @@
             name: react-github-actions-build
             path: dist
 
-
-
+        - name: Run cypress
+          uses: cypress-io/github-action@v6.5.0
+  
 
         - name: notify Frontend Discord Build-test Stage Succeeded
 
