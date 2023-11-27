@@ -12,4 +12,6 @@ module.exports = {
   // Code coverage report settings
   collectCoverage: true,
   coverageDirectory: "coverage",
+
+  coverageReporters: ["text", "cobertura"],
 };
