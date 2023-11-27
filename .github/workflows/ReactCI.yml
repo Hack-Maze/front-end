@@ -156,66 +156,82 @@
                 
         needs: [build_test]
         runs-on: ubuntu-latest
-        steps:    
-          - name: short-sha
-            uses: benjlevesque/short-sha@v2.2
-            env:
-              SHA: ${{ steps.short-sha.outputs.sha }}
-            
-  
-  
-          - name: notify codecov started
-            uses: rjstone/discord-webhook-notify@v1
-            with:
-                severity: info
-                color: '#FFFFFF'
-                details:  codecov stage started!
-                footer: HORRAI!
-                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          
-          
-              
-          - name: Upload coverage reports to Codecov
-            uses: codecov/codecov-action@v3
-            env:
-              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        steps:  
+        - name: Checkout
+          uses: actions/checkout@v2
 
+        - name: setup node
+          uses: actions/setup-node@master
+          with:
+            node-version: ${{ matrix.node-version }}
+            
+        - name: Install dependencies
+          run: npm install
+        - name: Run tests and collect coverage
+          run: npm run test
+        - name: Upload coverage reports to Codecov
+          uses: codecov/codecov-action@v3
+          env:
+            CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+
+
+
+        - name: short-sha
+          uses: benjlevesque/short-sha@v2.2
+          env:
+            SHA: ${{ steps.short-sha.outputs.sha }}
           
-          
-          
-          - name: notify Frontend  codecov Stage Succeeded
-            uses: rjstone/discord-webhook-notify@v1
-            if: success()
-            with:
-                severity: info
-                details: codecov stage Succeeded on Branch ${{ github.head_ref }}!
-                footer: sha ${{ env.SHA }}
-                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-            env:
-              SHA: ${{ env.SHA }}
-                
-          - name: Test Failure
-            uses: rjstone/discord-webhook-notify@v1
-            if: failure()
-            with:
-                severity: error
-                details: codecov stage Failed on Branch ${{ github.head_ref }}!
-                footer: sha ${{ env.SHA }}
-                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-            env:
-              SHA: ${{ env.SHA }}
+
+
+        - name: notify codecov started
+          uses: rjstone/discord-webhook-notify@v1
+          with:
+              severity: info
+              color: '#FFFFFF'
+              details:  codecov stage started!
+              footer: HORRAI!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        
+        
+            
+
+        
+        
+        
+        - name: notify Frontend  codecov Stage Succeeded
+          uses: rjstone/discord-webhook-notify@v1
+          if: success()
+          with:
+              severity: info
+              details: codecov stage Succeeded on Branch ${{ github.head_ref }}!
+              footer: sha ${{ env.SHA }}
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          env:
+            SHA: ${{ env.SHA }}
               
-          - name: Test Cancelled
-            uses: rjstone/discord-webhook-notify@v1
-            if: cancelled()
-            with:
-                severity: warn
-                details: Lint Cancelled!
-                footer: sha ${{ env.SHA }}
-                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-            env:
-              SHA: ${{ env.SHA }}
-  
+        - name: Test Failure
+          uses: rjstone/discord-webhook-notify@v1
+          if: failure()
+          with:
+              severity: error
+              details: codecov stage Failed on Branch ${{ github.head_ref }}!
+              footer: sha ${{ env.SHA }}
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          env:
+            SHA: ${{ env.SHA }}
+            
+        - name: Test Cancelled
+          uses: rjstone/discord-webhook-notify@v1
+          if: cancelled()
+          with:
+              severity: warn
+              details: Lint Cancelled!
+              footer: sha ${{ env.SHA }}
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          env:
+            SHA: ${{ env.SHA }}
+
 
     
 
