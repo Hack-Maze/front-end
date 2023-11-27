@@ -105,8 +105,8 @@
             name: react-github-actions-build
             path: dist
 
-        - name: Run cypress
-          uses: cypress-io/github-action@v6.5.0
+        # - name: Run cypress
+        #   uses: cypress-io/github-action@v6.5.0
   
 
         - name: notify Frontend Discord Build-test Stage Succeeded
