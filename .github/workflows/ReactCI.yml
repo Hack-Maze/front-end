@@ -342,7 +342,7 @@
       runs-on: ubuntu-latest
       # build docker image and push to docker hub
       # only if the app build and test successfully
-      # needs: [build_test,analyze,lint]
+      needs: [build_test,analyze,lint]
       steps:
         - name: short-sha
           uses: benjlevesque/short-sha@v2.2
