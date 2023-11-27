@@ -1,6 +1,6 @@
   # This is a basic workflow to help you get started with Actions
   name: react-CI
-
+ 
   on:
     # Triggers the workflow on push or pull request events but only for the main branch
     push:
@@ -8,15 +8,22 @@
     pull_request:
       branches: [main,develop]
 
+
   jobs:
 
       # env  
-      #secrets.DISCORD_WEBHOOK_URL_URL
+      #secrets.DISCORD_WEBHOOK_URL
       #secrets.DOCKERHUB_TOKEN
       #secrets.DOCKERUSERNAME
       #secrets.DOCKER_REPO
-      
+
+
+
+   
+            
+          
     notify_Discord:
+      if: github.actor!= 'dependabot[bot]'
       # The type of runner that the job will run on
       runs-on: ubuntu-latest
 
@@ -39,13 +46,12 @@
 
 
 
-
       
 
     # This workflow contains multiple jobs
     build_test:
-
-      # The type of runner that the job will run on
+      if: github.actor!= 'dependabot[bot]'
+      needs: [notify_Discord]
       runs-on: ubuntu-latest
       strategy:
         matrix:
@@ -53,10 +59,13 @@
 
 
 
-
    
       steps:
-
+        - name: short-sha
+          uses: benjlevesque/short-sha@v2.2
+          env:
+            SHA: ${{ steps.short-sha.outputs.sha }}
+            
         - name: notify Build-test Stage started
           uses: rjstone/discord-webhook-notify@v1
           with:
@@ -78,11 +87,13 @@
 
         # install applicaion dependencies
         - name: Install dependencies
-          run: npm install
+          run: npm ci
           
         # build and test the apps
         - name: Run the tests
           run: npm test
+
+          
           
         - name: Build
           run: npm run build
@@ -91,29 +102,42 @@
           uses: actions/upload-artifact@v3
           with:
             name: react-github-actions-build
-            path: build
+            path: dist
 
-
-
+        # - name: Run cypress
+        #   uses: cypress-io/github-action@v6.5.0
+  
 
         - name: notify Frontend Discord Build-test Stage Succeeded
+
+          env:
+            SHA: ${{ env.SHA }}
+            
           uses: rjstone/discord-webhook-notify@v1
+          
+
+       
           if: success()
           with:
               severity: info
               details: Build-test stage Succeeded on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha }} 
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+
               
         - name: Test Failure
+          env:
+            SHA: ${{ env.SHA }}
+      
           uses: rjstone/discord-webhook-notify@v1
           if: failure()
           with:
               severity: error
               details: Build-test stage Failed on Branch ${{ github.head_ref }} !
-              footer: sha ${{ github.sha }}
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-              
+
         - name: Test Cancelled
           uses: rjstone/discord-webhook-notify@v1
           if: cancelled()
@@ -123,11 +147,81 @@
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
+  
+    codecov:
+        if: github.actor!= 'dependabot[bot]'
+        defaults:
+          run:
+            shell: bash
+                
+        needs: [build_test]
+        runs-on: ubuntu-latest
+        steps:    
+          - name: short-sha
+            uses: benjlevesque/short-sha@v2.2
+            env:
+              SHA: ${{ steps.short-sha.outputs.sha }}
+            
+  
+  
+          - name: notify codecov started
+            uses: rjstone/discord-webhook-notify@v1
+            with:
+                severity: info
+                color: '#FFFFFF'
+                details:  codecov stage started!
+                footer: HORRAI!
+                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          
+          
+              
+          - name: Upload coverage reports to Codecov
+            uses: codecov/codecov-action@v3
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+          
+          
+          
+          - name: notify Frontend  codecov Stage Succeeded
+            uses: rjstone/discord-webhook-notify@v1
+            if: success()
+            with:
+                severity: info
+                details: codecov stage Succeeded on Branch ${{ github.head_ref }}!
+                footer: sha ${{ env.SHA }}
+                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+            env:
+              SHA: ${{ env.SHA }}
+                
+          - name: Test Failure
+            uses: rjstone/discord-webhook-notify@v1
+            if: failure()
+            with:
+                severity: error
+                details: codecov stage Failed on Branch ${{ github.head_ref }}!
+                footer: sha ${{ env.SHA }}
+                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+            env:
+              SHA: ${{ env.SHA }}
+              
+          - name: Test Cancelled
+            uses: rjstone/discord-webhook-notify@v1
+            if: cancelled()
+            with:
+                severity: warn
+                details: Lint Cancelled!
+                footer: sha ${{ env.SHA }}
+                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+            env:
+              SHA: ${{ env.SHA }}
+  
 
+    
 
 
     lint:
+      if: github.actor!= 'dependabot[bot]'
       defaults:
         run:
           shell: bash
@@ -135,6 +229,11 @@
       needs: [build_test]
       runs-on: ubuntu-latest
       steps:    
+        - name: short-sha
+          uses: benjlevesque/short-sha@v2.2
+          env:
+            SHA: ${{ steps.short-sha.outputs.sha }}
+            
 
         - name: notify lint started
           uses: rjstone/discord-webhook-notify@v1
@@ -146,9 +245,7 @@
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
               
-      
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-
+    
 
 
         - uses: actions/checkout@v3
@@ -158,10 +255,16 @@
           uses: actions/download-artifact@v3
           with:
             name: react-github-actions-build
-            path: build
+            path: dist
   
-        - name: 'Run Linter'
-          run: npx standard -v
+        ################################
+        # Run Linter against code base #
+        ################################
+        - name: Lint Code Base
+          uses: super-linter/super-linter/slim@v5
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            DISABLE_ERRORS: true
 
 
   
@@ -172,8 +275,10 @@
           with:
               severity: info
               details: Lint stage Succeeded on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha }}
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          env:
+            SHA: ${{ env.SHA }}
               
         - name: Test Failure
           uses: rjstone/discord-webhook-notify@v1
@@ -181,23 +286,27 @@
           with:
               severity: error
               details: Lint stage Failed on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha }}
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-              
+          env:
+            SHA: ${{ env.SHA }}
+            
         - name: Test Cancelled
           uses: rjstone/discord-webhook-notify@v1
           if: cancelled()
           with:
               severity: warn
               details: Lint Cancelled!
-              footer: sha ${{ github.sha }}
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+          env:
+            SHA: ${{ env.SHA }}
 
 
 
           
     analyze:
+      if: github.actor!= 'dependabot[bot]'
       name: Analyze code
       runs-on: ubuntu-latest
       needs: [build_test]
@@ -215,7 +324,11 @@
 
       steps:
       
-      
+      - name: short-sha
+        uses: benjlevesque/short-sha@v2.2
+        env:
+          SHA: ${{ steps.short-sha.outputs.sha }}
+          
       - name: notify analyze started
         uses: rjstone/discord-webhook-notify@v1
         with:
@@ -232,7 +345,7 @@
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
           # If you wish to specify custom queries, you can do so here or in a config file.
@@ -243,7 +356,7 @@
       # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
       # If this step fails, then you should remove it and run the build manually (see below)
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@v2
 
   
       # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
@@ -255,8 +368,7 @@
       #   make release
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-
+        uses:  github/codeql-action/analyze@v2
 
         
 
@@ -266,41 +378,49 @@
         with:
             severity: info
             details: Analyze stage Succeeded on Branch ${{ github.head_ref }}!
-            footer: sha ${{ github.sha }}
+            footer: sha ${{ env.SHA }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-            
+        env:
+          SHA: ${{ env.SHA }}
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
         with:
             severity: error
             details: Analyze stage Failed on Branch ${{ github.head_ref }}!
-            footer: sha ${{ github.sha }}
+            footer: sha ${{ env.SHA }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-            
+        env:
+          SHA: ${{ env.SHA }}
       - name: Test Cancelled
         uses: rjstone/discord-webhook-notify@v1
         if: cancelled()
         with:
             severity: warn
             details: Analyze Cancelled!
-            footer: sha ${{ github.sha }}
+            footer: sha ${{ env.SHA }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+        env:
+            SHA: ${{ env.SHA }}
 
 
 
           
                     
     push_to_Docker_Hub:
-
+      
+      if: github.actor!= 'dependabot[bot]'
       runs-on: ubuntu-latest
       # build docker image and push to docker hub
       # only if the app build and test successfully
-      needs: [build_test,analyze]
+      needs: [build_test,analyze,lint]
       steps:
-
-              
+        - name: short-sha
+          uses: benjlevesque/short-sha@v2.2
+          env:
+            SHA: ${{ steps.short-sha.outputs.sha }}
+            
+                
         - name: notify Push to Dockerhub started
           uses: rjstone/discord-webhook-notify@v1
           with:
@@ -323,24 +443,35 @@
           with:
             username: ${{ secrets.DOCKERUSERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+        - name: Checkout repository
+          uses: actions/checkout@v3
+
+        - name: List files in the directory
+          run: |
+            ls -al
 
         - name: Build and push
           uses: docker/build-push-action@v5
           with:
-            context: ./
+            context: .
             file: ./Dockerfile
             push: true
             tags: |
-              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}/frontend-react:latest
-              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}/frontend-react:${{ github.head_ref }}${{ github.sha }}
+              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+              ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:${{ github.head_ref }}${{ env.SHA }}
 
-
+    
         - name: Run the image in a container
           uses: addnab/docker-run-action@v3
           with:
-            image: ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}/frontend-react:latest
+            image: ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
             run: |
               echo "running the docker image"
+              ls -la /usr/share/nginx/html
+      
+
+              
 
 
 
@@ -354,8 +485,10 @@
           with:
               severity: info
               details: Push to DockerHub stage Succeeded on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha }}
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          env:
+            SHA: ${{ env.SHA }}
               
         - name: Test Failure
           uses: rjstone/discord-webhook-notify@v1
@@ -363,15 +496,17 @@
           with:
               severity: error
               details: Push to DockerHub stage Failed on Branch ${{ github.head_ref }}!
-              footer: sha ${{ github.sha }}
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-              
+          env:
+            SHA: ${{ env.SHA }}
         - name: Test Cancelled
           uses: rjstone/discord-webhook-notify@v1
           if: cancelled()
           with:
               severity: warn
               details: Push to DockerHub Cancelled!
-              footer: sha ${{ github.sha }}
+              footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+          env:
+            SHA: ${{ env.SHA }}
