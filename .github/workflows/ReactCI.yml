@@ -87,7 +87,7 @@
 
         # install applicaion dependencies
         - name: Install dependencies
-          run: npm ci
+          run: npm clean install
           
         # build and test the apps
         - name: Run the tests
