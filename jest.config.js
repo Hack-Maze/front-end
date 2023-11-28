@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 module.exports = {
   // Indicates the root directory of your code
   roots: ["<rootDir>/src"],
@@ -13,5 +12,5 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: "coverage",
 
-  "coverageReporters": ["html", "lcov"]
+  coverageReporters: ["html", "lcov"],
 };

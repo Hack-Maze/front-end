@@ -1,6 +1,6 @@
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
-// eslint-disable-next-line react/prop-types
+
 const FormRow = ({ type, name, inputHandler, text, value }) => {
   const isPasswordInput = name === "password";
   const [showPassword, setShowPassword] = useState(false);
