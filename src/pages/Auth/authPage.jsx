@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import FormRow from "../../components/FormRow";
 import NET from "vanta/dist/vanta.net.min";
+
 const Auth = () => {
   const [isLoginFormVisible, setLoginFormVisibility] = useState(true);
   const [username, setUsername] = useState("");
@@ -9,7 +10,7 @@ const Auth = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
-    NET({
+    const netEffect = NET({
       el: "#vanta",
       mouseControls: true,
       touchControls: true,
@@ -23,6 +24,9 @@ const Auth = () => {
       points: 11.0,
       maxDistance: 20.0,
     });
+    return () => {
+      if (netEffect) netEffect.destroy();
+    };
   }, []);
 
   const handleToggleLoginSignup = () => {
