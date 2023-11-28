@@ -39,7 +39,7 @@ const Auth = () => {
       id="vanta"
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white bg-opacity-50 backdrop-blur-sm p-4 shadow transition-shadow hover:shadow-md sm:rounded-lg sm:px-10">
+        <div className="bg-white bg-opacity-50 backdrop-blur-[1px] p-4 shadow transition-shadow hover:shadow-md sm:rounded-lg sm:px-10">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <h2 className="mb-5 text-center text-3xl font-extrabold text-gray-900">
               {isLoginFormVisible
