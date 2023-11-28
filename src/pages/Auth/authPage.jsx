@@ -1,12 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormRow from "../../components/FormRow";
-import bg from "../../assets/ctf.jpg";
+import NET from "vanta/dist/vanta.net.min";
 const Auth = () => {
   const [isLoginFormVisible, setLoginFormVisibility] = useState(true);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(() => {
+    NET({
+      el: "#vanta",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.0,
+      minWidth: 200.0,
+      scale: 0.5,
+      scaleMobile: 1.0,
+      color: 0x19ed67,
+      backgroundColor: 0x162b21,
+      points: 11.0,
+      maxDistance: 20.0,
+    });
+  }, []);
 
   const handleToggleLoginSignup = () => {
     setLoginFormVisibility(!isLoginFormVisible);
@@ -19,7 +36,7 @@ const Auth = () => {
   return (
     <div
       className="min-h-screen bg-cover bg-center flex flex-col justify-center py-8 sm:px-6 lg:px-8"
-      style={{ backgroundImage: `url(${bg})` }}
+      id="vanta"
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white bg-opacity-50 backdrop-blur-sm p-4 shadow transition-shadow hover:shadow-md sm:rounded-lg sm:px-10">
@@ -97,27 +114,27 @@ const Auth = () => {
                 {isLoginFormVisible ? "Login" : "Sign up"}
               </button>
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <hr className="flex-grow border-gray-300" />
               <div className="mx-4 text-gray-500">or</div>
               <hr className="flex-grow border-gray-300" />
+            </div> */}
+            <div
+              className={`flex items-center justify-center w-full mt-4 font-medium`}
+            >
+              <h4>
+                {isLoginFormVisible
+                  ? "Not have an account? "
+                  : "Already have an account! "}
+              </h4>
+              <button
+                className="ml-1 text-blue-500 hover:text-blue-400"
+                onClick={handleToggleLoginSignup}
+              >
+                {isLoginFormVisible ? "Join Now" : "Login"}
+              </button>
             </div>
           </form>
-        </div>
-        <div
-          className={`flex items-center justify-center w-full mt-4 font-medium`}
-        >
-          <h4>
-            {isLoginFormVisible
-              ? "Not have an account? "
-              : "Already have an account! "}
-          </h4>
-          <button
-            className="ml-1 text-blue-500 hover:text-blue-400"
-            onClick={handleToggleLoginSignup}
-          >
-            {isLoginFormVisible ? "Join Now" : "Login"}
-          </button>
         </div>
       </div>
     </div>

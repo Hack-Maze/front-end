@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import Auth from "./pages/Auth/authPage";
 const App = () => {
   return (
