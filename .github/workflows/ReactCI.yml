@@ -565,7 +565,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details: "- **ACI is online**  [Try me](hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"  
+              details: "- **ACI is online**  [Try me](http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"  
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -576,7 +576,7 @@
         - name: Stop ACI after 1 hour
           run: |
             sleep 3
-            az container stop --name hackmaze-frontend --resource-group react-rc --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} --resource-type Microsoft.ContainerInstance/containerGroups
+            az container stop --name hackmaze-frontend --resource-group react-rc  --resource-type Microsoft.ContainerInstance/containerGroups
         
         
         - name:  ACI stopped
