@@ -576,7 +576,7 @@
         - name: Stop ACI after 1 hour
           run: |
             sleep 3
-            az container stop --name hackmaze-frontend --resource-group react-rc  --resource-type Microsoft.ContainerInstance/containerGroups
+             az container stop --name hackmaze-frontend --resource-group react-rc
         
         
         - name:  ACI stopped
