@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import FormRow from "../../components/FormRow";
 import NET from "vanta/dist/vanta.net.min";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { FiGithub } from "react-icons/fi";
 
-const Auth = (props) => {
+const Auth = () => {
   const [isLoginFormVisible, setLoginFormVisibility] = useState(true);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const netEffect = NET({
@@ -37,7 +39,7 @@ const Auth = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    props.onLogin(username, password);
+    navigate("/home");
   };
 
   return (
@@ -88,7 +90,7 @@ const Auth = (props) => {
             />
           </div>
           <div>
-            <form onSubmit={submitHandler} className="">
+            <form onSubmit={submitHandler}>
               {!isLoginFormVisible && (
                 <FormRow
                   text="Username"
