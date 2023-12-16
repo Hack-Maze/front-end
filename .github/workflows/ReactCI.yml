@@ -492,11 +492,6 @@
               
 
 
-
-
-
-
-
         - name: notify Push to Dockerhub Stage Succeeded
           uses: rjstone/discord-webhook-notify@v1
           if: success()
@@ -528,3 +523,48 @@
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
     #       env:
     #         SHA: ${{ env.SHA }}
+
+
+
+
+    Start ACI:
+      runs-on: ubuntu-latest
+      if: github.actor!= 'dependabot[bot]'
+      needs: [push_to_Docker_Hub]
+      steps:
+      
+        - name: Azure Login
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+  
+        - name: Check ACI Status
+          id: check_status
+          run: |
+            aci_status=$(az container show --name hackmaze-frontend --resource-group react-rc --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} --query "instanceView.state" -o tsv)
+            echo "::set-output name=status::$aci_status"
+  
+        - name: Start ACI if stopped
+          if: steps.check_status.outputs.status == 'Stopped'
+          run: |
+            az container start --name hackmaze-frontend --resource-group react-rc --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} --resource-type Microsoft.ContainerInstance/containerGroups
+  
+        - name: Restart ACI
+          run: |
+            az container restart --name hackmaze-frontend --resource-group react-rc --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} --resource-type Microsoft.ContainerInstance/containerGroups
+
+
+        - name: notify start ACI started
+          uses: rjstone/discord-webhook-notify@v1
+          with:
+              severity: info
+              color: '#FFFFFF'
+              details: start ACI stage started!
+              footer: HORRAI!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+            
+        - name: Stop ACI after 1 hour
+          run: |
+            sleep 3600
+            az container stop --name hackmaze-frontend --resource-group react-rc --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} --resource-type Microsoft.ContainerInstance/containerGroups
