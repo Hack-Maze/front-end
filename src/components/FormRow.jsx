@@ -10,35 +10,30 @@ const FormRow = ({ type, name, inputHandler, text, value }) => {
 
   return (
     <div>
-      <label
-        htmlFor={name}
-        className="block text-sm font-medium text-gray-900 mb-1"
-      >
-        {text}
-      </label>
-
       <div className="relative">
         <input
           type={isPasswordInput && showPassword ? "text" : type}
-          name={name}
+          placeholder={text}
           autoComplete={name}
           value={value}
           onChange={inputHandler}
-          className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="appearance-none bg-transparent block w-full mb-6 px-3 pb-2  border-b-[1px] border-white placeholder-white focus:outline-none focus:border-b-2 text-sm sm:text-lg text-white transition border-transition duration-500 focus:border-opacity-100 border-opacity-50"
         />
         {(name === "password" || name === "confirmPassword") && (
           <>
             {showPassword ? (
               <AiOutlineEye
-                className="absolute right-2 top-2 cursor-pointer"
+                className="absolute right-2 top-2 cursor-pointer text-white"
                 size={20}
                 onClick={togglePasswordVisibility}
+                title="hide password"
               />
             ) : (
               <AiOutlineEyeInvisible
-                className="absolute right-2 top-2 cursor-pointer"
+                className="absolute right-2 top-2 cursor-pointer text-white"
                 size={20}
                 onClick={togglePasswordVisibility}
+                title="show password"
               />
             )}
           </>
