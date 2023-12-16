@@ -44,7 +44,7 @@ const Auth = () => {
 
   return (
     <div
-      className="min-h-screen  bg-cover bg-center py-4 sm:px-6 lg:px-8"
+      className="min-h-screen  bg-cover bg-center py-4 sm:px-6 lg:px-8 font-Incon"
       id="vanta"
     >
       <div className="flex mb-4">
@@ -130,7 +130,7 @@ const Auth = () => {
                     href=".forgot-password"
                     className="text-white text-md hover:text-gray-200"
                   >
-                    Forgot password?
+                    Forgot Password?
                   </a>
                 </div>
               )}

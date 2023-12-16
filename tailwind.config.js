@@ -4,6 +4,7 @@ export default {
   mode: "jit",
   theme: {
     fontFamily: {
+      Incon: ["Inconsolata", "sans-serif"],
       Roboto: ["Roboto", "sans-serif"],
       Poppins: ["Poppins", "sans-serif"],
     },

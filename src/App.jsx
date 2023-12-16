@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Auth from "./pages/Auth/authPage";
 import LandingPage from "./pages/Landing/LandingPage";
 import HomePage from "./pages/Home/HomePage";
+import "./App.css";
 
 const App = () => {
   return (
