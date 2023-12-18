@@ -466,9 +466,6 @@
         - name: Checkout repository
           uses: actions/checkout@v3
 
-        - name: List files in the directory
-          run: |
-            ls -al
 
         - name: Build and push
           uses: docker/build-push-action@v5
@@ -480,18 +477,29 @@
               ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
               ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:${{ github.head_ref }}${{ env.SHA }}
 
+
+
     
-        - name: Run the image in a container
-          uses: addnab/docker-run-action@v3
-          with:
-            image: ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
-            run: |
-              echo "running the docker image"
-              ls -la /usr/share/nginx/html
-      
-
+        - name: Clean up Docker Tags
+          
+          run: |
+            #!/bin/bash
+          
+            REPO_NAME=${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}  # Replace with your Docker repository name
+          
+            # Get list of tags for the repository
+            TAGS=$(docker pull --quiet --all-tags $REPO_NAME | sort -r)
+          
+            # Retain the first three tags (most recent)
+            KEEP_TAGS=$(echo "$TAGS" | head -n 3)
+            
+            # Loop through all tags, delete those not in the retained list
+            for tag in $TAGS; do
+                if [[ ! " $KEEP_TAGS " =~ " $tag " ]]; then
+                    docker rmi $REPO_NAME:$tag
+                fi
+            done
               
-
 
         - name: notify Push to Dockerhub Stage Succeeded
           uses: rjstone/discord-webhook-notify@v1
@@ -573,9 +581,9 @@
 
 
             
-        - name: Stop ACI after 1 hour
+        - name: Stop ACI after 1 min
           run: |
-            sleep 3
+            sleep 60
              az container stop --name hackmaze-frontend --resource-group react-rc
         
         
