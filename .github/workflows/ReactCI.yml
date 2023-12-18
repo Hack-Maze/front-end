@@ -495,6 +495,7 @@
                 echo $KEEP_TAGS
                 
                 # Loop through all tags, delete those not in the retained list
+                sleep 10
                 for tag in $TAGS; do
                     if [[ ! " $KEEP_TAGS " =~ " $tag " ]]; then
                        sudo docker image rm  $REPO_NAME:$tag
