@@ -480,27 +480,27 @@
 
 
     
-        - name: Clean up Docker Tags
-          run: |
-              #!/bin/bash
+        # - name: Clean up Docker Tags
+        #   run: |
+        #       #!/bin/bash
 
-                REPO_NAME=${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}  # Replace with your Docker repository name
-                sudo apt install jq -y
-                # Get list of tags for the repository
-                TAGS=$(sudo curl -sS "https://hub.docker.com/v2/repositories/${REPO_NAME}/tags/?page_size=10000" | jq -r '.results|.[]|.name'|sort -r)
+        #         REPO_NAME=${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}  # Replace with your Docker repository name
+        #         sudo apt install jq -y
+        #         # Get list of tags for the repository
+        #         TAGS=$(sudo curl -sS "https://hub.docker.com/v2/repositories/${REPO_NAME}/tags/?page_size=10000" | jq -r '.results|.[]|.name'|sort -r)
                 
-                # Retain the first three tags (most recent)
-                KEEP_TAGS=$(echo "$TAGS" | head -n 3)
-                echo $TAGS
-                echo $KEEP_TAGS
+        #         # Retain the first three tags (most recent)
+        #         KEEP_TAGS=$(echo "$TAGS" | head -n 3)
+        #         echo $TAGS
+        #         echo $KEEP_TAGS
                 
-                # Loop through all tags, delete those not in the retained list
-                sleep 10
-                for tag in $TAGS; do
-                    if [[ ! " $KEEP_TAGS " =~ " $tag " ]]; then
-                       sudo docker image rm  $REPO_NAME:$tag
-                    fi
-                done
+        #         # Loop through all tags, delete those not in the retained list
+        #         sleep 10
+        #         for tag in $TAGS; do
+        #             if [[ ! " $KEEP_TAGS " =~ " $tag " ]]; then
+        #                sudo docker image rm  $REPO_NAME:$tag
+        #             fi
+        #         done
 
 
 
