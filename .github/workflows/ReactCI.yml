@@ -482,17 +482,24 @@
     
         - name: Clean up Docker Tags
           run: |
-            REPO_NAME="${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}"  # Replace with your Docker repository name
-    
-            docker pull --quiet --all-tags $REPO_NAME | sort -r > /tmp/tags.txt
-            
-            KEEP_TAGS=$(head -n 3 /tmp/tags.txt)
-    
-            for tag in $(cat /tmp/tags.txt); do
-                if [[ ! " $KEEP_TAGS " =~ " $tag " ]]; then
-                    docker rmi $REPO_NAME:$tag
-                fi
-            done
+              #!/bin/bash
+
+                REPO_NAME=${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}  # Replace with your Docker repository name
+                sudo apt install jq -y
+                # Get list of tags for the repository
+                TAGS=$(sudo curl -sS "https://hub.docker.com/v2/repositories/${REPO_NAME}/tags/?page_size=10000" | jq -r '.results|.[]|.name'|sort -r)
+                
+                # Retain the first three tags (most recent)
+                KEEP_TAGS=$(echo "$TAGS" | head -n 3)
+                echo $TAGS
+                echo $KEEP_TAGS
+                
+                # Loop through all tags, delete those not in the retained list
+                for tag in $TAGS; do
+                    if [[ ! " $KEEP_TAGS " =~ " $tag " ]]; then
+                       sudo docker image rm  $REPO_NAME:$tag
+                    fi
+                done
 
 
 
