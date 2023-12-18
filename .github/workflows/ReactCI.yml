@@ -485,7 +485,7 @@
           run: |
             #!/bin/bash
           
-            REPO_NAME=${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}  # Replace with your Docker repository name
+            REPO_NAME=${{ secrets.DOCKER_REPO }}  # Replace with your Docker repository name
           
             # Get list of tags for the repository
             TAGS=$(docker pull --quiet --all-tags $REPO_NAME | sort -r)
@@ -573,7 +573,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details: "- **ACI is online**  [Try me](http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"  
+              details: "- **ACI is online** [![Try me]({https://avatars.githubusercontent.com/u/148903007?s=400&u=b5afabc1ae9027eb61dda3661306b54d2283eac9&v=4})]({http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io} 'Hackmaze')"
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -581,9 +581,9 @@
 
 
             
-        - name: Stop ACI after 1 min
+        - name: Stop ACI after 2 min
           run: |
-            sleep 60
+            sleep 120
              az container stop --name hackmaze-frontend --resource-group react-rc
         
         
@@ -592,6 +592,7 @@
           with:
               severity: warn
               color: '#85BB65'
-              details: "- **ACI is offline**  [Watchme](https://www.youtube.com/watch?v=JEzqoRCgD5Q)"
+              details: "- **ACI is offline**  [![Whatchme]({https://rb.gy/uu1owl})]({https://www.youtube.com/watch?v=JEzqoRCgD5Q} 'Money')"
+              
               footer:  "$$$$$"
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
