@@ -480,27 +480,33 @@
 
 
     
-        # - name: Clean up Docker Tags
-        #   run: |
-        #       #!/bin/bash
-
-        #         REPO_NAME=${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}  # Replace with your Docker repository name
-        #         sudo apt install jq -y
-        #         # Get list of tags for the repository
-        #         TAGS=$(sudo curl -sS "https://hub.docker.com/v2/repositories/${REPO_NAME}/tags/?page_size=10000" | jq -r '.results|.[]|.name'|sort -r)
-                
-        #         # Retain the first three tags (most recent)
-        #         KEEP_TAGS=$(echo "$TAGS" | head -n 3)
-        #         echo $TAGS
-        #         echo $KEEP_TAGS
-                
-        #         # Loop through all tags, delete those not in the retained list
-        #         sleep 10
-        #         for tag in $TAGS; do
-        #             if [[ ! " $KEEP_TAGS " =~ " $tag " ]]; then
-        #                sudo docker image rm  $REPO_NAME:$tag
-        #             fi
-        #         done
+        - name: Clean up Docker Tags
+          run: |
+            #!/bin/bash
+            
+            REPO_NAME=${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}  # Replace with your Docker repository name
+            
+            # Get list of tags for the repository
+            TAGS=$(curl -sS "https://hub.docker.com/v2/repositories/${REPO_NAME}/tags/?page_size=10000" | jq -r '.results|.[]|.name')
+            
+            # Retain the first three tags (most recent)
+            KEEP_TAGS=$(echo "$TAGS" | head -n 3)
+            
+            echo "All Tags: $TAGS"
+            echo "Retaining Tags: $KEEP_TAGS"
+            
+            TOKEN=${{ secrets.DOCKERHUB_TOKEN }} # Replace with your Docker Hub Personal Access Token
+            HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"mostafaewida\", \"password\": \"$TOKEN\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+            # Loop through all tags, delete those not in the retained list
+            for tag in $TAGS; do
+                if [[  "$KEEP_TAGS" =~ "$tag" ]]; then
+                    echo "keeping $tag"
+                else
+            
+                    response=$(curl -i -X DELETE   -H "Accept: application/json"   -H "Authorization: JWT $HUB_TOKEN"   https://hub.docker.com/v2/repositories/$REPO_NAME/tags/$tag/)
+                    echo "Deleted tag: $tag - Response: $response"
+                fi
+            done
 
 
 
@@ -578,7 +584,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details: "- **ACI is online** [![Try me]({https://avatars.githubusercontent.com/u/148903007?s=400&u=b5afabc1ae9027eb61dda3661306b54d2283eac9&v=4})]({http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io} 'Hackmaze')"
+              details: "- **ACI is online**  [Try me](http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -597,7 +603,7 @@
           with:
               severity: warn
               color: '#85BB65'
-              details: "- **ACI is offline**  [![Whatchme]({https://rb.gy/uu1owl})]({https://www.youtube.com/watch?v=JEzqoRCgD5Q} 'Money')"
+              details: "- **ACI is offline**  [Watchme](https://www.youtube.com/watch?v=JEzqoRCgD5Q)"
               
               footer:  "$$$$$"
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
