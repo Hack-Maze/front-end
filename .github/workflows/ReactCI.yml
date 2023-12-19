@@ -485,7 +485,7 @@
             #!/bin/bash
             
             REPO_NAME=${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}  # Replace with your Docker repository name
-            
+            USER_NAME=${{ secrets.DOCKERUSERNAME }}
             # Get list of tags for the repository
             TAGS=$(curl -sS "https://hub.docker.com/v2/repositories/${REPO_NAME}/tags/?page_size=10000" | jq -r '.results|.[]|.name')
             
@@ -496,15 +496,20 @@
             echo "Retaining Tags: $KEEP_TAGS"
             
             TOKEN=${{ secrets.DOCKERHUB_TOKEN }} # Replace with your Docker Hub Personal Access Token
-            HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"mostafaewida\", \"password\": \"$TOKEN\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+            HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$USER_NAME\", \"password\": \"$TOKEN\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+           
+            
             # Loop through all tags, delete those not in the retained list
             for tag in $TAGS; do
+            
                 if [[  "$KEEP_TAGS" =~ "$tag" ]]; then
                     echo "keeping $tag"
+                    
                 else
             
                     response=$(curl -i -X DELETE   -H "Accept: application/json"   -H "Authorization: JWT $HUB_TOKEN"   https://hub.docker.com/v2/repositories/$REPO_NAME/tags/$tag/)
                     echo "Deleted tag: $tag - Response: $response"
+                    
                 fi
             done
 
