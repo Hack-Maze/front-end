@@ -600,7 +600,13 @@
       if: github.actor!= 'dependabot[bot]'
       needs: [Start-ACI]
       steps:
-            
+
+
+        - name: Azure Login
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+
         - name: Stop ACI after 2 min
           run: |
             sleep 120
