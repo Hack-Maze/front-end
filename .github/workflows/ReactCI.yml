@@ -34,7 +34,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details: "> - **Frontend CI Workflow started!**"
+              details: "## ## > - **Frontend CI Workflow started!**"
               footer: HORRAI.
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -72,7 +72,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details: "- **Build-test stage Started!"
+              details: "## > - **Build-test stage Started!**"
               footer: HORRAI.
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
@@ -121,7 +121,7 @@
           if: success()
           with:
               severity: info
-              details: "** - **Build-test stage Succeeded "
+              details: "## > - **Build-test stage Succeeded**"
               footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -135,7 +135,7 @@
           if: failure()
           with:
               severity: error
-              details: "** - **Build-test stage Failed"
+              details: "## > - **Build-test stage Failed**"
               footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -144,7 +144,7 @@
           if: cancelled()
           with:
               severity: warn
-              details: Build-test stage Cancelled!
+              details: "## > - **Build-test stage Cancelled!**"
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
@@ -259,7 +259,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details:  "** - **Lint stage started!"
+              details:  "> - **Lint stage started!**"
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -293,7 +293,7 @@
           if: success()
           with:
               severity: info
-              details: "** - **Lint stage Succeeded "
+              details: "## > - **Lint stage Succeeded** "
               footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           env:
@@ -304,7 +304,7 @@
           if: failure()
           with:
               severity: error
-              details: "** - **Lint stage Failed"
+              details: "## > - **Lint stage Failed**"
               footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           env:
@@ -315,7 +315,7 @@
           if: cancelled()
           with:
               severity: warn
-              details: Lint Cancelled!
+              details: "## > - **Lint Cancelled!**"
               footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           env:
@@ -353,7 +353,7 @@
         with:
             severity: info
             color: '#FFFFFF'
-            details: "** - **Analyze stage started!"
+            details: "## > - **Analyze stage started!**"
             footer: HORRAI!
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -396,7 +396,7 @@
         if: success()
         with:
             severity: info
-            details: " > - **Analyze stage Succeeded"
+            details: "##  > - **Analyze stage Succeeded**"
             footer: sha ${{ env.SHA }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
         env:
@@ -406,7 +406,7 @@
         if: failure()
         with:
             severity: error
-            details: " > - **Analyze stage Failed"
+            details: "##  > - **Analyze stage Failed**"
             footer: sha ${{ env.SHA }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
         env:
@@ -416,7 +416,7 @@
         if: cancelled()
         with:
             severity: warn
-            details: " > - **Analyze Cancelled!"
+            details: "##  > - **Analyze Cancelled!**"
             footer: sha ${{ env.SHA }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
         env:
@@ -445,7 +445,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details: " > - **Push to Dockerhub stage started!"
+              details: "##  > - **Push to Dockerhub stage started!**"
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -522,7 +522,7 @@
           if: success()
           with:
               severity: info
-              details: " > - **Push to DockerHub stage Succeeded "
+              details: "##  > - **Push to DockerHub stage Succeeded** "
               footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           env:
@@ -533,7 +533,7 @@
           if: failure()
           with:
               severity: error
-              details: " > - **Push to DockerHub stage Failed"
+              details: "##  > - **Push to DockerHub stage Failed**"
               footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           env:
@@ -543,7 +543,7 @@
           if: cancelled()
           with:
               severity: warn
-              details: " > - **Push to DockerHub Cancelled!"
+              details: "##  > - **Push to DockerHub Cancelled!**"
               footer: sha ${{ env.SHA }}
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           env:
@@ -589,7 +589,7 @@
           with:
               severity: info
               color: '#007fff'
-              details: " > - **ACI is online  [Try me](http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"
+              details: "##  > - **ACI is online**  [Try me](http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -608,7 +608,7 @@
           with:
               severity: warn
               color: '#85BB65'
-              details: " > - **ACI is offline  [Watchme](https://www.youtube.com/watch?v=JEzqoRCgD5Q)"
+              details: "##  > - **ACI is offline**  [Watchme](https://www.youtube.com/watch?v=JEzqoRCgD5Q)"
               
               footer:  "$$$$$"
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
