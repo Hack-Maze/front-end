@@ -33,7 +33,7 @@
           uses: rjstone/discord-webhook-notify@v1
           with:
               severity: info
-              color: '#FFFFFF'
+              color: '#A020F0'
               details: "## > - **Frontend CI Workflow started!**"
               footer: HORRAI.
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -259,7 +259,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details:  "> - **Lint stage started!**"
+              details:  "## > - **Lint stage started!**"
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -432,7 +432,7 @@
       runs-on: ubuntu-latest
       # build docker image and push to docker hub
       # only if the app build and test successfully
-      needs: [build_test,analyze,lint]
+      needs: [analyze,lint]
       steps:
         - name: short-sha
           uses: benjlevesque/short-sha@v2.2
@@ -595,7 +595,11 @@
 
 
 
-
+    Stop-ACI:
+      runs-on: ubuntu-latest
+      if: github.actor!= 'dependabot[bot]'
+      needs: [Start-ACI]
+      steps:
             
         - name: Stop ACI after 2 min
           run: |
@@ -608,7 +612,30 @@
           with:
               severity: warn
               color: '#85BB65'
-              details: "##  > - **ACI is offline**  [Watchme](https://www.youtube.com/watch?v=JEzqoRCgD5Q)"
+              details: "##  > - **ACI is offline**  [Watch me](https://www.youtube.com/watch?v=JEzqoRCgD5Q)"
               
               footer:  "$$$$$"
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+
+
+
+
+
+
+    notify_Discord_CI_finish:
+      if: github.actor!= 'dependabot[bot]'
+      needs: [Stop-ACI]
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+    
+      steps:
+        - name: notify Frontend CI Workflow started
+          uses: rjstone/discord-webhook-notify@v1
+          with:
+              severity: info
+              color: '#A020F0'
+              details: "## > - **Frontend CI Workflow Finished!**"
+              footer: HORRAI.
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  
