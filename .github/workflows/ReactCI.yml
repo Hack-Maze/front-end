@@ -34,7 +34,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details: "## ## > - **Frontend CI Workflow started!**"
+              details: "## > - **Frontend CI Workflow started!**"
               footer: HORRAI.
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
