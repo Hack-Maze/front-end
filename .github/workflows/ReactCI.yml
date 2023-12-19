@@ -34,7 +34,7 @@
           with:
               severity: info
               color: '#FFFFFF'
-              details: "> - ** - **Frontend CI Workflow started!**"
+              details: "> - **Frontend CI Workflow started!**"
               footer: HORRAI.
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -72,7 +72,7 @@
 #           with:
 #               severity: info
 #               color: '#FFFFFF'
-#               details: "> - ** - ** [!IMPORTANT] > - ** - **Build-test stage Started!"
+#               details: "- **Build-test stage Started!"
 #               footer: HORRAI.
 #               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
@@ -121,7 +121,7 @@
 #           if: success()
 #           with:
 #               severity: info
-#               details: "> - ** - ** [!IMPORTANT] > - ** - **Build-test stage Succeeded "
+#               details: "** - **Build-test stage Succeeded "
 #               footer: sha ${{ env.SHA }}
 #               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -135,7 +135,7 @@
 #           if: failure()
 #           with:
 #               severity: error
-#               details: "> - ** - ** [!IMPORTANT] > - ** - **Build-test stage Failed"
+#               details: "** - **Build-test stage Failed"
 #               footer: sha ${{ env.SHA }}
 #               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -259,7 +259,7 @@
 #           with:
 #               severity: info
 #               color: '#FFFFFF'
-#               details:  "> - ** - ** [!IMPORTANT] > - ** - **Lint stage started!"
+#               details:  "** - **Lint stage started!"
 #               footer: HORRAI!
 #               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
@@ -293,7 +293,7 @@
 #           if: success()
 #           with:
 #               severity: info
-#               details: "> - ** - ** [!IMPORTANT] > - ** - **Lint stage Succeeded "
+#               details: "** - **Lint stage Succeeded "
 #               footer: sha ${{ env.SHA }}
 #               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 #           env:
@@ -304,7 +304,7 @@
 #           if: failure()
 #           with:
 #               severity: error
-#               details: "> - ** - ** [!IMPORTANT] > - ** - **Lint stage Failed"
+#               details: "** - **Lint stage Failed"
 #               footer: sha ${{ env.SHA }}
 #               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 #           env:
@@ -353,7 +353,7 @@
 #         with:
 #             severity: info
 #             color: '#FFFFFF'
-#             details: "> - ** - ** [!IMPORTANT] > - ** - **Analyze stage started!"
+#             details: "** - **Analyze stage started!"
 #             footer: HORRAI!
 #             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
