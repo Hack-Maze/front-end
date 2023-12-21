@@ -2,6 +2,7 @@
 name: Codacy Security Scan
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "develop","main" ]
     paths:
