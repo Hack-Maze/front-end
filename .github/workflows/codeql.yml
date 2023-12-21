@@ -12,10 +12,11 @@
 name: "CodeQL"
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ "develop" ]
+    branches: [ "develop","main" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "develop", "main" ]
   schedule:
     - cron: '0 15 * * 4'  # Runs at 3:00 PM UTC every Thursday, which is 5:00 PM Cairo time (UTC+2)
 
