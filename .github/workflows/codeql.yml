@@ -15,8 +15,13 @@ on:
   workflow_dispatch:
   push:
     branches: [ "develop","main" ]
+    paths:
+      - '!.github/workflows'
   pull_request:
-    branches: [ "develop", "main" ]
+    # The branches below must be a subset of the branches above
+    branches: [ "develop","main" ]
+    paths:
+      - '!.github/workflows'
   schedule:
     - cron: '0 15 * * 4'  # Runs at 3:00 PM UTC every Thursday, which is 5:00 PM Cairo time (UTC+2)
 
