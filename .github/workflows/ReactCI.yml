@@ -553,7 +553,7 @@
 #################################################################################################
 
 
-        - name: notify start ACI started
+        - name: notify start ACI started frontend channel
           uses: rjstone/discord-webhook-notify@v1
           with:
               severity: info
@@ -561,6 +561,16 @@
               details: "##  > - **ACI is online**  [Try me](http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+              
+
+        - name: notify start ACI started demo channel
+          uses: rjstone/discord-webhook-notify@v1
+          with:
+              severity: info
+              color: '#007fff'
+              details: "##  > - **ACI is online**  [Try me](http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"
+              footer: HORRAI!
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL_DEMO }}
 
 
 
@@ -582,7 +592,7 @@
              az container stop --name hackmaze-frontend --resource-group react-rc
         
         
-        - name:  ACI stopped
+        - name:  ACI stopped frontend channel
           uses: rjstone/discord-webhook-notify@v1
           with:
               severity: warn
@@ -593,7 +603,15 @@
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
-
+        - name:  ACI stopped demo channel
+          uses: rjstone/discord-webhook-notify@v1
+          with:
+              severity: warn
+              color: '#85BB65'
+              details: "##  > - **ACI is offline**  [Watch me](https://www.youtube.com/watch?v=JEzqoRCgD5Q)"
+              
+              footer:  "$$$$$"
+              webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL_DEMO }}
 
 
 
