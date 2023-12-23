@@ -4,7 +4,7 @@ const Roadmap = () => {
   const [htmlContent, setHtmlContent] = useState("");
 
   useEffect(() => {
-    fetch("roadmaps/offensive-mindmap-expanded.html")
+    fetch("/roadmaps/offensive-mindmap-expanded.html")
       .then((response) => response.text())
       .then((html) => {
         setHtmlContent(html);
