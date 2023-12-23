@@ -11,6 +11,7 @@
         - 'feature-**'
         - '!CI-**'
       paths:
+          - '*'
           - '!.github/workflows'
     pull_request:
       branches:
@@ -19,7 +20,9 @@
         - 'feature-**'
         - '!CI-**'
       paths:
+          - '*'
           - '!.github/workflows'
+
 
 
   jobs:
@@ -629,15 +632,18 @@
           run: |
             aci_status=$(az container show --name hackmaze-frontend --resource-group react-rc --query "instanceView.state" -o tsv)
             echo "::set-output name=status::$aci_status"
+            
+        - name: Restart ACI
+          if: steps.check_status.outputs.status == 'Running'
+          run: |
+            az container restart --name hackmaze-frontend --resource-group react-rc
+  
         
         - name: Start ACI if stopped
           if: steps.check_status.outputs.status == 'Stopped'
           run: |
             az container start --name hackmaze-frontend --resource-group react-rc
         
-        - name: Restart ACI
-          run: |
-            az container restart --name hackmaze-frontend --resource-group react-rc
 
 #################################################################################################
 
