@@ -9,7 +9,7 @@ import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 
 const DashboardPage = () => {
   return (
-    <div className="bg-[#171616]">
+    <div className="bg-[#171616] min-h-screen">
       <header className="flex mx-6 my-4 justify-between items-center text-white">
         <div className="flex items-center">
           <div>
