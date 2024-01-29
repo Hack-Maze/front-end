@@ -425,19 +425,20 @@
       name: analyze trivy
       runs-on: ubuntu-latest
       steps:
-        - name: Run Trivy vulnerability scanner in repo mode
-          uses: aquasecurity/trivy-action@master
-          with:
-            scan-type: 'fs'
-            format: 'sarif'
-            output: 'trivy-repo-results.sarif'
-            severity: 'CRITICAL'
-  
-        - name: Upload Trivy scan results to GitHub Security tab
-          uses: github/codeql-action/upload-sarif@v3
-          if: always()
-          with:
-            sarif_file: 'trivy-repo-results.sarif'
+      
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
 
             
 #######################################################################################################
@@ -554,16 +555,38 @@
           uses: actions/checkout@v3
 
 
-        - name: Build and push
+        - name: Build 
           uses: docker/build-push-action@v5
           with:
             context: .
             file: ./Dockerfile
-            push: true
+            push: false
             tags: |
               ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
               ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:${{ github.head_ref }}${{ env.SHA }}
 
+
+
+
+        - name: Run Trivy vulnerability scanner
+          uses: aquasecurity/trivy-action@master
+          with:
+            image-ref: 'docker.io/mostafaewida/hackmaze_frontend:${{ github.sha }}'
+            format: 'template'
+            template: '@/contrib/sarif.tpl'
+            output: 'trivy-results.sarif'
+            severity: 'CRITICAL,HIGH,MEDIUM,LOW'
+
+        - name: Upload Trivy scan results to GitHub Security tab
+          uses: github/codeql-action/upload-sarif@v2
+          with:
+            sarif_file: 'trivy-results.sarif'
+
+
+        - name: push docker images
+          run: |
+            docker push ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+            docker push ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:${{ github.head_ref }}${{ env.SHA }}
 
 
     
@@ -635,34 +658,6 @@
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           env:
             SHA: ${{ env.SHA }}
-
-
-#######################################################################################################
-
-    analyze-image-trivy:
-      if: github.actor!= 'dependabot[bot]'
-      needs: [push_to_Docker_Hub]
-      defaults:
-        run:
-          shell: bash
-      name: analyze docker image trivy
-      runs-on: ubuntu-latest
-      steps:
-        - name: Run Trivy vulnerability scanner in repo mode
-          uses: aquasecurity/trivy-action@master
-          with:
-           image-ref: docker.io/${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
-           format: 'sarif'
-           output: 'trivy-docker-results.sarif'
-
-        - name: Upload Trivy scan results to GitHub Security tab
-          uses: github/codeql-action/upload-sarif@v3
-          if: always()
-          with:
-            sarif_file: 'trivy-docker-results.sarif'
-              
-#######################################################################################################
-
 
     Start-ACI:
       runs-on: ubuntu-latest
