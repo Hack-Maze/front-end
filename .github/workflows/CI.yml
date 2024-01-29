@@ -429,15 +429,15 @@
           uses: aquasecurity/trivy-action@master
           with:
             scan-type: 'fs'
-            ignore-unfixed: true
             format: 'sarif'
-            output: './trivy-results.sarif'
+            output: 'trivy-repo-results.sarif'
             severity: 'CRITICAL'
   
         - name: Upload Trivy scan results to GitHub Security tab
           uses: github/codeql-action/upload-sarif@v3
+          if: always()
           with:
-            sarif_file: './trivy-results.sarif'
+            sarif_file: 'trivy-repo-results.sarif'
 
             
 #######################################################################################################
@@ -641,7 +641,7 @@
 
     analyze-image-trivy:
       if: github.actor!= 'dependabot[bot]'
-      needs: [build_test]
+      needs: [push_to_Docker_Hub]
       defaults:
         run:
           shell: bash
@@ -651,15 +651,15 @@
         - name: Run Trivy vulnerability scanner in repo mode
           uses: aquasecurity/trivy-action@master
           with:
-           image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+           image-ref: docker.io/${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
            format: 'sarif'
-           output: './trivy-docker-results.sarif'
+           output: 'trivy-docker-results.sarif'
 
         - name: Upload Trivy scan results to GitHub Security tab
           uses: github/codeql-action/upload-sarif@v3
           if: always()
           with:
-            sarif_file: './trivy-docker-results.sarif'
+            sarif_file: 'trivy-docker-results.sarif'
               
 #######################################################################################################
 
