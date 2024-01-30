@@ -1,9 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Auth from "./pages/Auth/authPage";
 import LandingPage from "./pages/Landing/LandingPage";
-import HomePage from "./pages/Dashboard/DashboardPage";
-import Roadmap from "./pages/Roadmap/Roadmap";
 import "./App.css";
+import DashboardPage from "./pages/Dashboard/DashboardPage";
 
 const App = () => {
   return (
@@ -11,8 +10,7 @@ const App = () => {
       <Routes>
         <Route index element={<LandingPage />} />
         <Route path="/login" element={<Auth />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/roadmap" element={<Roadmap />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
     </Router>
   );
