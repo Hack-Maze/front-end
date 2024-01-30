@@ -6,10 +6,11 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { LuGraduationCap, LuSwords } from "react-icons/lu";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
+import Layout_1 from "../../components/Layout_1/Layout_1";
 
 const DashboardPage = () => {
   return (
-    <div className="bg-[#171616] min-h-screen">
+    <div className="bg-[#171616] min-h-screen overflow-y-auto ">
       <header className="flex mx-6 my-4 justify-between items-center text-white">
         <div className="flex items-center">
           <div>
@@ -46,17 +47,31 @@ const DashboardPage = () => {
           </ul>
         </div>
         <div className="flex">
-          <div>
+          <div className="cursor-pointer">
             <HiOutlineMagnifyingGlass size={25} />
           </div>
-          <div className="mx-6">
+          <div className="mx-6 cursor-pointer">
             <IoMdNotificationsOutline size={25} />
           </div>
-          <div>account</div>
+          <div className="cursor-pointer">account</div>
         </div>
       </header>
-      <body className="border-t h-[53vh]"></body>
-      <footer className="border-t text-white">
+      <body className="border-t px-6">
+        <div className="flex flex-row">
+          <Layout_1
+            box_1_title={"friends"}
+            button={"add friends"}
+            box_2_title={"skills matrix"}
+          />
+          <div className="w-full"></div>
+          <Layout_1
+            box_1_title={"tasks"}
+            button={"add tasks"}
+            box_2_title={"questions"}
+          />
+        </div>
+      </body>
+      <footer className="border-t text-white ">
         <div className="grid items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:px-8 px-5 py-8">
           <ul className="px-5 sm:m-auto sm:mt-0 sm:text-start flex sm:block flex-col">
             <img

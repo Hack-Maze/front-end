@@ -39,7 +39,7 @@ const Auth = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    navigate("/home");
+    navigate("/dashboard");
   };
 
   return (
