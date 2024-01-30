@@ -528,16 +528,39 @@
           uses: actions/checkout@v3
 
 
-        - name: Build and push
+        - name: Build 
           uses: docker/build-push-action@v5
           with:
             context: .
             file: ./Dockerfile
-            push: true
+            push: false
             tags: |
               ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
               ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:${{ github.head_ref }}${{ env.SHA }}
 
+
+
+
+        - name: Run Trivy vulnerability scanner
+          uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+          with:
+            image-ref: ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+            format: 'sarif'
+            output: 'trivy-results.sarif'
+            severity: 'CRITICAL,HIGH,MEDIUM,LOW'
+
+        - name: Upload Trivy scan results to GitHub Security tab
+          uses: github/codeql-action/upload-sarif@v2
+          with:
+           sarif_file: 'trivy-results.sarif'
+
+
+
+
+        - name: push docker images
+          run: |
+            docker push ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+            docker push ${{ secrets.DOCKERUSERNAME }}/${{ secrets.DOCKER_REPO }}:${{ github.head_ref }}${{ env.SHA }}
 
 
     
@@ -576,7 +599,7 @@
 
 
 
-          
+        
 
         - name: notify Push to Dockerhub Stage Succeeded
           uses: rjstone/discord-webhook-notify@v1
@@ -609,9 +632,6 @@
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           env:
             SHA: ${{ env.SHA }}
-
-
-
 
     Start-ACI:
       runs-on: ubuntu-latest

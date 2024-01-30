@@ -1,0 +1,53 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: trivy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "develop","main" ]
+    paths:
+      - '!.github/workflows'
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "develop","main" ]
+    paths:
+      - '!.github/workflows'
+  schedule:
+    - cron: '0 15 * * 4'  # Runs at 3:00 PM UTC every Thursday, which is 5:00 PM Cairo time (UTC+2)
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    name: Build
+    runs-on: "ubuntu-22.04"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build an image from Dockerfile
+        run: |
+          docker build -t docker.io/mostafaewida/hackmaze_frontend:${{ github.sha }} .
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+        with:
+          image-ref: 'docker.io/mostafaewida/hackmaze_frontend:${{ github.sha }}'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
