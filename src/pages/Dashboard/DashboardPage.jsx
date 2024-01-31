@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaFireAlt } from "react-icons/fa";
 import { CiTrophy } from "react-icons/ci";
@@ -7,71 +7,126 @@ import { LuGraduationCap, LuSwords } from "react-icons/lu";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import Layout_1 from "../../components/Layout_1/Layout_1";
+import { GiSecurityGate } from "react-icons/gi";
 
 const DashboardPage = () => {
+  const [activeItem, setActiveItem] = useState("dashboard");
+
+  const handleItemClick = (item) => {
+    setActiveItem(item);
+  };
+
   return (
-    <div className="bg-[#171616] min-h-screen overflow-y-auto ">
-      <header className="flex mx-6 my-4 justify-between items-center text-white">
-        <div className="flex items-center">
-          <div>
-            <img src="/logo.svg" alt="logo" className="w-10 mr-4" />
-          </div>
-          <div>
-            <div className="uppercase flex items-center mb-1 font-semibold">
-              <FaFireAlt className="text-red-500 mr-1" size={20} /> Streake
-              <p className="ml-1">100</p>
+    <div className="bg-[#0c0c0c] flex flex-col min-h-screen font-Incon">
+      <div className=" flex-grow ">
+        <header className="flex mx-6 my-4 justify-between items-center text-white">
+          <div className="flex items-center">
+            <div>
+              <img src="/logo.svg" alt="logo" className="w-10 mr-4" />
             </div>
-            <div className="uppercase flex items-center text-sm">
-              <CiTrophy className="text-yellow-500 mr-1" size={20} />
-              Rank <p className="ml-1">#100</p>
+            <div>
+              <div className="uppercase flex items-center mb-1 font-semibold">
+                <FaFireAlt className="text-red-500 mr-1" size={20} /> Streake
+                <p className="ml-1">100</p>
+              </div>
+              <div className="uppercase flex items-center text-sm">
+                <CiTrophy className="text-yellow-500 mr-1" size={20} />
+                Rank <p className="ml-1">#100</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          <ul className="flex font-medium">
-            <li className="flex items-center text-red-500 cursor-pointer">
-              {" "}
-              <MdOutlineDashboard className="mr-1" size={25} />
-              Dashboard
-            </li>
-            <li className="mx-12 flex items-center cursor-pointer">
-              {" "}
-              <LuGraduationCap className="mr-1" size={25} />
-              Learn
-            </li>
-            <li className="flex items-center cursor-pointer">
-              {" "}
-              <LuSwords className="mr-1" size={25} />
-              Compete
-            </li>
-          </ul>
-        </div>
-        <div className="flex">
-          <div className="cursor-pointer">
-            <HiOutlineMagnifyingGlass size={25} />
+          <div>
+            <ul className="flex font-medium">
+              <li
+                className={`flex items-center cursor-pointer ${
+                  activeItem === "dashboard"
+                    ? "text-red-500"
+                    : "hover:text-red-400"
+                }`}
+                onClick={() => handleItemClick("dashboard")}
+              >
+                <MdOutlineDashboard className="mr-1" size={25} />
+                Dashboard
+              </li>
+              <li
+                className={`mx-12 flex items-center cursor-pointer ${
+                  activeItem === "learn" ? "text-red-500" : "hover:text-red-400"
+                }`}
+                onClick={() => handleItemClick("learn")}
+              >
+                <LuGraduationCap className="mr-1" size={30} />
+                Learn
+              </li>
+              <li
+                className={`flex items-center cursor-pointer ${
+                  activeItem === "compete"
+                    ? "text-red-500"
+                    : "hover:text-red-400"
+                }`}
+                onClick={() => handleItemClick("compete")}
+              >
+                <LuSwords className="mr-1" size={25} />
+                Compete
+              </li>
+            </ul>
           </div>
-          <div className="mx-6 cursor-pointer">
-            <IoMdNotificationsOutline size={25} />
+          <div className="flex">
+            <div className="cursor-pointer">
+              <HiOutlineMagnifyingGlass size={25} />
+            </div>
+            <div className="mx-6 cursor-pointer">
+              <IoMdNotificationsOutline size={25} />
+            </div>
+            <div className="cursor-pointer">account</div>
           </div>
-          <div className="cursor-pointer">account</div>
-        </div>
-      </header>
-      <body className="border-t px-6">
-        <div className="flex flex-row">
-          <Layout_1
-            box_1_title={"friends"}
-            button={"add friends"}
-            box_2_title={"skills matrix"}
-          />
-          <div className="w-full"></div>
-          <Layout_1
-            box_1_title={"tasks"}
-            button={"add tasks"}
-            box_2_title={"questions"}
-          />
-        </div>
-      </body>
-      <footer className="border-t text-white ">
+        </header>
+        <body className="border-t px-8 py-4">
+          <div className="flex flex-row">
+            <Layout_1
+              box_1_title={"friends"}
+              button={"add friends"}
+              box_2_title={"skills matrix"}
+            />
+            <div className="w-full p-8 text-white">
+              <h1 className="text-3xl border-b-2 pb-3">
+                Current path challenges
+              </h1>
+              <div className="pt-2 flex justify-between">
+                <p className="text-xl ">
+                  Continue with the Introduction to Cyber Security path
+                </p>
+                <div className="flex flex-col">
+                  <span className="text-sm">Your Progress : 70%</span>
+                  <div className="relative h-2 w-full bg-white rounded-lg mt-1">
+                    <div
+                      className="absolute top-0 left-0 h-full bg-red-500 rounded-lg"
+                      style={{ width: "70%" }} // Set the width dynamically here
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-row p-4 border border-red-500 my-5 rounded-md bg-[#ffffff0a] shadow-md shadow-[#fff3] cursor-pointer hover:bg-[#ffffff13]">
+                <div>
+                  <GiSecurityGate size={60} />
+                </div>
+                <div className="flex flex-col ml-3">
+                  <h2 className="pb-2 text-xl">Intro to Offensive Security</h2>
+                  <p className="text-md">
+                    Hack your first website (legally in a safe environment) and
+                    experience an ethical hacker's job.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Layout_1
+              box_1_title={"tasks"}
+              button={"add tasks"}
+              box_2_title={"questions"}
+            />
+          </div>
+        </body>
+      </div>
+      <footer className="border-t w-full text-white ">
         <div className="grid items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:px-8 px-5 py-8">
           <ul className="px-5 sm:m-auto sm:mt-0 sm:text-start flex sm:block flex-col">
             <img
