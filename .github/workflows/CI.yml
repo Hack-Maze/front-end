@@ -46,7 +46,7 @@
 
       steps:
         - name: notify Frontend CI Workflow started
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           with:
               severity: info
               color: '#7851A9'
@@ -121,7 +121,7 @@
           env:
             SHA: ${{ env.SHA }}
             
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           
 
        
@@ -138,7 +138,7 @@
           env:
             SHA: ${{ env.SHA }}
       
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: failure()
           with:
               severity: error
@@ -147,7 +147,7 @@
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
         - name: Test Cancelled
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: cancelled()
           with:
               severity: warn
@@ -194,7 +194,7 @@
   
 
         - name: notify Frontend  lint Stage Succeeded
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: success()
           with:
               severity: info
@@ -205,7 +205,7 @@
             SHA: ${{ env.SHA }}
               
         - name: Test Failure
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: failure()
           with:
               severity: error
@@ -216,7 +216,7 @@
             SHA: ${{ env.SHA }}
             
         - name: Test Cancelled
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: cancelled()
           with:
               severity: warn
@@ -289,7 +289,7 @@
         
 
       - name: notify analyze Stage Succeeded
-        uses: rjstone/discord-webhook-notify@v1
+        uses: rjstone/discord-webhook-notify@v1.0.4
         if: success()
         with:
             severity: info
@@ -299,7 +299,7 @@
         env:
           SHA: ${{ env.SHA }}
       - name: Test Failure
-        uses: rjstone/discord-webhook-notify@v1
+        uses: rjstone/discord-webhook-notify@v1.0.4
         if: failure()
         with:
             severity: error
@@ -309,7 +309,7 @@
         env:
           SHA: ${{ env.SHA }}
       - name: Test Cancelled
-        uses: rjstone/discord-webhook-notify@v1
+        uses: rjstone/discord-webhook-notify@v1.0.4
         if: cancelled()
         with:
             severity: warn
@@ -367,7 +367,7 @@
             sarif_file: results.sarif
 
         - name: notify analyze-codacy Stage Succeeded
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: success()
           with:
               severity: info
@@ -377,7 +377,7 @@
           env:
             SHA: ${{ env.SHA }}
         - name: Test Failure
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: failure()
           with:
               severity: error
@@ -387,7 +387,7 @@
           env:
             SHA: ${{ env.SHA }}
         - name: Test Cancelled
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: cancelled()
           with:
               severity: warn
@@ -519,7 +519,7 @@
         
 
         - name: notify Push to Dockerhub Stage Succeeded
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: success()
           with:
               severity: info
@@ -530,7 +530,7 @@
             SHA: ${{ env.SHA }}
               
         - name: Test Failure
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: failure()
           with:
               severity: error
@@ -540,7 +540,7 @@
           env:
             SHA: ${{ env.SHA }}
         - name: Test Cancelled
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: cancelled()
           with:
               severity: warn
@@ -586,7 +586,7 @@
 
 
         - name: notify start ACI started frontend channel
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           with:
               severity: info
               color: '#007fff'
@@ -596,7 +596,7 @@
               
 
         - name: notify start ACI started demo channel
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           with:
               severity: info
               color: '#007fff'
@@ -625,7 +625,7 @@
         
         
         - name:  ACI stopped frontend channel
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           with:
               severity: warn
               color: '#85BB65'
@@ -636,7 +636,7 @@
 
 
         - name:  ACI stopped demo channel
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           with:
               severity: warn
               color: '#85BB65'
@@ -656,7 +656,7 @@
     
       steps:
         - name: notify Frontend CI Workflow finished
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           with:
               severity: info
               color: '#7851A9'
