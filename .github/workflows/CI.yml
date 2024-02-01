@@ -401,7 +401,7 @@
 ########################################################################################################
 
 
-    build:
+    Trivy:
       if: github.actor!= 'dependabot[bot]'
       needs: [build_test]
       permissions:
@@ -416,11 +416,11 @@
   
         - name: Build an image from Dockerfile
           run: |
-            docker build -t Trivy-scan:${{ github.sha }} .
+            docker build -t docker.io/mostafaewida/hackmaze_frontend:${{ github.sha }} .
         - name: Run Trivy vulnerability scanner
           uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
           with:
-            image-ref: 'Trivy-scan:${{ github.sha }}'
+            image-ref: 'docker.io/mostafaewida/hackmaze_frontend:${{ github.sha }}'
             format: 'template'
             template: '@/contrib/sarif.tpl'
             output: 'trivy-results.sarif'
