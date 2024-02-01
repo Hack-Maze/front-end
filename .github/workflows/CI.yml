@@ -401,7 +401,7 @@
 ########################################################################################################
 
 
-    Trivy:
+    Trivy-scan:
       if: github.actor!= 'dependabot[bot]'
       needs: [build_test]
       permissions:
@@ -442,7 +442,7 @@
       runs-on: ubuntu-latest
       # build docker image and push to docker hub
       # only if the app build and test successfully
-      needs: [analyze-codeQL,analyze-codacy,lint]
+      needs: [analyze-codeQL,analyze-codacy,lint,Trivy-scan]
       steps:
         - name: short-sha
           uses: benjlevesque/short-sha@v2.2
