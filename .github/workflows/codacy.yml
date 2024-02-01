@@ -40,7 +40,6 @@ jobs:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           # verbose: true
           output: results.sarif
-          upload: true
           format: sarif
           # Adjust severity of non-security issues
           gh-code-scanning-compat: true
