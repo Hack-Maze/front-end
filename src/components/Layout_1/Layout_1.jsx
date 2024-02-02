@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import RadarChart from "../Charts/RadarChart";
-import LinearChart from "../Charts/LinearChart";
+import LinearChart from "../Charts/LineChart";
 
 const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
   const [isCard1Open, setIsCard1Open] = useState(true);
@@ -36,13 +36,9 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
       <div className="flex flex-col text-white">
         {freinds && (
           <div
-            className={`border bg-[#be97970d] p-5 my-6 flex flex-col justify-between shadow-md shadow-[#fff3] w-[280px] ${
+            className={`border bg-[#be97970d] p-5 my-6 flex flex-col justify-between shadow-md shadow-[#fff3] w-[280px] border-gray-400 rounded-md ${
               isCard1Open ? "h-[250px]" : ""
             }`}
-            style={{
-              borderImage:
-                "linear-gradient(140.79deg, #F03D3E 30%, #FFFFFF 60%) 1",
-            }}
           >
             <div onClick={handleFriendsToggle} className="cursor-pointer">
               <h2 className="flex justify-between items-center font-bold text-xl capitalize ">
@@ -88,13 +84,9 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
           </div>
         )}
         <div
-          className={`border bg-[#be97970d] p-5 my-6 shadow-md shadow-[#fff3] w-[280px] ${
+          className={`border bg-[#be97970d] p-5 my-6 shadow-md shadow-[#fff3] w-[280px] border-gray-400 rounded-md ${
             isCard2Open ? "h-[300px]" : ""
           }`}
-          style={{
-            borderImage:
-              "linear-gradient(140.79deg, #F03D3E 30%, #FFFFFF 60%) 1",
-          }}
         >
           <div onClick={handleSkillsToggle} className="cursor-pointer pb-2">
             <h2 className="flex justify-between items-center font-bold text-xl capitalize">
@@ -107,7 +99,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
               {box_2_title === "skills matrix" ? (
                 <RadarChart />
               ) : (
-                <div className="h-[330px]">
+                <div className="h-full">
                   <LinearChart />
                 </div>
               )}

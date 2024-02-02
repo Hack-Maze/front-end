@@ -44,7 +44,7 @@ const Auth = () => {
 
   return (
     <div
-      className="min-h-screen  bg-cover bg-center py-4 sm:px-6 lg:px-8 font-Incon"
+      className="h-screen overflow-hidden  bg-cover bg-center py-4 sm:px-6 lg:px-8 font-Incon"
       id="vanta"
     >
       <div className="flex mb-4">

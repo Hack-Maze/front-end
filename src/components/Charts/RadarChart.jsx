@@ -8,7 +8,7 @@ const RadarChart = () => {
     labels: ["Thing1", "Thing2", "Thing3", "Thing4", "Thing5", "Thing6"],
     datasets: [
       {
-        label: "Skills",
+        label: "",
         data: [10, 20, 30, 40, 50, 60],
         backgroundColor: "#6b0a03de",
         borderColor: "#E50E00",
@@ -33,6 +33,11 @@ const RadarChart = () => {
         type: "radar",
         data: data,
         options: {
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
           scales: {
             r: {
               ticks: {

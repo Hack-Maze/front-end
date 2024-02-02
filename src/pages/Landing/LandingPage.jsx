@@ -24,7 +24,10 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-row items-center" id="vanta">
+    <div
+      className="flex overflow-hidden h-screen flex-row items-center"
+      id="vanta"
+    >
       <div className="flex flex-col w-[50%] ml-8">
         <h1 className="font-bold text-white text-5xl">HackMaze</h1>
         <div className="mt-12 mb-4 text-white font-bold text-xl">

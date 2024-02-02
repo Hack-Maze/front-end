@@ -14,7 +14,6 @@ const FormRow = ({ type, name, inputHandler, text, value }) => {
         <input
           type={isPasswordInput && showPassword ? "text" : type}
           placeholder={text}
-          autoComplete={name}
           value={value}
           onChange={inputHandler}
           className="appearance-none bg-transparent block w-full mb-6 px-3 pb-2  border-b-[1px] border-white placeholder-white focus:outline-none focus:border-b-2 text-sm sm:text-lg text-white transition border-transition duration-500 focus:border-opacity-100 border-opacity-50"

@@ -87,34 +87,38 @@ const DashboardPage = () => {
               button={"add friends"}
               box_2_title={"skills matrix"}
             />
-            <div className="w-full p-8 text-white">
-              <h1 className="text-3xl border-b-2 pb-3">
-                Current path challenges
-              </h1>
-              <div className="pt-2 flex justify-between">
-                <p className="text-xl ">
-                  Continue with the Introduction to Cyber Security path
-                </p>
-                <div className="flex flex-col">
-                  <span className="text-sm">Your Progress : 70%</span>
-                  <div className="relative h-2 w-full bg-white rounded-lg mt-1">
-                    <div
-                      className="absolute top-0 left-0 h-full bg-red-500 rounded-lg"
-                      style={{ width: "70%" }} // Set the width dynamically here
-                    ></div>
+            <div className="w-full py-8 text-white flex justify-center">
+              <div className="w-[80%]">
+                <h1 className="text-3xl border-b-2 pb-3">
+                  Current path challenges
+                </h1>
+                <div className="pt-2 flex justify-between">
+                  <p className="text-xl ">
+                    Continue with the Introduction to Cyber Security path
+                  </p>
+                  <div className="flex flex-col">
+                    <span className="text-sm">Your Progress : 70%</span>
+                    <div className="relative h-2 w-full bg-white rounded-lg mt-1">
+                      <div
+                        className="absolute top-0 left-0 h-full bg-red-500 rounded-lg"
+                        style={{ width: "70%" }} // Set the width dynamically here
+                      ></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex flex-row p-4 border border-red-500 my-5 rounded-md bg-[#ffffff0a] shadow-md shadow-[#fff3] cursor-pointer hover:bg-[#ffffff13]">
-                <div>
-                  <GiSecurityGate size={60} />
-                </div>
-                <div className="flex flex-col ml-3">
-                  <h2 className="pb-2 text-xl">Intro to Offensive Security</h2>
-                  <p className="text-md">
-                    Hack your first website (legally in a safe environment) and
-                    experience an ethical hacker's job.
-                  </p>
+                <div className="flex flex-row items-center p-4 border border-red-500 my-5 rounded-md bg-[#ffffff0a] shadow-md shadow-[#fff3] cursor-pointer hover:bg-[#ffffff13]">
+                  <div>
+                    <GiSecurityGate size={60} />
+                  </div>
+                  <div className="flex flex-col ml-3">
+                    <h2 className="pb-2 text-xl">
+                      Intro to Offensive Security
+                    </h2>
+                    <p className="text-md">
+                      Hack your first website (legally in a safe environment)
+                      and experience an ethical hacker's job.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
