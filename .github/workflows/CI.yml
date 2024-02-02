@@ -12,7 +12,7 @@
         - '!CI-**'
       paths:
           - '*'
-          - '*.md'
+          - '!*.md'
           - '!.github/workflows/*'
     pull_request:
       branches:
@@ -20,24 +20,9 @@
         - 'develop'
         - 'feature-**'
         - '!CI-**'
-      # paths:
-      #     - '*'
-      #     - '!.github/workflows'
-
-
 
   jobs:
-
-      # env  
-      #secrets.DISCORD_WEBHOOK_URL
-      #secrets.DOCKERHUB_TOKEN
-      #secrets.DOCKERUSERNAME
-      #secrets.DOCKER_REPO
-
-
-
-
-   
+ 
             
           
     notify_Discord:
