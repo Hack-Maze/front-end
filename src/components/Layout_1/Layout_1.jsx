@@ -99,7 +99,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
               {box_2_title === "skills matrix" ? (
                 <RadarChart />
               ) : (
-                <div className="h-full flex items-center">
+                <div>
                   <LinearChart />
                 </div>
               )}
