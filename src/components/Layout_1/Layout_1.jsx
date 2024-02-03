@@ -59,7 +59,9 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
                           <div className="flex items-center space-x-2">
                             <span className="font-medium">{friend.name}</span>
                           </div>
-                          <button className="text-red-500">Remove</button>
+                          <button className="text-red-500 hover:text-red-300">
+                            Remove
+                          </button>
                         </div>
                       ))
                     : data.tasks.map((task, index) => (
@@ -70,7 +72,9 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
                           <div className="flex items-center space-x-2">
                             <span className="font-medium">{task.name}</span>
                           </div>
-                          <button className="text-red-500">Remove</button>
+                          <button className="text-red-500 hover:text-red-300">
+                            Remove
+                          </button>
                         </div>
                       ))}
                 </div>

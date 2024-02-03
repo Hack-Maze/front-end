@@ -19,7 +19,7 @@ const DashboardPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen font-Incon">
-      <div className="absolute top-0 left-0 w-full h-screen bg-[#0000008f] z-10"></div>
+      <div className="absolute top-0 left-0 w-full h-screen bg-[#000000d9] z-10"></div>
       <div
         className=" flex-grow relative"
         style={{
@@ -90,7 +90,7 @@ const DashboardPage = () => {
             <div className="cursor-pointer">account</div>
           </div>
         </header>
-        <body className="border-t px-8 py-4 relative z-20">
+        <body className="border-t border-gray-500 px-8 py-4 relative z-20">
           <div className="flex flex-row">
             <Layout_1
               box_1_title={"friends"}
@@ -111,7 +111,7 @@ const DashboardPage = () => {
                     <div className="relative h-2 w-full bg-white rounded-lg mt-1">
                       <div
                         className="absolute top-0 left-0 h-full bg-red-500 rounded-lg"
-                        style={{ width: "70%" }} // Set the width dynamically here
+                        style={{ width: "70%" }}
                       ></div>
                     </div>
                   </div>
@@ -140,7 +140,7 @@ const DashboardPage = () => {
           </div>
         </body>
       </div>
-      <footer className="border-t w-full text-white bg-[#060606] relative z-20">
+      <footer className="border-t border-gray-500 w-full text-white bg-[#060606] relative z-20">
         <div className="grid items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:px-8 px-5 py-8">
           <ul className="px-5 sm:m-auto sm:mt-0 sm:text-start flex sm:block flex-col">
             <img
@@ -150,7 +150,9 @@ const DashboardPage = () => {
             />
           </ul>
           <ul className="text-center sm:text-start sm:m-auto sm:mt-0">
-            <h1 className="mb-1 font-semibold capitalize">overview</h1>
+            <h1 className="mb-1 font-semibold text-lg capitalize leading-7">
+              overview
+            </h1>
             <li>
               <Link
                 to={"/services"}
@@ -169,7 +171,9 @@ const DashboardPage = () => {
             </li>
           </ul>
           <ul className="text-center sm:text-start sm:m-auto sm:mt-0">
-            <h1 className="mb-1 font-semibold capitalize">usefull links</h1>
+            <h1 className="mb-1 font-semibold capitalize text-lg">
+              usefull links
+            </h1>
 
             <li>
               <Link
@@ -189,7 +193,9 @@ const DashboardPage = () => {
             </li>
           </ul>
           <ul className="text-center sm:text-start sm:m-auto">
-            <h1 className="mb-1 font-semibold capitalize">law and order</h1>
+            <h1 className="mb-1 font-semibold capitalize text-lg">
+              law and order
+            </h1>
 
             <li>
               <Link
