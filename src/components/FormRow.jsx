@@ -1,5 +1,6 @@
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
+import "../assets/style.css";
 
 const FormRow = ({ type, name, inputHandler, text, value }) => {
   const isPasswordInput = name === "password";
@@ -16,7 +17,7 @@ const FormRow = ({ type, name, inputHandler, text, value }) => {
           placeholder={text}
           value={value}
           onChange={inputHandler}
-          className="appearance-none bg-transparent block w-full mb-6 px-3 pb-2  border-b-[1px] border-white placeholder-white focus:outline-none focus:border-b-2 text-sm sm:text-lg text-white transition border-transition duration-500 focus:border-opacity-100 border-opacity-50"
+          className="input appearance-none bg-transparent block w-full mb-6 px-3 pb-2  border-b-[1px] border-white placeholder-white focus:outline-none focus:border-b-2 text-sm sm:text-lg text-white transition border-transition duration-500 focus:border-opacity-100 border-opacity-50"
         />
         {(name === "password" || name === "confirmPassword") && (
           <>

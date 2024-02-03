@@ -2,3 +2,8 @@
   border-bottom: 1px solid #86d90b;
   font-size: x-large;
 }
+
+.input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #0c0b0b inset;
+  -webkit-text-fill-color: white !important;
+}

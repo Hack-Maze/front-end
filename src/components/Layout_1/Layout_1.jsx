@@ -36,7 +36,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
       <div className="flex flex-col text-white">
         {freinds && (
           <div
-            className={`border bg-[#be97970d] p-5 my-6 flex flex-col justify-between shadow-md shadow-[#fff3] w-[280px] border-gray-400 rounded-md ${
+            className={`border bg-[#f8eded29] p-5 my-6 flex flex-col justify-between shadow-md shadow-[#fff3] w-[280px] border-red-500 rounded-md ${
               isCard1Open ? "h-[250px]" : ""
             }`}
           >
@@ -84,7 +84,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
           </div>
         )}
         <div
-          className={`border bg-[#be97970d] p-5 my-6 shadow-md shadow-[#fff3] w-[280px] border-gray-400 rounded-md ${
+          className={`border bg-[#f8eded29] p-5 my-6 shadow-md shadow-[#fff3] w-[280px] border-red-500 rounded-md ${
             isCard2Open ? "h-[300px]" : ""
           }`}
         >

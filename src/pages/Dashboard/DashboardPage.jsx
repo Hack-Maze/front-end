@@ -8,6 +8,7 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import Layout_1 from "../../components/Layout_1/Layout_1";
 import { GiSecurityGate } from "react-icons/gi";
+import GIF from "../../assets/X.gif";
 
 const DashboardPage = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
@@ -17,9 +18,18 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="bg-[#0c0c0c] flex flex-col min-h-screen font-Incon">
-      <div className=" flex-grow ">
-        <header className="flex mx-6 my-4 justify-between items-center text-white">
+    <div className="flex flex-col min-h-screen font-Incon">
+      <div className="absolute top-0 left-0 w-full h-screen bg-[#0000008f] z-10"></div>
+      <div
+        className=" flex-grow relative"
+        style={{
+          backgroundImage: `url(${GIF})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
+      >
+        <header className="flex mx-6 my-4 justify-between items-center text-white relative z-20">
           <div className="flex items-center">
             <div>
               <img src="/logo.svg" alt="logo" className="w-10 mr-4" />
@@ -80,7 +90,7 @@ const DashboardPage = () => {
             <div className="cursor-pointer">account</div>
           </div>
         </header>
-        <body className="border-t px-8 py-4">
+        <body className="border-t px-8 py-4 relative z-20">
           <div className="flex flex-row">
             <Layout_1
               box_1_title={"friends"}
@@ -106,7 +116,7 @@ const DashboardPage = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-row items-center p-4 border border-red-500 my-5 rounded-md bg-[#ffffff0a] shadow-md shadow-[#fff3] cursor-pointer hover:bg-[#ffffff13]">
+                <div className="flex flex-row items-center p-4 border border-red-500 my-5 rounded-md bg-[#f8eded29] shadow-md shadow-[#fff3] cursor-pointer hover:bg-[#ffffff13]">
                   <div>
                     <GiSecurityGate size={60} />
                   </div>
@@ -130,7 +140,7 @@ const DashboardPage = () => {
           </div>
         </body>
       </div>
-      <footer className="border-t w-full text-white ">
+      <footer className="border-t w-full text-white bg-[#060606] relative z-20">
         <div className="grid items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:px-8 px-5 py-8">
           <ul className="px-5 sm:m-auto sm:mt-0 sm:text-start flex sm:block flex-col">
             <img

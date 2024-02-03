@@ -41,17 +41,21 @@ const LinearChart = () => {
           responsive: true,
           scales: {
             x: {
+              border: {
+                display: false,
+              },
               grid: {
+                beginAtZero: true,
                 color: "white",
               },
               ticks: {
-                color: "transparent", // Hide x-axis labels text
+                color: "transparent",
               },
             },
             y: {
-              beginAtZero: true,
               grid: {
                 display: false,
+                beginAtZero: true,
               },
               ticks: {
                 color: "white",
