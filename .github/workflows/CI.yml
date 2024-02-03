@@ -11,6 +11,7 @@
         - 'feature-**'
         - '!CI-**'
       paths:
+          - '*/*'
           - '!*.md'
           - '!.github/workflows/*'
     pull_request:
