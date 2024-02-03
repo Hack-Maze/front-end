@@ -10,17 +10,20 @@
         - 'develop'
         - 'feature-**'
         - '!CI-**'
-      paths:
-          - '*/*'
-          - '!*.md'
-          - '!.github/workflows/*'
+        
+      paths-ignore:    
+          - '*.md'
+          - '.github/workflows/*'
     pull_request:
       branches:
         - 'main'
         - 'develop'
         - 'feature-**'
         - '!CI-**'
-
+        
+      paths-ignore:    
+          - '*.md'
+          - '.github/workflows/*'
   jobs:
  
             
