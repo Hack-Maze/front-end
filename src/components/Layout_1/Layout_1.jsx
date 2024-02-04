@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import RadarChart from "../Charts/RadarChart";
@@ -7,6 +7,20 @@ import LinearChart from "../Charts/LineChart";
 const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
   const [isCard1Open, setIsCard1Open] = useState(true);
   const [isCard2Open, setIsCard2Open] = useState(true);
+
+  const [shouldRenderChart, setShouldRenderChart] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (isCard2Open) {
+      timer = setTimeout(() => {
+        setShouldRenderChart(true);
+      }, 200);
+    } else {
+      setShouldRenderChart(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isCard2Open]);
 
   const handleFriendsToggle = () => {
     setIsCard1Open(!isCard1Open);
@@ -36,12 +50,12 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
       <div className="flex flex-col text-white">
         {freinds && (
           <div
-            className={`border bg-[#f8eded29] p-5 my-6 flex flex-col justify-between shadow-md shadow-[#fff3] w-[280px] border-red-500 rounded-md ${
-              isCard1Open ? "h-[250px]" : ""
+            className={`border bg-[#f8eded29] px-5 py-4 pb-10 my-6 flex flex-col justify-between shadow-md shadow-[#fff3] w-[280px] border-red-500 rounded-md transition-height duration-300 ${
+              isCard1Open ? "h-[250px]" : "overflow-hidden h-0"
             }`}
           >
             <div onClick={handleFriendsToggle} className="cursor-pointer">
-              <h2 className="flex justify-between items-center font-bold text-xl capitalize ">
+              <h2 className="flex justify-between items-center font-bold text-xl capitalize">
                 {box_1_title}
                 {isCard1Open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
               </h2>
@@ -88,8 +102,8 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
           </div>
         )}
         <div
-          className={`border bg-[#f8eded29] p-5 my-6 shadow-md shadow-[#fff3] w-[280px] border-red-500 rounded-md ${
-            isCard2Open ? "h-[300px]" : ""
+          className={`border bg-[#f8eded29] px-5 py-4 pb-10 my-6 shadow-md shadow-[#fff3] w-[280px] border-red-500 rounded-md transition-height duration-300 ${
+            isCard2Open ? "h-[300px]" : "overflow-hidden h-0"
           }`}
         >
           <div onClick={handleSkillsToggle} className="cursor-pointer pb-2">
@@ -98,15 +112,15 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
               {isCard2Open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
             </h2>
           </div>
-          {isCard2Open && (
+          {isCard2Open && shouldRenderChart && (
             <>
-              {box_2_title === "skills matrix" ? (
-                <RadarChart />
-              ) : (
-                <div className="h-[300px]">
+              <div className="h-[300px]">
+                {box_2_title === "skills matrix" ? (
+                  <RadarChart />
+                ) : (
                   <LinearChart />
-                </div>
-              )}
+                )}
+              </div>
             </>
           )}
         </div>
