@@ -10,23 +10,26 @@
         - 'develop'
         - 'feature-**'
         - '!CI-**'
-      paths:
-          - '*/*'
-          - '!*.md'
-          - '!.github/workflows/*'
+        
+      paths-ignore:    
+          - '*.md'
+          - '.github/workflows/*'
     pull_request:
       branches:
         - 'main'
         - 'develop'
         - 'feature-**'
         - '!CI-**'
-
+        
+      paths-ignore:    
+          - '*.md'
+          - '.github/workflows/*'
   jobs:
  
             
           
     notify_Discord:
-      if: github.actor!= 'dependabot[bot]'
+      if: ${{ github.actor != 'dependabot[bot]' && !contains(github.event.head_commit.message, 'dependabot') }}
       # The type of runner that the job will run on
       runs-on: ubuntu-latest
 
