@@ -8,19 +8,35 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
   const [isCard1Open, setIsCard1Open] = useState(true);
   const [isCard2Open, setIsCard2Open] = useState(true);
 
-  const [shouldRenderChart, setShouldRenderChart] = useState(false);
+  const [shouldRenderCards, setShouldRenderCards] = useState({
+    card1: false,
+    card2: false,
+  });
 
   useEffect(() => {
-    let timer;
-    if (isCard2Open) {
-      timer = setTimeout(() => {
-        setShouldRenderChart(true);
+    let timer1, timer2;
+
+    if (isCard1Open) {
+      timer1 = setTimeout(() => {
+        setShouldRenderCards((prevState) => ({ ...prevState, card1: true }));
       }, 200);
     } else {
-      setShouldRenderChart(false);
+      setShouldRenderCards((prevState) => ({ ...prevState, card1: false }));
     }
-    return () => clearTimeout(timer);
-  }, [isCard2Open]);
+
+    if (isCard2Open) {
+      timer2 = setTimeout(() => {
+        setShouldRenderCards((prevState) => ({ ...prevState, card2: true }));
+      }, 200);
+    } else {
+      setShouldRenderCards((prevState) => ({ ...prevState, card2: false }));
+    }
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [isCard1Open, isCard2Open]);
 
   const handleFriendsToggle = () => {
     setIsCard1Open(!isCard1Open);
@@ -60,7 +76,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
                 {isCard1Open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
               </h2>
             </div>
-            {isCard1Open && (
+            {isCard1Open && shouldRenderCards.card1 && (
               <>
                 <div className="mb-4 mt-2 overflow-y-auto max-h-48">
                   {/* Conditionally render friends or tasks data */}
@@ -112,7 +128,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
               {isCard2Open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
             </h2>
           </div>
-          {isCard2Open && shouldRenderChart && (
+          {isCard2Open && shouldRenderCards.card2 && (
             <>
               <div className="h-[300px]">
                 {box_2_title === "skills matrix" ? (
