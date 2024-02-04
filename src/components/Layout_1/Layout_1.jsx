@@ -103,7 +103,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
               {box_2_title === "skills matrix" ? (
                 <RadarChart />
               ) : (
-                <div>
+                <div className="h-[300px]">
                   <LinearChart />
                 </div>
               )}

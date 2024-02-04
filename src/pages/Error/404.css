@@ -109,4 +109,25 @@
 
 .errorcode {
   color: white;
+  font-size: 2rem;
+}
+
+@media only screen and (min-width: 768px) {
+  .terminal {
+    width: 90%;
+    padding: 3rem;
+  }
+}
+
+@media only screen and (min-width: 360px) {
+  .body {
+    font-size: 1.2rem;
+  }
+  .terminal {
+    width: 100%;
+    padding: 2rem;
+  }
+  .errorcode {
+    font-size: 1.5rem;
+  }
 }
