@@ -141,7 +141,7 @@ const DashboardPage = () => {
         </body>
       </div>
       <footer className="border-t border-gray-500 w-full text-white bg-[#060606] relative z-20">
-        <div className="grid items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:px-8 px-5 py-8">
+        <div className="grid items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-5 sm:px-8 px-5 py-8">
           <ul className="px-5 sm:m-auto sm:mt-0 sm:text-start flex sm:block flex-col">
             <img
               src="/logo.svg"
