@@ -49,13 +49,19 @@ const Auth = () => {
     >
       <div className="flex mb-4">
         <div>
-          <img src="/logo.png" alt="logo" className="w-10 mr-8" />
+          <img
+            src="/logo.png"
+            alt="logo"
+            className="w-7 sm:w-8 lg:w-12 mr-3 sm:mr-5 lg:mr-8"
+          />
         </div>
-        <h1 className="text-3xl text-white ">HackMaze</h1>
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl text-white">
+          HackMaze
+        </h1>
       </div>
-      <div className=" flex justify-center items-center h-[80vh]">
+      <div className="flex justify-center items-center sm:h-[70vh] lg:h-[80vh]">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <div className="flex text-white text-xl uppercase font-bold w-full mb-8 cursor-pointer">
+          <div className="flex text-white text-base sm:text-lg lg:text-xl uppercase font-bold w-full mb-8 cursor-pointer">
             <h2
               className={`text-center w-[50%] border-b-2 ${
                 isLoginFormVisible ? "border-red-600" : "border-gray-200"
