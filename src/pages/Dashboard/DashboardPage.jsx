@@ -5,6 +5,9 @@ import { CiTrophy } from "react-icons/ci";
 import { MdOutlineDashboard } from "react-icons/md";
 import { LuGraduationCap, LuSwords } from "react-icons/lu";
 import { IoMdNotificationsOutline } from "react-icons/io";
+// import { GoCircle } from "react-icons/go";
+import { FaCircleUser } from "react-icons/fa6";
+
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import Layout_1 from "../../components/Layout_1/Layout_1";
 import { GiSecurityGate } from "react-icons/gi";
@@ -82,12 +85,14 @@ const DashboardPage = () => {
           </div>
           <div className="flex">
             <div className="cursor-pointer">
-              <HiOutlineMagnifyingGlass size={25} />
+              <HiOutlineMagnifyingGlass size={30} />
             </div>
             <div className="mx-6 cursor-pointer">
-              <IoMdNotificationsOutline size={25} />
+              <IoMdNotificationsOutline size={30} />
             </div>
-            <div className="cursor-pointer">account</div>
+            <div className="cursor-pointer">
+              <FaCircleUser size={30} />
+            </div>
           </div>
         </header>
         <body className="border-t border-gray-500 px-8 py-4 relative z-20">
@@ -141,95 +146,97 @@ const DashboardPage = () => {
         </body>
       </div>
       <footer className="border-t border-gray-500 w-full text-white bg-[#060606] relative z-20">
-        <div className="grid items-center grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-5 sm:px-8 px-5 py-8">
-          <ul className="px-5 sm:m-auto sm:mt-0 sm:text-start flex sm:block flex-col">
-            <img
-              src="/logo.svg"
-              alt="logo"
-              className="sm:w-[120px] w-[100px]"
-            />
-          </ul>
-          <ul className="text-center sm:text-start sm:m-auto sm:mt-0">
-            <h1 className="mb-1 font-semibold text-lg capitalize leading-7">
-              overview
-            </h1>
-            <li>
-              <Link
-                to={"/services"}
-                className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
-              >
-                services
-              </Link>
-            </li>
-            <li>
-              <Link
-                to={"/services"}
-                className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
-              >
-                contact us
-              </Link>
-            </li>
-          </ul>
-          <ul className="text-center sm:text-start sm:m-auto sm:mt-0">
-            <h1 className="mb-1 font-semibold capitalize text-lg">
-              usefull links
-            </h1>
+        <div className="flex justify-center">
+          <div className="grid items-center grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-10 lg:gap-16 sm:px-8 px-5 py-8">
+            <ul className="px-5 sm:m-auto sm:mt-0 sm:text-start flex sm:block flex-col">
+              <img
+                src="/logo.svg"
+                alt="logo"
+                className="sm:w-[120px] w-[100px]"
+              />
+            </ul>
+            <ul className="text-center sm:text-start sm:m-auto sm:mt-0">
+              <h1 className="mb-1 font-semibold text-lg capitalize leading-7">
+                overview
+              </h1>
+              <li>
+                <Link
+                  to={"/services"}
+                  className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
+                >
+                  services
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={"/services"}
+                  className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
+                >
+                  contact us
+                </Link>
+              </li>
+            </ul>
+            <ul className="text-center sm:text-start sm:m-auto sm:mt-0">
+              <h1 className="mb-1 font-semibold capitalize text-lg">
+                usefull links
+              </h1>
 
-            <li>
-              <Link
-                to={"/about"}
-                className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
-              >
-                about
-              </Link>
-            </li>
-            <li>
-              <Link
-                to={"/help"}
-                className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
-              >
-                help
-              </Link>
-            </li>
-          </ul>
-          <ul className="text-center sm:text-start sm:m-auto">
-            <h1 className="mb-1 font-semibold capitalize text-lg">
-              law and order
-            </h1>
+              <li>
+                <Link
+                  to={"/about"}
+                  className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
+                >
+                  about
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={"/help"}
+                  className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
+                >
+                  help
+                </Link>
+              </li>
+            </ul>
+            <ul className="text-center sm:text-start sm:m-auto">
+              <h1 className="mb-1 font-semibold capitalize text-lg">
+                law and order
+              </h1>
 
-            <li>
-              <Link
-                to={"/terms-of-service"}
-                className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
-              >
-                terms of service
-              </Link>
-            </li>
-            <li>
-              <Link
-                to={"/data-protection"}
-                className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
-              >
-                data protection
-              </Link>
-            </li>
-            <li>
-              <Link
-                to={"/cookies"}
-                className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
-              >
-                cookies
-              </Link>
-            </li>
-            <li>
-              <Link
-                to={"/legal-notices"}
-                className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
-              >
-                legal notices
-              </Link>
-            </li>
-          </ul>
+              <li>
+                <Link
+                  to={"/terms-of-service"}
+                  className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
+                >
+                  terms of service
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={"/data-protection"}
+                  className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
+                >
+                  data protection
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={"/cookies"}
+                  className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
+                >
+                  cookies
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={"/legal-notices"}
+                  className=" capitalize hover:text-gray-400 duration-200 text-sm cursor-pointer leading-8 underline"
+                >
+                  legal notices
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="text-sm pb-5 flex justify-between mx-6 font-bold">
           <span>&copy; 2023 HackMaze.</span>

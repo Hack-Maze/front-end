@@ -78,9 +78,9 @@
   box-sizing: inherit;
   position: absolute;
   height: 100%;
-  width: 1000px;
+  width: 100%;
   max-width: 100%;
-  padding: 4rem;
+  padding: 2rem;
   text-transform: uppercase;
 }
 
@@ -88,6 +88,7 @@
   color: rgba(255, 170, 170, 0.8); /* Slightly lighter shade of red */
   text-shadow: 0 0 1px rgba(255, 170, 170, 0.4),
     /* Matching shadow color */ 0 0 2px rgba(255, 255, 255, 0.8);
+  padding-top: 1rem;
 }
 
 .output::before {
@@ -109,25 +110,5 @@
 
 .errorcode {
   color: white;
-  font-size: 2rem;
-}
-
-@media only screen and (min-width: 768px) {
-  .terminal {
-    width: 90%;
-    padding: 3rem;
-  }
-}
-
-@media only screen and (min-width: 360px) {
-  .body {
-    font-size: 1.2rem;
-  }
-  .terminal {
-    width: 100%;
-    padding: 2rem;
-  }
-  .errorcode {
-    font-size: 1.5rem;
-  }
+  font-size: 5rem;
 }

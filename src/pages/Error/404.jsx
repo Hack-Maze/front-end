@@ -9,11 +9,11 @@ const ErrorPage = () => {
   };
   return (
     <div className="bg-red-500 h-screen">
-      <div className="body">
+      <div className="body text-lg sm:text-sm lg:text-xl">
         <div className="noise"></div>
         <div className="overlay"></div>
-        <div className="terminal">
-          <h1 className="errorcode">
+        <div className="terminal flex flex-col justify-center items-center">
+          <h1 className="errorcode text-3xl sm:text-2xl lg:text-5xl mb-2">
             Error <span>404</span>
           </h1>
           <p className="output">
@@ -25,7 +25,7 @@ const ErrorPage = () => {
               go back
             </Link>{" "}
             <span> or </span>{" "}
-            <Link to="/" className="link">
+            <Link to="/dashboard" className="link">
               return to the homepage
             </Link>
           </p>

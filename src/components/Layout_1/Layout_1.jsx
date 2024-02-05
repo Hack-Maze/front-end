@@ -89,7 +89,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
                           <div className="flex items-center space-x-2">
                             <span className="font-medium">{friend.name}</span>
                           </div>
-                          <button className="text-red-500 hover:text-red-300">
+                          <button className="text-red-500 hover:text-red-300 mr-3">
                             Remove
                           </button>
                         </div>
@@ -102,7 +102,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
                           <div className="flex items-center space-x-2">
                             <span className="font-medium">{task.name}</span>
                           </div>
-                          <button className="text-red-500 hover:text-red-300">
+                          <button className="text-red-500 hover:text-red-300 mr-3">
                             Remove
                           </button>
                         </div>
