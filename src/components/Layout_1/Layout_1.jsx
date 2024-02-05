@@ -130,7 +130,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
           </div>
           {isCard2Open && shouldRenderCards.card2 && (
             <>
-              <div className="h-[300px]">
+              <div>
                 {box_2_title === "skills matrix" ? (
                   <RadarChart />
                 ) : (

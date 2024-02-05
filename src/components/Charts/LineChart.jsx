@@ -79,7 +79,7 @@ const LinearChart = () => {
     };
   }, [data]);
 
-  return <canvas ref={chartRef} style={{ height: "300px" }} />;
+  return <canvas ref={chartRef} height={300} />;
 };
 
 export default LinearChart;
