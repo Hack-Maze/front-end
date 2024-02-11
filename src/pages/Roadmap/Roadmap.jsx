@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const Roadmap = () => {
+  const { type } = useParams();
   const [htmlContent, setHtmlContent] = useState("");
 
   useEffect(() => {
-    fetch("/roadmaps/offensive-mindmap-expanded.html")
+    let url = `/roadmaps/${type.toLowerCase()}.html`;
+
+    fetch(url)
       .then((response) => response.text())
       .then((html) => {
         setHtmlContent(html);
@@ -12,7 +16,7 @@ const Roadmap = () => {
       .catch((error) => {
         console.error("Error fetching HTML:", error);
       });
-  }, []);
+  }, [type]);
 
   return (
     <div>

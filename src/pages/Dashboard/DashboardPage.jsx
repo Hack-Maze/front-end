@@ -32,7 +32,7 @@ const DashboardPage = () => {
           backgroundPosition: "center",
         }}
       >
-        <header className="flex mx-6 my-4 justify-between items-center text-white relative z-20">
+        <header className="flex mx-6 my-4 justify-between items-center text-white relative z-30">
           <div className="flex items-center">
             <div>
               <img src="/logo.svg" alt="logo" className="w-10 mr-4" />
@@ -62,13 +62,30 @@ const DashboardPage = () => {
                 Dashboard
               </li>
               <li
-                className={`mx-12 flex items-center cursor-pointer ${
+                className={`mx-12 flex items-center relative cursor-pointer ${
                   activeItem === "learn" ? "text-red-500" : "hover:text-red-400"
                 }`}
                 onClick={() => handleItemClick("learn")}
               >
                 <LuGraduationCap className="mr-1" size={30} />
                 Learn
+                {activeItem === "learn" && (
+                  <div className="absolute top-full left-0 mt-1 bg-white shadow-md rounded-md">
+                    <ul>
+                      <Link to={`/roadmap/offensive`}>
+                        <li className="py-2 px-4 hover:bg-slate-200 rounded-md">
+                          Offensive
+                        </li>
+                      </Link>
+
+                      <Link to={`/roadmap/defensive`}>
+                        <li className="py-2 px-4 hover:bg-slate-200 rounded-md">
+                          Defensive
+                        </li>
+                      </Link>
+                    </ul>
+                  </div>
+                )}
               </li>
               <li
                 className={`flex items-center cursor-pointer ${

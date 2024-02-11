@@ -4,6 +4,7 @@ import LandingPage from "./pages/Landing/LandingPage";
 import "./App.css";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import ErrorPage from "./pages/Error/404";
+import Roadmap from "./pages/Roadmap/Roadmap";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Route index element={<LandingPage />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/roadmap/:type" element={<Roadmap />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Router>

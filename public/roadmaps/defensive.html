@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Markmap</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        background: #181818;
+        color: #ffffff;
+      }
+      #mindmap {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.15.6/dist/style.css"
+    />
+  </head>
+  <body>
+    <svg id="mindmap"></svg>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.6/dist/browser/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.15.6/dist/index.js"></script>
+    <script>
+      ((r) => {
+        setTimeout(r);
+      })(() => {
+        const { markmap, mm } = window;
+        const { el } = markmap.Toolbar.create(mm);
+        el.setAttribute("style", "position:absolute;bottom:20px;right:20px");
+        document.body.append(el);
+      });
+    </script>
+    <script>
+      ((getMarkmap, getOptions, root2, jsonOptions) => {
+        const markmap = getMarkmap();
+        window.mm = markmap.Markmap.create(
+          "svg#mindmap",
+          (getOptions || markmap.deriveOptions)(jsonOptions),
+          root2
+        );
+      })(
+        () => window.markmap,
+        null,
+        {
+          type: "heading",
+          depth: 0,
+          payload: { lines: [0, 1] },
+          content: "Getting ready",
+          children: [
+            {
+              type: "ordered_list",
+              depth: 1,
+              payload: { lines: [2, 20], startIndex: 1 },
+              content: "",
+              children: [
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [2, 3], index: 1 },
+                  content:
+                    "1. <strong>Networking:</strong> solid understanding of OSI Layers, IP, Port, Protocol, Routing, Switching, Port Security, DNS, DHCP, Domain Group Policy, Domain Controller, difference between UDP and TCP, ARP Table",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [3, 4] },
+                      content: "Recommended courses: Network+ or CCNA",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [4, 5] },
+                      content:
+                        '<a href="https://maharatech.gov.eg/course/view.php?id=22">Computer Network Fundamentals</a> &amp; <a href="https://maharatech.gov.eg/course/view.php?id=37">Introduction To Network Security</a>, <a href="https://maharatech.gov.eg/course/view.php?id=2116">Implementation Of Computer Network Fundamentals</a>',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [6, 7], index: 2 },
+                  content: "2. <strong>Operating Systems:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [7, 8] },
+                      content: "<strong>Windows</strong>",
+                      children: [
+                        {
+                          type: "list_item",
+                          depth: 4,
+                          payload: { lines: [8, 9] },
+                          content: "basic windows commands",
+                          children: [],
+                        },
+                        {
+                          type: "list_item",
+                          depth: 4,
+                          payload: { lines: [9, 10] },
+                          content:
+                            "understanding of windows environment (events, registry, file system, windows features such as task scheduling)",
+                          children: [],
+                        },
+                        {
+                          type: "list_item",
+                          depth: 4,
+                          payload: { lines: [10, 11] },
+                          content:
+                            'Active directory services and windows Domain environment <a href="https://www.youtube.com/playlist?list=PLdWx9r2CgK7ActEDCBe_-tojDG5T4AHXK">windows Domain basics</a>',
+                          children: [],
+                        },
+                      ],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [11, 12] },
+                      content: "<strong>Linux</strong>",
+                      children: [
+                        {
+                          type: "list_item",
+                          depth: 4,
+                          payload: { lines: [12, 13] },
+                          content:
+                            '<a href="https://maharatech.gov.eg/course/view.php?id=2155">basic Linux commands &amp; understanding of Linux environment</a>',
+                          children: [],
+                        },
+                        {
+                          type: "list_item",
+                          depth: 4,
+                          payload: { lines: [13, 14] },
+                          content:
+                            '<a href="https://overthewire.org/wargames/bandit/">practice on over the wire</a>',
+                          children: [],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [15, 16], index: 3 },
+                  content:
+                    "3. <strong>Programming:</strong> any programming language",
+                  children: [],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [17, 18], index: 4 },
+                  content:
+                    "4. <strong>Security Essentials:</strong> SEC401 Security Essentials Bootcamp Style",
+                  children: [],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [18, 19], index: 5 },
+                  content:
+                    '5. <a href="https://securitycreators.video/">Security Creators list</a>',
+                  children: [],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              depth: 1,
+              payload: { lines: [20, 21] },
+              content: "SOC L1",
+              children: [
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [21, 22], index: 1 },
+                  content: "1. **Blue Team Basics: one of these **",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [22, 23] },
+                      content:
+                        '<a href="https://netriders.academy/courses/incident-response/lesson/00-course-introduction-2/">ecIR NetRiders</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [23, 24] },
+                      content:
+                        "Blue Team Fundamentals: Security Operations and Analysis SANS 450",
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [25, 26], index: 2 },
+                  content: "2. <strong>security tools and technology</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [26, 27] },
+                      content: "SIEM solution:",
+                      children: [
+                        {
+                          type: "list_item",
+                          depth: 4,
+                          payload: { lines: [27, 28] },
+                          content:
+                            '<a href="https://www.splunk.com/en_us/training/course-catalog.html?sort=Newest&amp;filters=filterGroup1FreeCourses">Splunk Training Courses</a>',
+                          children: [],
+                        },
+                        {
+                          type: "list_item",
+                          depth: 4,
+                          payload: { lines: [28, 29] },
+                          content:
+                            '<a href="https://www.pluralsight.com/courses/incident-detection-investigation-qradar">Incident Detection &amp; Investigation with Qradar</a>',
+                          children: [],
+                        },
+                        {
+                          type: "list_item",
+                          depth: 4,
+                          payload: { lines: [29, 30] },
+                          content:
+                            '<a href="https://www.elastic.co/training/elastic-security-fundamentals-siem">Elastic Security Fundamentals SIEM</a>',
+                          children: [],
+                        },
+                      ],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [30, 31] },
+                      content: "Firewalls Types",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [31, 32] },
+                      content: "IDS\\IPS basics",
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [33, 34], index: 3 },
+                  content:
+                    '3. <strong>SOC Environment:</strong> <a href="https://youtube.com/playlist?list=PLdUDP-atVHBoDae43tcUZnW1YsjoPJRvP&amp;si=GCwAdoDyboQORWIN">SOC Investigation course</a>',
+                  children: [],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [35, 36], index: 4 },
+                  content:
+                    '4. <strong>Basics of Malware Analysis</strong> (<a href="https://maharatech.gov.eg/course/view.php?id=1404">Malware Analysis Fundamentals</a>)',
+                  children: [],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [37, 38], index: 5 },
+                  content:
+                    '5. <a href="https://www.guru99.com/ethical-hacking-tutorials.html">Ethical Hacking Tutorials for Beginners</a>',
+                  children: [],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              depth: 1,
+              payload: { lines: [39, 40] },
+              content: "Digital Forensics",
+              children: [
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [40, 41], index: 1 },
+                  content:
+                    '1. <strong>Introduction to Digital Forensics:</strong> <a href="https://my.ine.com/CyberSecurity/learning-paths/54d03ae9-f161-4c34-85d1-ed4007d83f11/digital-forensics-professional">ecDFP</a>, FOR 308 , <a href="https://www.circl.lu/services/forensic-training-materials/">Digital Forensic - Training Materials</a>',
+                  children: [],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [42, 43], index: 2 },
+                  content:
+                    '2. <strong>Windows Forensics:</strong> FOR 500, <a href="https://academy.tcm-sec.com/p/practical-windows-forensics">Practical Windows Forensics</a>',
+                  children: [],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [44, 45], index: 3 },
+                  content:
+                    '3. <strong>Memory Forensics:</strong> The Art of Memory Forensics book, FOR 526: investigating-memory-forensic-processes-dlls-consoles-process), <a href="https://blog.onfvp.com/post/volatility-cheatsheet/">volatility cheat sheet</a>',
+                  children: [],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [46, 47], index: 4 },
+                  content:
+                    '4. <strong>Network Forensics:</strong> FOR572, <a href="https://owasp.org/www-pdf-archive/Owasp_wireshark.pdf">wireshark</a>',
+                  children: [],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [48, 49], index: 5 },
+                  content: "5. <strong>Linux Forensics:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [49, 50] },
+                      content:
+                        '<a href="https://www.osdfcon.org/presentations/2019/Ali-Hadi_Performing-Linux-Forensic-Analysis-and-Why-You-Should-Care.pdf">linux forensics by Ali Hady</a>,',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [51, 52], index: 6 },
+                  content: "6. <strong>Useful Channels:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [52, 53] },
+                      content:
+                        '<a href="https://www.youtube.com/@13Cubed">13 cubed</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [53, 54] },
+                      content:
+                        '<a href="https://www.youtube.com/@binaryz0ne">Ali Hadi</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [54, 55] },
+                      content:
+                        '<a href="https://www.youtube.com/@DFIRScience">DFIR Science</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [55, 56] },
+                      content:
+                        '<a href="https://www.youtube.com/@SANSForensics">SANS Forensics</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [56, 57] },
+                      content:
+                        '<a href="https://www.youtube.com/@BlueMonkey4n6">Blue Monkey 4n6</a>',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [58, 59], index: 7 },
+                  content: "7. <strong>Resources:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [59, 60] },
+                      content:
+                        '<a href="https://alpbatursahin.medium.com/">Investigating Memory Forensic Write up</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [60, 61] },
+                      content:
+                        '<a href="https://onlinedegrees.sandiego.edu/network-forensics-tools/">Top DF Tools cheet</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [61, 62] },
+                      content:
+                        '<a href="https://aboutdfir.com/toolsandartifacts/windows/registry-explorer-recmd/">Registry Explorer/RECmd Guide</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [62, 63] },
+                      content:
+                        '<a href="https://aboutdfir.com/toolsandartifacts/windows/mft-explorer-mftecmd/">MFT Explorer/MFTECmd Guide</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [63, 64] },
+                      content:
+                        '<a href="https://samsclass.info/">Online training sessions from CNIT</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [64, 65] },
+                      content:
+                        '<a href="https://belkasoft.com/android-forensics-training">Android Forensics with Belkasoft</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [65, 66] },
+                      content:
+                        '<a href="https://training.dfirdiva.com/">DFIR Diva</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [66, 67] },
+                      content:
+                        '<a href="https://dfir.science/">DFIR science</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [67, 68] },
+                      content:
+                        '<a href="https://dfircheatsheet.github.io/">DFIR Cheat Sheet</a>',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [69, 70], index: 8 },
+                  content: "8. <strong>Practice on DF:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [70, 71] },
+                      content:
+                        '<a href="https://github.com/frankwxu/digital-forensics-lab">Hands-On Digital Forensics Lab &amp; Shared Cyber Forensic Intelligence Repository</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [71, 72] },
+                      content:
+                        '<a href="https://www.ashemery.com/dfir.html">Ali Hadi’s Images</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [72, 73] },
+                      content:
+                        '<a href="https://wiki.wireshark.org/SampleCaptures">wireshaek wiki</a>',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [74, 75], index: 9 },
+                  content: "9. <strong>books:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [75, 76] },
+                      content:
+                        "Digital Forensics Basics A Practical Guide Using Windows OS by Nihad A. Hassan",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [76, 77] },
+                      content:
+                        "Introductory Computer Forensics: A Hands-on Practical Approach by Xiaodong Lin",
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              depth: 1,
+              payload: { lines: [79, 80] },
+              content: "Malware Analysis &amp; Reverse Engineering",
+              children: [
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [80, 81], index: 1 },
+                  content: "1. <strong>Before Starting:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [81, 82] },
+                      content:
+                        "[Computer Architecture], Assembly in both x86 and x86-64, C or C++",
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [83, 84], index: 2 },
+                  content:
+                    "2. <strong>Introduction to Malware Analysis &amp; Reverse Engineering:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [84, 85] },
+                      content:
+                        '<a href="https://maharatech.gov.eg/course/view.php?id=1404">Malware Analysis Fundamentals</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [85, 86] },
+                      content:
+                        '<a href="https://maharatech.gov.eg/course/view.php?id=1423">Reverse Code Engineering</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [86, 87] },
+                      content:
+                        '<a href="https://maharatech.gov.eg/course/view.php?id=1599">Advanced Malware Analysis</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [87, 88] },
+                      content:
+                        '<a href="https://p.ost2.fyi/">OpenSecurityTraining2</a>',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [89, 90], index: 3 },
+                  content: "3. <strong>Practical Analysis:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [90, 91] },
+                      content:
+                        '<a href="https://my.ine.com/CyberSecurity/learning-paths/e831d3ee-18b5-4b46-b1a7-9f7b3d65feae/malware-analysis-professional">Malware Analyst Professional</a> by INE',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [91, 92] },
+                      content:
+                        '<a href="https://my.ine.com/CyberSecurity/learning-paths/67c2d9f8-f4f5-4705-b5e2-56d6c3583030/reverse-engineering-professional">Reverse Engineer Professional</a> by INE',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [92, 93] },
+                      content:
+                        "FOR 610 Reverse-Engineering Malware: Malware Analysis Tools and Techniques",
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [94, 95], index: 4 },
+                  content: "4. <strong>Useful resources:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [95, 96] },
+                      content:
+                        '<a href="https://www.youtube.com/@AmrThabet">Amr Thabet</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [96, 97] },
+                      content:
+                        '<a href="https://www.youtube.com/@valhalla_dev">Mitch Edwards</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [97, 98] },
+                      content:
+                        '<a href="https://www.youtube.com/@MalwareAnalysisForHedgehogs">MalwareAnalysisForHedgehogs</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [98, 99] },
+                      content:
+                        '<a href="https://www.youtube.com/@LowLevelLearning">Low Level Learning</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [99, 100] },
+                      content:
+                        '<a href="https://www.youtube.com/@OALABS">OALabs</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [100, 101] },
+                      content:
+                        '<a href="https://www.youtube.com/c/c3rb3ru5d3d53c">c3rb3ru5d3d53c</a>',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [102, 103], index: 5 },
+                  content: "5. <strong>books:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [103, 104] },
+                      content:
+                        "Practical Malware Analysis by Michael Sikorski &amp; Andrew Honig",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [104, 105] },
+                      content: "Practical Binary Analysis by Dennis Andriesse",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [105, 106] },
+                      content:
+                        "Mastering Malware Analysis by Amr Thabet &amp; Alexey Kleymenov",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [106, 107] },
+                      content:
+                        "Practical reverse engineering: x86, x64, ARM, Windows Kernel, reversing tools, and obfuscation",
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              depth: 1,
+              payload: { lines: [108, 109] },
+              content: "Threat Hunting",
+              children: [
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [109, 110], index: 1 },
+                  content: "1. <strong>Certification:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [110, 111] },
+                      content:
+                        '<a href="https://ine.com/learning/paths/threat-hunting-professional">ecTHP</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [111, 112] },
+                      content:
+                        "FOR508 Advanced Incident Response, Threat Hunting, and Digital Forensics",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [112, 113] },
+                      content:
+                        "FOR572 Advanced Network Forensics: Threat Hunting, Analysis, and Incident Response",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [113, 114] },
+                      content: "FOR578 Cyber Threat Intelligence",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [114, 115] },
+                      content:
+                        "FOR608: Enterprise-class incident response and threat hunting",
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [116, 117], index: 2 },
+                  content: "2. <strong>Resources:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [117, 118] },
+                      content:
+                        '<a href="https://www.youtube.com/@Huntress">Huntress</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [118, 119] },
+                      content:
+                        '<a href="https://www.youtube.com/@SANSCyberDefense">SANS Cyber Defense</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [119, 120] },
+                      content:
+                        '<a href="https://www.youtube.com/channel/UCqVIVdF5lwb3uMhiS0XM4XQ">BlackPerl</a>',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [121, 122], index: 3 },
+                  content: "3. <strong>Books:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [122, 123] },
+                      content:
+                        '<a href="https://www.threathunting.net/files/huntpedia.pdf">Huntpedia PDF</a>',
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              depth: 1,
+              payload: { lines: [124, 125] },
+              content: "Threat Intelligence &amp; OSINT",
+              children: [
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [126, 127], index: 1 },
+                  content: "1. <strong>Training:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [128, 129] },
+                      content:
+                        "SEC487 Open-Source Intelligence (OSINT) Gathering &amp; Analysis",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [129, 130] },
+                      content: "FOR578 Cyber Threat Intelligence",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [130, 131] },
+                      content:
+                        '<a href="https://arcx.io/courses/cyber-threat-intelligence-101">CYBER THREAT INTELLIGENCE 101</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [131, 132] },
+                      content:
+                        '<a href="https://www.youtube.com/playlist?list=PL423I_gHbWUUOs09899rex4t2l5py9YIk">10 Minute OSINT Tips</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [132, 133] },
+                      content:
+                        '<a href="https://academy.tcm-sec.com/p/osint-fundamentals?__cf_chl_tk=BYQ5PDyDQWjD4CwHHdC8kKrtnzEKDz9LvIAAfpW8jVg-1707345379-0-4283">Open-Source Intelligence (OSINT) Fundamentals</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [133, 134] },
+                      content:
+                        '<a href="https://www.bellingcat.com/workshops/">bellingcat</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [134, 135] },
+                      content:
+                        '<a href="https://www.classcentral.com/course/ibm-cyber-threat-intelligence-20193">IBM Cyber Threat Intelligence</a>',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [136, 137], index: 2 },
+                  content: "2. <strong>Useful Resources:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [137, 138] },
+                      content:
+                        '<a href="https://www.youtube.com/c/NullByteWHT/search">Null Byte</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [138, 139] },
+                      content:
+                        '<a href="https://youtube.com/playlist?list=PLqEq1PI7wfwxdi2E9lmtx3Cl7GT-UUf9D&amp;si=1c_SYi82KG2AJ_u1">Misp Tutorial</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [139, 140] },
+                      content:
+                        '<a href="https://thehackernews.com/">The Hacker News</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [140, 141] },
+                      content:
+                        '<a href="https://otx.alienvault.com/dashboard/new">AlienVault Open Threat Exchange</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [141, 142] },
+                      content:
+                        '<a href="https://filigran.io/solutions/products/opencti-threat-intelligence/">Open CTI</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [142, 143] },
+                      content:
+                        '<a href="https://www.phishtank.com/">PhishTank</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [143, 144] },
+                      content:
+                        '<a href="https://attack.mitre.org/">MITRE ATT&amp;CK®</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [144, 145] },
+                      content:
+                        '<a href="https://gbhackers.com/cyber-threat-intelligence-tools/">50 Best Free Cyber Threat Intelligence Tools</a>',
+                      children: [],
+                    },
+                  ],
+                },
+                {
+                  type: "list_item",
+                  depth: 2,
+                  payload: { lines: [146, 147], index: 3 },
+                  content: "3. <strong>Books:</strong>",
+                  children: [
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [147, 148] },
+                      content:
+                        '<a href="https://cyber-edge.com/resources/the-threat-intelligence-handbook-second-edition/download/">The Threat Intelligence Handbook</a>',
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [148, 149] },
+                      content:
+                        "<em>Open Source Intelligence Methods and Tools</em> by Nihad A. Hassan &amp; Rami Hijazi",
+                      children: [],
+                    },
+                    {
+                      type: "list_item",
+                      depth: 3,
+                      payload: { lines: [149, 150] },
+                      content:
+                        "<em>Practical Threat Intelligence and Data-Driven Threat Hunting</em> by Valentina Palacín",
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {}
+      );
+    </script>
+  </body>
+</html>
