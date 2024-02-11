@@ -16,20 +16,22 @@ const ErrorPage = () => {
           <h1 className="errorcode text-3xl sm:text-2xl lg:text-5xl mb-2">
             Error <span>404</span>
           </h1>
-          <p className="output">
-            The page you are looking for might have been removed, had its name
-            changed, or is temporarily unavailable.
-          </p>
-          <p className="output">
-            <Link to="/" className="link" onClick={handleGoBack}>
-              go back
-            </Link>{" "}
-            <span> or </span>{" "}
-            <Link to="/dashboard" className="link">
-              return to the homepage
-            </Link>
-          </p>
-          <p className="output">Good luck.</p>
+          <div className="items-start">
+            <p className="output">
+              The page you are looking for might have been removed, had its name
+              changed, or is temporarily unavailable.
+            </p>
+            <p className="output">
+              <Link to="/" className="link" onClick={handleGoBack}>
+                go back
+              </Link>{" "}
+              <span> or </span>{" "}
+              <Link to="/dashboard" className="link">
+                return to the homepage
+              </Link>
+            </p>
+            <p className="output">Good luck.</p>
+          </div>
         </div>
       </div>
     </div>

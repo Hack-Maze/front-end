@@ -72,13 +72,21 @@ const DashboardPage = () => {
                 {activeItem === "learn" && (
                   <div className="absolute top-full left-0 mt-1 bg-white shadow-md rounded-md">
                     <ul>
-                      <Link to={`/roadmap/offensive`}>
+                      <Link
+                        to={`/roadmap/offensive`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <li className="py-2 px-4 hover:bg-slate-200 rounded-md">
                           Offensive
                         </li>
                       </Link>
 
-                      <Link to={`/roadmap/defensive`}>
+                      <Link
+                        to={`/roadmap/defensive`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <li className="py-2 px-4 hover:bg-slate-200 rounded-md">
                           Defensive
                         </li>
