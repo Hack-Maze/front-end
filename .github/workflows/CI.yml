@@ -579,7 +579,7 @@
           with:
               severity: info
               color: '#007fff'
-              details: "##  > - **ACI is online**  [Try me](http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"
+              details: "##  > - **ACI is online**  [Try me](http://hackmaze-front.bzdzeze0bxe6hkd2.eastus.azurecontainer.io)"
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
               
@@ -589,7 +589,7 @@
           with:
               severity: info
               color: '#007fff'
-              details: "##  > - **ACI is online**  [Try me](http://hackmaze.edfxbug2fse2bhgk.germanynorth.azurecontainer.io)"
+              details: "##  > - **ACI is online**  [Try me](http://hackmaze-front.bzdzeze0bxe6hkd2.eastus.azurecontainer.io)"
               footer: HORRAI!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL_DEMO }}
 
