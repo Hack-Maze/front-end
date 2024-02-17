@@ -3,8 +3,8 @@
 .body {
   box-sizing: border-box;
   height: 100%;
-  background-color: #fe0000;
-  background-image: radial-gradient(#fe0000, #100000),
+  background-color: #1a1f2c;
+  background-image: radial-gradient(#1a1f2c, #100000),
     url("https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif");
   background-repeat: no-repeat;
   background-size: cover;
@@ -56,7 +56,7 @@
     0deg,
     transparent 0%,
     rgba(255, 170, 170, 0.2) 2%,
-    rgba(255, 170, 170, 0.8) 3%,
+    rgba(17, 31, 44, 0.8) 3%,
     rgba(255, 170, 170, 0.2) 3%,
     transparent 100%
   );

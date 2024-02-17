@@ -5,6 +5,7 @@ import { AiOutlineGoogle } from "react-icons/ai";
 import { FiGithub } from "react-icons/fi";
 import customFetch from "../../utils/CustomFetsh";
 import GIF from "../assets/sign.gif";
+import { motion } from "framer-motion";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -35,7 +36,13 @@ const LoginPage = () => {
     }
   };
   return (
-    <div className="flex flex-col min-h-screen font-Roboto">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col min-h-screen font-Roboto overflow-hidden"
+    >
       <div className="absolute top-0 left-0 w-full h-screen bg-[#171c29cf] z-10"></div>
       <div
         className=" flex-grow relative"
@@ -46,7 +53,12 @@ const LoginPage = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="relative z-30 py-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="relative z-30 py-4 sm:px-6 lg:px-8"
+        >
           <div className="flex mb-4">
             <div>
               <img
@@ -57,11 +69,21 @@ const LoginPage = () => {
             </div>
             <h1 className="sm:text-2xl lg:text-3xl text-white">HackMaze</h1>
           </div>
-          <div className="flex flex-col items-center text-white my-auto">
-            <h1 className="mb-3 text-center sm:text-3xl lg:text-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 1 }}
+            className="flex flex-col items-center text-white my-auto"
+          >
+            <h1 className="mb-4 text-center sm:text-3xl lg:text-4xl">
               Welcome Back !
             </h1>
-            <div className="sm:mx-auto sm:w-[70%] lg:w-[30%] bg-[#1a1f2ce2] rounded-md flex flex-col p-5 shadow-box">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.7, duration: 1 }}
+              className="sm:mx-auto sm:w-[70%] lg:w-[30%] bg-[#1a1f2ce2] rounded-md flex flex-col p-5 shadow-box"
+            >
               <div className="flex flex-row items-start justify-between w-full">
                 <div className="bg-gray-300 h-[5px] rounded-sm w-[5px]"></div>
                 <div className="flex flex-col gap-4 items-center justify-start w-auto">
@@ -140,14 +162,14 @@ const LoginPage = () => {
                   </div>
                 </Form>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           <div className="fixed bottom-0 left-4 w-full text-white py-2">
             &copy; <span>2023 HackMaze</span>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

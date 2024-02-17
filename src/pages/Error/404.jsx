@@ -8,7 +8,7 @@ const ErrorPage = () => {
     navigate(-1);
   };
   return (
-    <div className="bg-red-500 h-screen">
+    <div className="bg-[#1a1f2ce2] h-screen overflow-hidden">
       <div className="body text-lg sm:text-sm lg:text-xl">
         <div className="noise"></div>
         <div className="overlay"></div>
