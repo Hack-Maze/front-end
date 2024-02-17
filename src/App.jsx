@@ -1,5 +1,4 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
 import "./App.css";
 import DashboardPage from "./pages/DashboardPage";
@@ -8,7 +7,7 @@ import Roadmap from "./pages/Roadmap";
 import PasswordResetPage from "./pages/PassReset";
 import PasswordRecoveryPage from "./pages/PassRecovery";
 import HomeLayout from "./pages/HomeLayout";
-import RegisterPage from "./pages/RegisterPage";
+import SharedAuth from "./pages/SharedAuth";
 
 const router = createBrowserRouter([
   {
@@ -21,12 +20,8 @@ const router = createBrowserRouter([
         element: <LandingPage />,
       },
       {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/register",
-        element: <RegisterPage />,
+        path: "/:authType",
+        element: <SharedAuth />,
       },
       {
         path: "/reset-password",
