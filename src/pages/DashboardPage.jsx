@@ -9,9 +9,9 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { FaCircleUser } from "react-icons/fa6";
 
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
-import Layout_1 from "../../components/Layout_1/Layout_1";
+import Layout_1 from "../components/Layout_1/Layout_1";
 import { GiSecurityGate } from "react-icons/gi";
-import GIF from "../../assets/X.gif";
+import GIF from "../assets/X.gif";
 
 const DashboardPage = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
