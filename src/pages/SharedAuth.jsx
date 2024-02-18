@@ -37,15 +37,15 @@ const SharedAuth = () => {
               <img
                 src="/Logo2.png"
                 alt="logo"
-                className="w-6 sm:w-8 lg:w-10 mr-1 sm:mr-3 lg:mr-5"
+                className="w-5 sm:w-6 lg:w-8 mr-1 sm:mr-3 lg:mr-5"
               />
             </div>
-            <h1 className="sm:text-2xl lg:text-3xl text-white">HackMaze</h1>
+            <h1 className="sm:text-2xl lg:text-2xl text-white">HackMaze</h1>
           </div>
 
           {!isLoginPage ? <RegisterPage /> : <LoginPage />}
 
-          <div className="fixed bottom-5 left-0 text-lg text-center w-full text-white">
+          <div className="fixed bottom-10 left-0 text-lg text-center w-full text-white">
             &copy; <span>2023 HackMaze</span>
           </div>
         </motion.div>

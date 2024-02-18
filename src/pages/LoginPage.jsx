@@ -43,7 +43,7 @@ const LoginPage = () => {
         transition={{ delay: 1, duration: 0.7 }}
         className="flex flex-col items-center justify-between text-white pt-5"
       >
-        <h1 className="mb-6 text-center sm:text-3xl lg:text-4xl">
+        <h1 className="mb-6 text-center sm:text-2xl lg:text-4xl">
           Welcome Back !
         </h1>
         {/* login card */}
