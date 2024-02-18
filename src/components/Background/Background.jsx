@@ -7,7 +7,7 @@ const Background = ({ children }) => {
         className="absolute top-0 left-0 w-full h-screen z-10"
         style={{
           background:
-            "linear-gradient(to right, rgba(19, 45, 19, 0.84),rgba(22, 47, 65, 0.90))",
+            "linear-gradient(to right, rgba(18, 42, 18, 0.84),rgba(15, 34, 47, 0.90))",
           backdropFilter: "blur(15px)",
         }}
       ></div>

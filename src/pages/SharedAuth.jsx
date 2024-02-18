@@ -14,7 +14,7 @@ const SharedAuth = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col h-screen font-Roboto overflow-hidden"
+      className="flex flex-col h-screen font-Grotesk overflow-hidden"
     >
       <div className="absolute top-0 left-0 w-full h-screen bg-[#171c29cf] z-10"></div>
       <div
@@ -35,7 +35,7 @@ const SharedAuth = () => {
           <div className="flex mb-4">
             <div>
               <img
-                src="/Logo1.png"
+                src="/Logo2.png"
                 alt="logo"
                 className="w-6 sm:w-8 lg:w-10 mr-1 sm:mr-3 lg:mr-5"
               />

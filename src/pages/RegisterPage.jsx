@@ -49,7 +49,7 @@ const RegisterPage = () => {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 0.7 }}
-        className="flex flex-col items-center text-white pt-5"
+        className="flex flex-col items-center text-white pt-1"
       >
         <h1 className="mb-6 text-center sm:text-3xl lg:text-4xl">Welcome !</h1>
         <motion.div
@@ -60,10 +60,9 @@ const RegisterPage = () => {
         >
           <div className="flex flex-row items-start justify-between w-full">
             <div className="bg-gray-300 h-[5px] rounded-sm w-[5px]"></div>
-            <div className="flex flex-col gap-4 items-center justify-start w-auto">
-              <img src="/Logo2.png" alt="logo" className="h-11 w-12" />
-              <h2 className="text-center text-white text-xl w-auto">
-                Register to Hack Maze
+            <div>
+              <h2 className="text-center text-white text-3xl w-auto uppercase">
+                Register
               </h2>
             </div>
             <div className="bg-gray-300 h-[5px] rounded-sm w-[5px]"></div>
@@ -127,7 +126,7 @@ const RegisterPage = () => {
                   Don't Have An Account?{" "}
                   <Link
                     to={"/login"}
-                    className="text-[#D5FFC1] hover:text-[#d5ffc19a]"
+                    className="text-[#5EE848] hover:text-[#d5ffc19a]"
                   >
                     Login
                   </Link>

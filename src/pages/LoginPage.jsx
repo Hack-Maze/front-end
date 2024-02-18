@@ -55,10 +55,9 @@ const LoginPage = () => {
         >
           <div className="flex flex-row items-start justify-between w-full">
             <div className="bg-gray-300 h-[5px] rounded-sm w-[5px]"></div>
-            <div className="flex flex-col gap-4 items-center justify-start w-auto">
-              <img src="/Logo2.png" alt="logo" className="h-11 w-12" />
-              <h2 className="text-center text-white text-xl w-auto">
-                Sign in to Hack Maze
+            <div>
+              <h2 className="text-center text-white text-3xl w-auto uppercase">
+                Login
               </h2>
             </div>
             <div className="bg-gray-300 h-[5px] rounded-sm w-[5px]"></div>
@@ -121,7 +120,7 @@ const LoginPage = () => {
                   Don't Have An Account?{" "}
                   <Link
                     to={"/register"}
-                    className="text-[#D5FFC1] hover:text-[#d5ffc19a]"
+                    className="text-[#5EE848] hover:text-[#d5ffc19a]"
                   >
                     Sign Up
                   </Link>
