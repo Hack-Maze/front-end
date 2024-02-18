@@ -11,7 +11,7 @@ const FormRow = ({ type, name, inputHandler, text, value }) => {
 
   return (
     <div className="flex flex-col items-start justify-start my-4 w-auto sm:w-full">
-      <label className="mb-1 text-md">{text}</label>
+      <label className="mb-1 md:text-lg text-base">{text}</label>
       <div className="relative w-full">
         <input
           type={isPasswordInput && showPassword ? "text" : type}

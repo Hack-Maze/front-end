@@ -32,7 +32,7 @@ const SharedAuth = () => {
           transition={{ delay: 1 }}
           className="relative z-30 py-4 sm:px-6 lg:px-8"
         >
-          <div className="flex mb-4">
+          <div className="flex items-center mb-4">
             <div>
               <img
                 src="/Logo2.png"
@@ -40,12 +40,12 @@ const SharedAuth = () => {
                 className="w-5 sm:w-6 lg:w-8 mr-1 sm:mr-3 lg:mr-5"
               />
             </div>
-            <h1 className="sm:text-2xl lg:text-2xl text-white">HackMaze</h1>
+            <h1 className="sm:text-lg lg:text-2xl text-white">HackMaze</h1>
           </div>
 
           {!isLoginPage ? <RegisterPage /> : <LoginPage />}
 
-          <div className="fixed bottom-10 left-0 text-lg text-center w-full text-white">
+          <div className="fixed bottom-16 md:bottom-10 left-0 md:text-lg text-sm text-center w-full text-white">
             &copy; <span>2023 HackMaze</span>
           </div>
         </motion.div>
