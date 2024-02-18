@@ -7,3 +7,16 @@
   -webkit-box-shadow: 0 0 0px 1000px #0c0b0b inset;
   -webkit-text-fill-color: white !important;
 }
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate-infinite {
+  animation: rotate 30s linear infinite;
+}

@@ -14,7 +14,7 @@ const SharedAuth = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col min-h-screen font-Roboto overflow-hidden"
+      className="flex flex-col h-screen font-Roboto overflow-hidden"
     >
       <div className="absolute top-0 left-0 w-full h-screen bg-[#171c29cf] z-10"></div>
       <div
@@ -42,8 +42,10 @@ const SharedAuth = () => {
             </div>
             <h1 className="sm:text-2xl lg:text-3xl text-white">HackMaze</h1>
           </div>
+
           {!isLoginPage ? <RegisterPage /> : <LoginPage />}
-          <div className="fixed bottom-0 left-4 w-full text-white py-2">
+
+          <div className="fixed bottom-5 left-0 text-lg text-center w-full text-white">
             &copy; <span>2023 HackMaze</span>
           </div>
         </motion.div>
