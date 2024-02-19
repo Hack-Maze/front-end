@@ -9,13 +9,7 @@ const SharedAuth = () => {
   const isLoginPage = authType === "login";
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="flex flex-col h-screen font-Grotesk overflow-hidden"
-    >
+    <div className="flex flex-col h-screen font-Grotesk overflow-hidden">
       <div
         className="absolute top-0 left-0 w-full h-screen z-10"
         style={{
@@ -51,12 +45,18 @@ const SharedAuth = () => {
 
           {!isLoginPage ? <RegisterPage /> : <LoginPage />}
 
-          <div className="fixed bottom-16 md:bottom-10 left-0 md:text-lg text-sm text-center w-full text-white">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed bottom-16 md:bottom-10 left-0 md:text-lg text-sm text-center w-full text-white"
+          >
             &copy; <span>2023 HackMaze</span>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

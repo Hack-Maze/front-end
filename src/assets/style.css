@@ -20,3 +20,7 @@
 .rotate-infinite {
   animation: rotate 30s linear infinite;
 }
+
+.smooth-scroll {
+  transition: all 0.3s ease-in-out;
+}

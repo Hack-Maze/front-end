@@ -4,9 +4,14 @@ import "../../assets/style.css";
 import { motion } from "framer-motion";
 
 const Hero = () => {
+  const scrollDown = (e) => {
+    e.preventDefault();
+    window.scrollBy(0, window.innerHeight);
+  };
+
   return (
     <div
-      className="flex flex-col h-screen py-3 px-7 overflow-hidden"
+      className="flex flex-col h-screen py-3 px-7 overflow-hidden smooth-scroll"
       style={{
         background:
           "linear-gradient(to bottom, rgba(15, 32, 24, 0.99),rgb(10, 18, 26))",
@@ -57,18 +62,21 @@ const Hero = () => {
             >
               <span className="mr-2">Get Started</span> &rarr;
             </Link>
-            <a
-              href="#"
-              className="cursor-pointer text-white font-semibold flex items-center hover:text-gray-300"
+            <span
+              className="cursor-pointer text-base text-white font-semibold flex items-center hover:text-gray-300 smooth-scroll"
+              onClick={scrollDown}
             >
               <span className="mr-2 underline">Learn More</span> &darr;
-            </a>
+            </span>
           </div>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
+          transition={{
+            delay: 0.8,
+            duration: 0.8,
+          }}
           className="w-full flex justify-center"
         >
           <img
