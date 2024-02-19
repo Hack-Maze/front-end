@@ -11,7 +11,7 @@ const Hero = () => {
 
   return (
     <div
-      className="flex flex-col h-screen py-3 px-7 overflow-hidden smooth-scroll"
+      className="flex flex-col h-screen py-3 px-7 overflow-hidden"
       style={{
         background:
           "linear-gradient(to bottom, rgba(15, 32, 24, 0.99),rgb(10, 18, 26))",

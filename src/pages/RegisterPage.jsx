@@ -56,7 +56,7 @@ const RegisterPage = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.3, duration: 0.7 }}
-          className="sm:mx-auto w-full md:w-[50%] xl:w-[30%] bg-[#ffffff0b] rounded-md flex flex-col p-5 shadow-box"
+          className="sm:mx-auto w-full md:w-[50%] xl:w-[30%] bg-[#ffffff0b] rounded-md flex flex-col p-5 shadow-box border border-gray-700"
         >
           <div className="flex flex-row items-start justify-between w-full">
             <div className="bg-gray-300 h-[5px] rounded-sm w-[5px]"></div>

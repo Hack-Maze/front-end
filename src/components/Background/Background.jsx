@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
+import { FaArrowUp } from "react-icons/fa";
 
 const Background = ({ children }) => {
+  const [showUpButton, setShowUpButton] = useState(false);
+
+  const handleScroll = () => {
+    if (window.pageYOffset > 100) {
+      setShowUpButton(true);
+    } else {
+      setShowUpButton(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Add event listener for scroll
+  React.useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
       <div
@@ -14,6 +35,15 @@ const Background = ({ children }) => {
 
       <div className="relative w-full flex flex-col z-30 font-Grotesk h-full">
         {children}
+        {/* Up Button */}
+        {showUpButton && (
+          <button
+            className="fixed bottom-10 right-5 bg-[#013c3350] text-white p-2 rounded-md shadow-md cursor-pointer"
+            onClick={scrollToTop}
+          >
+            <FaArrowUp size={30} />
+          </button>
+        )}
       </div>
     </>
   );
