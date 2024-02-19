@@ -2,7 +2,7 @@ import GIF from "../assets/sign.gif";
 import { motion } from "framer-motion";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const SharedAuth = () => {
   const { authType } = useParams();
@@ -16,7 +16,13 @@ const SharedAuth = () => {
       transition={{ duration: 0.5 }}
       className="flex flex-col h-screen font-Grotesk overflow-hidden"
     >
-      <div className="absolute top-0 left-0 w-full h-screen bg-[#171c29cf] z-10"></div>
+      <div
+        className="absolute top-0 left-0 w-full h-screen z-10"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(15, 32, 24, 0.99),rgb(10, 18, 26))",
+        }}
+      ></div>
       <div
         className=" flex-grow relative"
         style={{
@@ -32,7 +38,7 @@ const SharedAuth = () => {
           transition={{ delay: 1 }}
           className="relative z-30 py-4 sm:px-6 lg:px-8"
         >
-          <div className="flex items-center mb-4">
+          <Link to={"/"} className="flex items-center mb-4 w-fit">
             <div>
               <img
                 src="/Logo2.png"
@@ -41,7 +47,7 @@ const SharedAuth = () => {
               />
             </div>
             <h1 className="sm:text-lg lg:text-2xl text-white">HackMaze</h1>
-          </div>
+          </Link>
 
           {!isLoginPage ? <RegisterPage /> : <LoginPage />}
 
