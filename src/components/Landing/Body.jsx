@@ -6,7 +6,7 @@ const Body = () => {
       {Rows.map((row, index) => (
         <div
           key={index}
-          className="flex flex-col gap-4 items-start justify-start mt-12 w-auto md:w-full"
+          className="flex flex-col gap-4 items-start mt-12 w-auto md:w-full"
         >
           <>
             <div className="flex flex-row items-center border border-[#5EE848] bg-[#5de84810] rounded-2xl px-2 py-1">
@@ -24,11 +24,11 @@ const Body = () => {
               {row.cards.map((card, cardIndex) => (
                 <div
                   key={cardIndex}
-                  className="border border-[#585b742f] p-3 w-[30%] h-[35vh] bg-[#013c3314] rounded-md"
+                  className="border border-[#585b742f] px-5 w-[30%] h-[35vh] bg-[#013c3314] rounded-md flex flex-col justify-evenly shadow-box"
                 >
                   <h2 className="text-5xl font-semibold">{card.id}.</h2>
-                  <h3 className="text-2xl font-medium my-4">{card.title}</h3>
-                  <p className="text-sm leading-6 mr-5">{card.desc}</p>
+                  <h3 className="text-2xl font-medium">{card.title}</h3>
+                  <p className="text-sm leading-7 mr-5">{card.desc}</p>
                 </div>
               ))}
             </div>

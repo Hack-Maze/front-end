@@ -11,7 +11,7 @@ const Footer = () => {
           <input
             type="email"
             placeholder="Your email address"
-            className="py-2 px-3 mr-5 bg-[#585b745a] w-full outline-none rounded-md border border-[#585b7484]"
+            className="py-2 px-3 mr-5 bg-[#2E3251] w-full outline-none rounded-md border border-[#585b7484]"
           />
           <button
             type="submit"

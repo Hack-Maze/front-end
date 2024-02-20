@@ -14,17 +14,17 @@ export const Rows = [
       {
         id: 1,
         title: "Understanding Beyond Solving.",
-        desc: "Move beyond mere problem-solving understand the practical significance of each challenge in the cybersecurity realm. Nitty-gritty delves deep, showing how your skills translate into tangible expertise.",
+        desc: "Move beyond problem-solving to grasp the practical significance of each cybersecurity challenge. Dive deep into the details, exploring how your skills translate into expertise.",
       },
       {
         id: 2,
         title: 'Upgrade from "How" to "Why".',
-        desc: "Embrace a profound understanding. Nitty-gritty goes beyond surface-level comprehension, unlocking the deeper principles behind each challenge. Develop the ability to think like a pro and confidently tackle real-world scenarios.",
+        desc: "Embrace a deeper understanding as Nitty-gritty takes you beyond surface-level comprehension. Unlock the principles behind each challenge and think like a cybersecurity pro.",
       },
       {
         id: 3,
         title: "Conquer Confusion.",
-        desc: "Embrace a profound understanding. Nitty-gritty goes beyond surface-level comprehension, unlocking the deeper principles behind each challenge. Develop the ability to think like a pro and confidently tackle real-world scenarios.",
+        desc: "Rise above confusion with Nitty-gritty's insights. Gain a profound understanding of cybersecurity principles and confidently tackle real-world scenarios.",
       },
     ],
   },
@@ -64,17 +64,17 @@ export const Rows = [
       {
         id: 1,
         title: "Build a Pack, not Lone Wolves.",
-        desc: "Collaborative challenges offer the ultimate training ground. Share your expertise, learn from others, and dominate the cyber battlefield together.",
+        desc: "Join forces in collaborative challenges, where teamwork is the key. Share your expertise, learn from others, and dominate the cyber battlefield together.",
       },
       {
         id: 2,
         title: "Level Up, Inspire Up.",
-        desc: "Join the collaborative revolution. Contribute your knowledge, learn from the best, and push the boundaries of cybersecurity innovation.",
+        desc: "Become part of the collaborative revolution. Contribute your knowledge, learn from the best, and push the boundaries of cybersecurity innovation.",
       },
       {
         id: 3,
         title: "The Pen is Mightier.",
-        desc: "Craft challenges, inspire others, and shape the future of cybersecurity. Your contribution becomes a stepping stone for countless learners, leaving a lasting impact.",
+        desc: "Craft challenges, inspire others, and shape the future of cybersecurity. Your contribution becomes a stepping stone for countless learners, leaving a lasting impact on the cyber landscape.",
       },
     ],
   },

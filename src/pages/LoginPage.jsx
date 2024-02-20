@@ -43,7 +43,7 @@ const LoginPage = () => {
         transition={{ delay: 1, duration: 0.7 }}
         className="flex flex-col items-center justify-center text-white h-full my-auto"
       >
-        <h1 className="mb-6 text-center md:text-4xl text-3xl">
+        <h1 className="mb-9 text-center md:text-5xl text-3xl">
           Welcome Back !
         </h1>
         {/* login card */}
@@ -89,7 +89,7 @@ const LoginPage = () => {
               <div className="w-full text-center mt-6">
                 <button
                   type="submit"
-                  className="cursor-pointer font-bold text-center border py-1 md:py-1 w-[50%] rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
+                  className="cursor-pointer font-bold text-center border py-1 md:py-2 w-[40%] rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
                 >
                   Continue
                 </button>

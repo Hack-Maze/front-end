@@ -11,6 +11,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^0.5.3",
     "axios": "^1.6.7",
     "chart.js": "^4.4.1",
     "dompurify": "^3.0.6",

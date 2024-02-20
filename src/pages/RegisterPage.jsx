@@ -51,7 +51,7 @@ const RegisterPage = () => {
         transition={{ delay: 1, duration: 0.7 }}
         className="flex flex-col items-center justify-center text-white h-full"
       >
-        <h1 className="mb-6 text-center md:text-4xl text-3xl">Welcome !</h1>
+        <h1 className="mb-9 text-center md:text-5xl text-3xl">Welcome !</h1>
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ const RegisterPage = () => {
               <div className="w-full text-center mt-6">
                 <button
                   type="submit"
-                  className="cursor-pointer font-bold text-center border py-1 md:py-1 w-[50%] rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
+                  className="cursor-pointer font-bold text-center border py-1 md:py-2 w-[40%] rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
                 >
                   Continue
                 </button>
@@ -123,7 +123,7 @@ const RegisterPage = () => {
                 <div className="bg-gray-300 h-[5px] rounded-sm w-[5px]"></div>
 
                 <p className="text-center text-gray-300 text-base md:text-lg w-auto">
-                  Don't Have An Account?{" "}
+                  Alredy Have An Account?{" "}
                   <Link
                     to={"/login"}
                     className="text-[#5EE848] hover:text-[#d5ffc19a]"
