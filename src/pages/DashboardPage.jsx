@@ -7,7 +7,7 @@ import { LuSwords } from "react-icons/lu";
 import { IoMdNotificationsOutline } from "react-icons/io";
 // import { GoCircle } from "react-icons/go";
 import { FaCircleUser } from "react-icons/fa6";
-import { SlBadge } from "react-icons/sl";
+import { LuGraduationCap } from "react-icons/lu";
 
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import Layout_1 from "../components/Layout_1/Layout_1";
@@ -38,7 +38,7 @@ const DashboardPage = () => {
         <div>
           <ul className="flex font-medium text-xl">
             <li
-              className={`flex items-center cursor-pointer mr-7 ${
+              className={`flex items-center cursor-pointer ${
                 activeItem === "dashboard"
                   ? "text-[#5EE848]"
                   : "hover:text-[#5de848cc]"
@@ -48,7 +48,7 @@ const DashboardPage = () => {
               <MdOutlineDashboard className="mr-1" size={25} />
               Dashboard
             </li>
-            {/* <li
+            <li
               className={`mx-12 flex items-center relative cursor-pointer ${
                 activeItem === "learn"
                   ? "text-[#5EE848]"
@@ -83,7 +83,7 @@ const DashboardPage = () => {
                   </ul>
                 </div>
               )}
-            </li> */}
+            </li>
             <li
               className={`flex items-center cursor-pointer ${
                 activeItem === "compete"
@@ -115,7 +115,7 @@ const DashboardPage = () => {
             <h2 className="text-3xl border-b-2 pb-3">Learning Paths</h2>
             <div className="pt-2 flex justify-between">
               <p className="text-xl ">
-                Continue with the guide of Cyber Security paths
+                Continue with the intro of Cyber Security paths
               </p>
               {/* <div className="flex flex-col">
                   <span className="text-sm">Your Progress : 70%</span>
