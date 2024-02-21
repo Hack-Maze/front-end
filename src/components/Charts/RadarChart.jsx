@@ -10,8 +10,8 @@ const RadarChart = () => {
       {
         label: "",
         data: [10, 20, 30, 40, 50, 60],
-        backgroundColor: "#6b0a03de",
-        borderColor: "#E50E00",
+        backgroundColor: "#3b8d2ece",
+        borderColor: "#5de848",
         borderWidth: 2,
         pointStyle: false,
         spanGaps: null,

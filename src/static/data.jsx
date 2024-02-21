@@ -1,6 +1,8 @@
 import { CiPlay1 } from "react-icons/ci";
 import { FaQuestion } from "react-icons/fa6";
 import { HiUserGroup } from "react-icons/hi";
+import { GiSwordsEmblem } from "react-icons/gi";
+import { SiHackaday } from "react-icons/si";
 
 export const Rows = [
   {
@@ -77,5 +79,22 @@ export const Rows = [
         desc: "Craft challenges, inspire others, and shape the future of cybersecurity. Your contribution becomes a stepping stone for countless learners, leaving a lasting impact on the cyber landscape.",
       },
     ],
+  },
+];
+
+export const Paths = [
+  {
+    id: 1,
+    link: "/roadmap/offensive",
+    icon: <SiHackaday size={60} color="#1aaf02fc" />,
+    title: "Offensive Security",
+    desc: "Hack your first website (legally in a safe environment) and experience an ethical hacker's job.",
+  },
+  {
+    id: 2,
+    link: "/roadmap/defensive",
+    icon: <GiSwordsEmblem size={60} color="#1aaf02fc" />,
+    title: "Defensive Security",
+    desc: "Learn how to defend against cyber threats by mastering defensive security techniques.",
   },
 ];

@@ -8,10 +8,10 @@ const LinearChart = () => {
     labels: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"],
     datasets: [
       {
-        label: "",
+        label: "solved this week",
         data: Array.from({ length: 7 }, () => Math.floor(Math.random() * 100)),
-        borderColor: "red",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "#5de848",
+        backgroundColor: "transparent",
         pointStyle: false,
         pointRadius: 10,
         pointHoverRadius: 15,
@@ -35,7 +35,9 @@ const LinearChart = () => {
         options: {
           plugins: {
             legend: {
-              display: false,
+              labels: {
+                color: "white",
+              },
             },
           },
           responsive: true,

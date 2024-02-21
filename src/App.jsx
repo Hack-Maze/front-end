@@ -27,10 +27,18 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/:authType",
+        path: "/login",
         element: (
           <VerificationMiddleware>
-            <SharedAuth />
+            <SharedAuth authType="login" />
+          </VerificationMiddleware>
+        ),
+      },
+      {
+        path: "/register",
+        element: (
+          <VerificationMiddleware>
+            <SharedAuth authType="register" />
           </VerificationMiddleware>
         ),
       },
@@ -40,6 +48,7 @@ const router = createBrowserRouter([
       { path: "/roadmap/:type", element: <Roadmap /> },
     ],
   },
+  { path: "*", element: <ErrorPage /> },
   { path: "/verification", element: <CaptchaPage /> },
 ]);
 

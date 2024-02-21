@@ -55,7 +55,7 @@ const CaptchaPage = ({ handleVerificationResponse }) => {
         <h1 className="text-3xl font-bold">CAPTCHA Verification</h1>
       </div>
       <Turnstile
-        siteKey="0x4AAAAAAASWY7Au8IQHj96l"
+        siteKey="0x4AAAAAAASbBGhzW0RhAnQi"
         onSuccess={handleTokenSuccess}
         ref={turnstileRef}
       />

@@ -38,7 +38,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
     };
   }, [isCard1Open, isCard2Open]);
 
-  const handleFriendsToggle = () => {
+  const handleChallengesToggle = () => {
     setIsCard1Open(!isCard1Open);
   };
 
@@ -46,25 +46,25 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
     setIsCard2Open(!isCard2Open);
   };
 
-  const data = {
-    friends: [
-      { id: 1, name: "John Doe" },
-      { id: 2, name: "Jane Smith" },
-      { id: 1, name: "John Doe" },
-      { id: 2, name: "Jane Smith" },
-      { id: 1, name: "John Doe" },
-      { id: 2, name: "Jane Smith" },
-    ],
-    tasks: [
-      { id: 1, name: "Task 1" },
-      { id: 2, name: "Task 2" },
-    ],
-  };
+  // const data = {
+  //   friends: [
+  //     { id: 1, name: "John Doe" },
+  //     { id: 2, name: "Jane Smith" },
+  //     { id: 1, name: "John Doe" },
+  //     { id: 2, name: "Jane Smith" },
+  //     { id: 1, name: "John Doe" },
+  //     { id: 2, name: "Jane Smith" },
+  //   ],
+  //   tasks: [
+  //     { id: 1, name: "Task 1" },
+  //     { id: 2, name: "Task 2" },
+  //   ],
+  // };
 
   return (
     <>
       <div className="flex flex-col text-white">
-        {freinds && (
+        {/* {freinds && (
           <div
             className={`border bg-[#f8eded29] px-5 py-4 pb-10 my-6 flex flex-col justify-between shadow-md shadow-[#fff3] w-[280px] border-red-500 rounded-md transition-height duration-300 ${
               isCard1Open ? "h-[250px]" : "overflow-hidden h-0"
@@ -76,10 +76,10 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
                 {isCard1Open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
               </h2>
             </div>
-            {isCard1Open && shouldRenderCards.card1 && (
+             {isCard1Open && shouldRenderCards.card1 && (
               <>
                 <div className="mb-4 mt-2 overflow-y-auto max-h-48">
-                  {/* Conditionally render friends or tasks data */}
+                  Conditionally render friends or tasks data
                   {box_1_title === "friends"
                     ? data.friends.map((friend, index) => (
                         <div
@@ -107,7 +107,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
                           </button>
                         </div>
                       ))}
-                </div>
+                </div> 
                 <div className="mt-auto">
                   <button className="flex items-center font-medium text-lg m-auto rounded-md hover:bg-red-400 bg-red-500 px-3 py-1.5 capitalize">
                     <IoMdAdd /> {button}
@@ -116,29 +116,32 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
               </>
             )}
           </div>
-        )}
+        )} */}
         <div
-          className={`border bg-[#f8eded29] px-5 py-4 pb-10 my-6 shadow-md shadow-[#fff3] w-[280px] border-red-500 rounded-md transition-height duration-300 ${
+          className={`border bg-[#f8eded29] px-5 py-4 pb-10 my-6 shadow-md shadow-[#fff3] w-[280px] border-[#5EE848] rounded-md transition-height duration-300 ${
             isCard2Open ? "h-[300px]" : "overflow-hidden h-0"
           }`}
         >
           <div onClick={handleSkillsToggle} className="cursor-pointer pb-2">
             <h2 className="flex justify-between items-center font-bold text-xl capitalize">
-              {box_2_title}
+              {box_1_title}
               {isCard2Open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
             </h2>
           </div>
-          {isCard2Open && shouldRenderCards.card2 && (
-            <>
-              <div>
-                {box_2_title === "skills matrix" ? (
-                  <RadarChart />
-                ) : (
-                  <LinearChart />
-                )}
-              </div>
-            </>
-          )}
+          {isCard2Open && shouldRenderCards.card2 && <RadarChart />}
+        </div>
+        <div
+          className={`border bg-[#f8eded29] px-5 py-4 pb-10 my-6 shadow-md shadow-[#fff3] w-[280px] border-[#5EE848] rounded-md transition-height duration-300 ${
+            isCard1Open ? "h-[300px]" : "overflow-hidden h-0"
+          }`}
+        >
+          <div onClick={handleChallengesToggle} className="cursor-pointer pb-2">
+            <h2 className="flex justify-between items-center font-bold text-xl capitalize">
+              {box_2_title}
+              {isCard1Open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
+            </h2>
+          </div>
+          {isCard1Open && shouldRenderCards.card1 && <LinearChart />}
         </div>
       </div>
     </>

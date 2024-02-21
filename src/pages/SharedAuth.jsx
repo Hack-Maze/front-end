@@ -2,12 +2,9 @@ import GIF from "../assets/sign.gif";
 import { motion } from "framer-motion";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const SharedAuth = () => {
-  const { authType } = useParams();
-  const isLoginPage = authType === "login";
-
+const SharedAuth = ({ authType }) => {
   return (
     <div className="flex flex-col h-screen font-Grotesk overflow-hidden">
       <div
@@ -43,7 +40,7 @@ const SharedAuth = () => {
             <h1 className="sm:text-lg lg:text-2xl text-white">HackMaze</h1>
           </Link>
 
-          {!isLoginPage ? <RegisterPage /> : <LoginPage />}
+          {authType === "login" ? <LoginPage /> : <RegisterPage />}
 
           <motion.div
             initial={{ opacity: 0 }}

@@ -32,7 +32,7 @@ const Hero = () => {
               className="w-6 sm:w-8 lg:w-10 mr-1 sm:mr-3 lg:mr-5"
             />
           </div>
-          <h1 className="sm:text-2xl lg:text-3xl text-white">HackMaze</h1>
+          <h2 className="sm:text-2xl lg:text-3xl text-white">HackMaze</h2>
         </div>
         <Link
           to={"/login"}
