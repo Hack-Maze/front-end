@@ -27,8 +27,7 @@ const Background = ({ children }) => {
         className="fixed top-0 left-0 w-full h-full z-10"
         style={{
           background:
-            "linear-gradient(to bottom, rgb(9, 19, 26),rgb(11, 17, 26))",
-          backdropFilter: "blur(15px)",
+            "linear-gradient(to bottom, rgb(9, 26, 18),rgb(11, 17, 26))",
         }}
       ></div>
 

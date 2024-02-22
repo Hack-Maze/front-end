@@ -12,6 +12,7 @@ import { LuGraduationCap } from "react-icons/lu";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import Layout_1 from "../components/Layout_1/Layout_1";
 import { Paths, RecPaths } from "../static/data";
+import Background from "../components/Background/Background";
 
 const DashboardPage = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
@@ -21,14 +22,14 @@ const DashboardPage = () => {
   };
 
   return (
-    <div
+    <Background>
+      {/* <div
       className="flex flex-col min-h-screen"
       style={{
         background:
           "linear-gradient(to bottom, rgba(15, 32, 24, 0.988),rgb(10, 18, 26))",
-        backdropFilter: "blur(15px)",
       }}
-    >
+    > */}
       <header className="flex p-7 justify-between items-center text-white border-b border-gray-500">
         <Link to={"/dashboard"} className="flex">
           <img src="/Logo2.png" alt="logo" className="w-10 mr-4" />
@@ -41,7 +42,7 @@ const DashboardPage = () => {
               className={`flex items-center cursor-pointer ${
                 activeItem === "dashboard"
                   ? "text-[#5EE848]"
-                  : "hover:text-[#5de848cc]"
+                  : "hover:text-[#5de84881]"
               }`}
               onClick={() => handleItemClick("dashboard")}
             >
@@ -52,7 +53,7 @@ const DashboardPage = () => {
               className={`mx-12 flex items-center relative cursor-pointer ${
                 activeItem === "learn"
                   ? "text-[#5EE848]"
-                  : "hover:text-[#5de848cc]"
+                  : "hover:text-[#5de84881]"
               }`}
               onClick={() => handleItemClick("learn")}
             >
@@ -88,7 +89,7 @@ const DashboardPage = () => {
               className={`flex items-center cursor-pointer ${
                 activeItem === "compete"
                   ? "text-[#5EE848]"
-                  : "hover:text-[#5de848cc]"
+                  : "hover:text-[#5de84881]"
               }`}
               onClick={() => handleItemClick("compete")}
             >
@@ -97,15 +98,19 @@ const DashboardPage = () => {
             </li>
           </ul>
         </div>
-        <div className="flex">
+        <div className="flex items-center">
           <div className="cursor-pointer">
-            <HiOutlineMagnifyingGlass size={30} />
+            <HiOutlineMagnifyingGlass size={35} />
           </div>
           <div className="mx-6 cursor-pointer">
-            <IoMdNotificationsOutline size={30} />
+            <IoMdNotificationsOutline size={35} />
           </div>
-          <div className="cursor-pointer">
-            <FaCircleUser size={30} />
+          <div className="cursor-pointer border border-[#5de848] rounded-full hover:border-[#5de8487e]">
+            <img
+              className="p-2"
+              src="https://api.dicebear.com/7.x/initials/svg?size=25&seed=Mahmoud Memo&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100"
+              alt="profle"
+            />
           </div>
         </div>
       </header>
@@ -179,7 +184,8 @@ const DashboardPage = () => {
           <p className="capitalize ">enjoy your time with us</p>
         </div>
       </footer>
-    </div>
+      {/* </div> */}
+    </Background>
   );
 };
 
