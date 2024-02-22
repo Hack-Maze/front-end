@@ -98,3 +98,27 @@ export const Paths = [
     desc: "Learn how to defend against cyber threats by mastering defensive security techniques.",
   },
 ];
+
+export const RecPaths = [
+  {
+    id: 1,
+    // link: "/roadmap/offensive",
+    img: "/rec-path-1.png",
+    title: "Jr Penetration Tester",
+    desc: "This learning path covers the core technical skills that will allow you to succeed as a junior penetration tester. Upon completing this path, you will have the practical skills necessary to perform security assessments against web applications and enterprise infrastructure.",
+  },
+  {
+    id: 2,
+    // link: "/roadmap/defensive",
+    img: "/rec-path-2.png",
+    title: "Linux Fundamentals",
+    desc: "Power-up your Linux skills and get hands-on with some common utilities that you are likely to use day-to-day!",
+  },
+  {
+    id: 3,
+    // link: "/roadmap/defensive",
+    img: "/rec-path-3.png",
+    title: "Intro to Offensive Security",
+    desc: "Hack your first website (legally in a safe environment) and experience an ethical hacker's job.",
+  },
+];

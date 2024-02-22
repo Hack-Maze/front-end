@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: "Space Grotesk", "sans-serif";
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }

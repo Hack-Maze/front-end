@@ -11,7 +11,7 @@ import { LuGraduationCap } from "react-icons/lu";
 
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import Layout_1 from "../components/Layout_1/Layout_1";
-import { Paths } from "../static/data";
+import { Paths, RecPaths } from "../static/data";
 
 const DashboardPage = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
@@ -22,14 +22,14 @@ const DashboardPage = () => {
 
   return (
     <div
-      className="flex flex-col min-h-screen font-Incon"
+      className="flex flex-col min-h-screen"
       style={{
         background:
-          "linear-gradient(to bottom, rgba(15, 32, 24, 0.99),rgb(10, 18, 26))",
+          "linear-gradient(to bottom, rgba(15, 32, 24, 0.988),rgb(10, 18, 26))",
         backdropFilter: "blur(15px)",
       }}
     >
-      <header className="flex p-6 justify-between items-center text-white border-b border-gray-500">
+      <header className="flex p-7 justify-between items-center text-white border-b border-gray-500">
         <Link to={"/dashboard"} className="flex">
           <img src="/Logo2.png" alt="logo" className="w-10 mr-4" />
 
@@ -58,7 +58,7 @@ const DashboardPage = () => {
             >
               <LuGraduationCap className="mr-1" size={30} />
               Learn
-              {activeItem === "learn" && (
+              {/* {activeItem === "learn" && (
                 <div className="absolute top-full left-0 mt-1 bg-white shadow-md rounded-md">
                   <ul>
                     <Link
@@ -82,7 +82,7 @@ const DashboardPage = () => {
                     </Link>
                   </ul>
                 </div>
-              )}
+              )} */}
             </li>
             <li
               className={`flex items-center cursor-pointer ${
@@ -149,11 +149,31 @@ const DashboardPage = () => {
             box_2_title={"challenges"}
           />
         </div>
-        <div>
+        <div className="flex flex-col gap-3 mb-10">
           <h2 className="text-3xl">Recommended Paths</h2>
+          <p className="text-xl text-gray-400 mb-2">
+            Based on your skills matrix
+          </p>
+          <div className="flex flex-row justify-between gap-10">
+            {RecPaths.map((recPath, index) => (
+              <div
+                key={index}
+                className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md max-w-md shadow-box"
+              >
+                <img src={recPath.img} alt="image" className="w-40" />
+                <h2 className="text-2xl my-3">{recPath.title}</h2>
+
+                <p className={"text-base text-gray-400 px-3"}>
+                  {recPath.desc.length > 130
+                    ? `${recPath.desc.substring(0, 130)}...`
+                    : recPath.desc}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </body>
-      <footer className="border-t border-gray-500 w-full text-white fixed bottom-2">
+      <footer className="border-t border-gray-500 w-full text-white">
         <div className="text-sm m-5 flex justify-between mx-6 font-bold">
           <span>&copy; 2023 HackMaze.</span>
           <p className="capitalize ">enjoy your time with us</p>
