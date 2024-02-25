@@ -664,6 +664,7 @@ jobs:
       - name: deploy to azure
         uses: benc-uk/workflow-dispatch@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           workflow: terraform-apply.yml
           repo: Hack-Maze/IaC
 
