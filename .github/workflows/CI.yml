@@ -10,7 +10,7 @@
         - 'develop'
         - 'feature-**'
         - '!CI-**'
-        
+        - 'deploy'
       paths-ignore:    
           - '*.md'
           - '.github/workflows/*'
@@ -20,6 +20,7 @@
         - 'develop'
         - 'feature-**'
         - '!CI-**'
+        - 'deploy'
         
       paths-ignore:    
           - '*.md'
@@ -427,7 +428,7 @@
                     
     push_to_Docker_Hub:
       
-      if: github.actor!= 'dependabot[bot]'
+      if: github.actor != 'dependabot[bot]' && github.event_name == 'push'
       runs-on: ubuntu-latest
       # build docker image and push to docker hub
       # only if the app build and test successfully
@@ -541,7 +542,7 @@
 
     Start-ACI:
       runs-on: ubuntu-latest
-      if: github.actor!= 'dependabot[bot]'
+      if: github.actor != 'dependabot[bot]' && github.event_name == 'push' && github.ref != 'refs/heads/deploy'
       needs: [push_to_Docker_Hub]
       steps:
       
@@ -597,10 +598,9 @@
 
     Stop-ACI:
       runs-on: ubuntu-latest
-      if: github.actor!= 'dependabot[bot]'
+      if: github.actor != 'dependabot[bot]' && github.event_name == 'push' && github.ref != 'refs/heads/deploy'
       needs: [Start-ACI]
       steps:
-
 
         - name: Azure Login
           uses: azure/login@v1
@@ -634,7 +634,17 @@
               footer:  "$$$$$"
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL_DEMO }}
 
-
+    deploy-azure:
+      runs-on: ubuntu-latest
+      if: github.actor != 'dependabot[bot]' && github.event_name == 'push' && github.ref == 'refs/heads/deploy'
+      needs: [push_to_Docker_Hub]
+      steps:
+      
+        - name: deploy to azure
+          uses: benc-uk/workflow-dispatch@v1
+          with:
+            workflow: my-workflow.yaml
+            repo: benc-uk/example
 
 
     notify_Discord_CI_finish:
