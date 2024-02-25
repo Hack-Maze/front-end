@@ -7,7 +7,7 @@ RUN npm install react-scripts@5.0.1 -g --silent
 # Copy app files
 COPY . .
 RUN npm run build 
-
+ 
 FROM nginx:stable-alpine 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
