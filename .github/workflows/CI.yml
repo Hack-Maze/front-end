@@ -634,6 +634,27 @@ jobs:
             footer:  "$$$$$"
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL_DEMO }}
 
+
+
+  notify_Discord_CI_finish:
+    if: github.actor!= 'dependabot[bot]'
+    needs: [Stop-ACI]
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: notify Frontend CI Workflow finished
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+            severity: info
+            color: '#7851A9'
+            details: "## > - **Frontend CI Workflow Finished!**"
+            footer: HORRAI.
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+
+
+
   deploy-azure:
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]' && github.event_name == 'push' && github.ref == 'refs/heads/deploy'
@@ -643,16 +664,16 @@ jobs:
       - name: deploy to azure
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: my-workflow.yaml
-          repo: benc-uk/example
+          workflow: terraform-apply.yml
+          repo: Hack-Maze/IaC
 
 
-  notify_Discord_CI_finish:
+  notify_Discord_CI_finish-deploy:
     if: github.actor!= 'dependabot[bot]'
-    needs: [Stop-ACI]
+    needs: [deploy-azure]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: notify Frontend CI Workflow finished
         uses: rjstone/discord-webhook-notify@v1.0.4
