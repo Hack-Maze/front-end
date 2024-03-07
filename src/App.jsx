@@ -20,11 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <VerificationMiddleware>
-            <LandingPage />
-          </VerificationMiddleware>
-        ),
+        element: <LandingPage />,
       },
       {
         path: "/login",
