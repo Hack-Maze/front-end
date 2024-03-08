@@ -32,11 +32,11 @@ const RegisterPage = () => {
           password: password,
         }),
       });
-      const data = await response.json();
+
       if (response.ok) {
         navigate("/dashboard");
       } else {
-        console.error("Registration failed:", data);
+        console.error("Registration failed:", response);
       }
     } catch (error) {
       console.error("Error during registration:", error);

@@ -13,27 +13,40 @@ const LoginPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await customFetch.post(`login/access-token`, {
-        method: "POST",
+      const formData = new URLSearchParams();
+      formData.append('grant_type', '');
+      formData.append('username', email);
+      formData.append('password', password);
+      formData.append('scope', ''); 
+      formData.append('client_id', ''); 
+      formData.append('client_secret', ''); 
+  
+      const response = await customFetch.post(`login/access-token`, formData.toString(), {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify(
-          `grant_type=&username=${email}&password=${password}&scope=&client_id=&client_secret=`
-        ),
       });
-      const data = await response.json();
-      if (response.ok) {
+  
+      if (response.status === 200) {
+        const data = response.data;
+        const accessToken = data.access_token;
+  
+        console.log("Access Token:", accessToken);
         navigate("/dashboard");
       } else {
-        console.error("Login failed:", data);
+        const errorMessage = response.data.detail;
+        throw new Error(errorMessage); 
       }
     } catch (error) {
-      console.error("Error during login:", error);
+      const errorMessage = error.response ? error.response.data.detail : error.message;
+      console.error("Error during login:", errorMessage);
     }
   };
+  
+  
+  
 
   return (
     <div className="h-[80vh]">
