@@ -30,6 +30,8 @@ const RegisterPage = () => {
           email: email,
           full_name: username,
           password: password,
+          is_active: true,
+  "is_superuser": false,
         }),
       });
 
