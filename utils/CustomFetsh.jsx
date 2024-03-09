@@ -1,8 +1,7 @@
 import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
-const apiUrl = `${process.env.VITE_API_URL}`;
 
+
+const apiUrl = `${import.meta.env.VITE_API_URL}api/v1`;
 console.log(apiUrl);
 const customFetch = axios.create({
   baseURL: `${apiUrl}/`,
