@@ -30,12 +30,14 @@ const RegisterPage = () => {
           email: email,
           full_name: username,
           password: password,
-          is_active: true,
-  "is_superuser": false,
         }),
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
+        const data = response.data;
+        const accessToken = data.access_token;
+  
+        console.log("Access Token:", accessToken);
         navigate("/dashboard");
       } else {
         console.error("Registration failed:", response);
