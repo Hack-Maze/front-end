@@ -16,12 +16,9 @@ const LoginPage = () => {
   
     try {
       const formData = new URLSearchParams();
-      formData.append('grant_type', '');
       formData.append('username', email);
       formData.append('password', password);
-      formData.append('scope', ''); 
-      formData.append('client_id', ''); 
-      formData.append('client_secret', ''); 
+
   
       const response = await customFetch.post(`login/access-token`, formData.toString(), {
         headers: {
@@ -32,22 +29,16 @@ const LoginPage = () => {
       if (response.status === 200) {
         const data = response.data;
         const accessToken = data.access_token;
-  
+        localStorage.setItem('accessToken', accessToken);
         console.log("Access Token:", accessToken);
         navigate("/dashboard");
-      } else {
-        const errorMessage = response.data.detail;
-        throw new Error(errorMessage); 
       }
     } catch (error) {
-      const errorMessage = error.response ? error.response.data.detail : error.message;
-      console.error("Error during login:", errorMessage);
+      console.log(error.response.data.detail);
     }
   };
   
   
-  
-
   return (
     <div className="h-[80vh]">
       <motion.div

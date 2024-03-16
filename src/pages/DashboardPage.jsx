@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaFireAlt } from "react-icons/fa";
 import { CiTrophy } from "react-icons/ci";
@@ -13,13 +13,32 @@ import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import Layout_1 from "../components/Layout_1/Layout_1";
 import { Paths, RecPaths } from "../static/data";
 import Background from "../components/Background/Background";
+import customFetch from "../../utils/CustomFetsh";
 
 const DashboardPage = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
+  const [username, setUsername] = useState('');
 
   const handleItemClick = (item) => {
     setActiveItem(item);
   };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    customFetch.get('users/me', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+      .then(response => {
+        const { full_name } = response.data;
+        console.log(full_name);
+        setUsername(full_name);
+      })
+      .catch(error => {
+        console.error('Error fetching user information:', error);
+      });
+  }, []);
 
   return (
     <Background>
@@ -39,22 +58,20 @@ const DashboardPage = () => {
         <div>
           <ul className="flex font-medium text-xl">
             <li
-              className={`flex items-center cursor-pointer ${
-                activeItem === "dashboard"
+              className={`flex items-center cursor-pointer ${activeItem === "dashboard"
                   ? "text-[#5EE848]"
                   : "hover:text-[#5de84881]"
-              }`}
+                }`}
               onClick={() => handleItemClick("dashboard")}
             >
               <MdOutlineDashboard className="mr-1" size={25} />
               Dashboard
             </li>
             <li
-              className={`mx-12 flex items-center relative cursor-pointer ${
-                activeItem === "learn"
+              className={`mx-12 flex items-center relative cursor-pointer ${activeItem === "learn"
                   ? "text-[#5EE848]"
                   : "hover:text-[#5de84881]"
-              }`}
+                }`}
               onClick={() => handleItemClick("learn")}
             >
               <LuGraduationCap className="mr-1" size={30} />
@@ -86,11 +103,10 @@ const DashboardPage = () => {
               )} */}
             </li>
             <li
-              className={`flex items-center cursor-pointer ${
-                activeItem === "compete"
+              className={`flex items-center cursor-pointer ${activeItem === "compete"
                   ? "text-[#5EE848]"
                   : "hover:text-[#5de84881]"
-              }`}
+                }`}
               onClick={() => handleItemClick("compete")}
             >
               <LuSwords className="mr-1" size={25} />
@@ -108,9 +124,10 @@ const DashboardPage = () => {
           <div className="cursor-pointer border border-[#5de848] rounded-full hover:border-[#5de8487e]">
             <img
               className="p-2"
-              src="https://api.dicebear.com/7.x/initials/svg?size=25&seed=Mahmoud Memo&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100"
-              alt="profle"
+              src={`https://api.dicebear.com/7.x/initials/svg?size=25&seed=${username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100`}
+              alt="profile"
             />
+
           </div>
         </div>
       </header>

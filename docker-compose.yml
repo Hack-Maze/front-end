@@ -18,6 +18,8 @@ services:
       - .env
     ports:
       - "80:80"
+    volumes:
+      - ./config.js:/usr/share/nginx/html/config.js
 
   db:
     image: postgres:12

@@ -1,7 +1,8 @@
 import axios from "axios";
+import config from "../config";
 
-// const apiUrl = `${window.API_URL}api/v1`;
-const apiUrl = `${import.meta.env.VITE_API_URL}api/v1`;
+const apiUrl = `${config.VITE_API_URL}api/v1`;
+
 console.log(apiUrl);
 const customFetch = axios.create({
   baseURL: `${apiUrl}/`,

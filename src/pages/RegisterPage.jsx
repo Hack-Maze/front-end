@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Link, useNavigate } from "react-router-dom";
+import { Form, Link, useNavigate, useActionData } from "react-router-dom";
 import FormRow from "../components/FormRow";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { PiGithubLogoFill } from "react-icons/pi";
@@ -14,38 +14,32 @@ const RegisterPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     if (password.length < 6) {
       console.error("Password should be at least 6 characters long.");
       return;
     }
-
+  
     try {
-      const response = await customFetch.post(`users/`, {
-        method: "POST",
+      const formData = {
+        full_name: username,
+        email: email,
+        password: password
+      };
+  
+      const response = await customFetch.post(`signup`, formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: email,
-          full_name: username,
-          password: password,
-        }),
       });
-
-      if (response.status === 200) {
-        const data = response.data;
-        const accessToken = data.access_token;
   
-        console.log("Access Token:", accessToken);
-        navigate("/dashboard");
-      } else {
-        console.error("Registration failed:", response);
-      }
+      if (response.status === 200) {
+        navigate("/login");}
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.log(error.response.data.detail);
     }
   };
+  
 
   return (
     <div className="h-[80vh]">
