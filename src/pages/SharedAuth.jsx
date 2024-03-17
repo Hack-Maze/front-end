@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import { Link } from "react-router-dom";
+import PasswordRecoveryPage from "./PassRecovery";
+import PasswordResetPage from "./PassReset";
 
 const SharedAuth = ({ authType }) => {
   return (
@@ -40,8 +42,10 @@ const SharedAuth = ({ authType }) => {
             <h1 className="sm:text-lg lg:text-2xl text-white">HackMaze</h1>
           </Link>
 
-          {authType === "login" ? <LoginPage /> : <RegisterPage />}
-
+          {authType === "login" && <LoginPage /> }
+          {authType === "register" && <RegisterPage />}
+          {authType === "recover" && <PasswordRecoveryPage />}
+          {authType === "reset" && <PasswordResetPage />}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

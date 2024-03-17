@@ -1,87 +1,62 @@
 import React, { useState } from "react";
 import FormRow from "../components/FormRow";
-import VantaBackground from "../components/VantaBackground/VantaBackground";
 import customFetch from "../../utils/CustomFetsh";
+import { Form, redirect, useParams } from "react-router-dom";
+import SubmitBtn from "@/components/SubmitBtn";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
+
+export const action = async ({ request }) => {
+  const {token} = useParams();
+  console.log(token);
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  data.token = token;
+  console.log(data);
+  try {
+    await customFetch.post(`reset-password`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    toast.success('Password changed');
+    return redirect('/login');
+  } catch (error) {
+    toast.error(error.response.data.detail.toString());
+    return error;
+  }
+}
 
 const PasswordResetPage = () => {
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-
-  const handlePasswordReset = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setSuccessMessage(null);
-
-    try {
-      const response = await customFetch.post(`reset-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ password }),
-      });
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccessMessage(data.message);
-      } else {
-        setError(data.message);
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <VantaBackground>
-      <div className="text-white py-4 sm:px-6 lg:px-8">
-        <div className="flex mb-4">
-          <div>
-            <img
-              src="/logo.png"
-              alt="logo"
-              className="w-7 sm:w-8 lg:w-12 mr-3 sm:mr-5 lg:mr-8"
-            />
-          </div>
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl text-white">
-            HackMaze
-          </h1>
-        </div>
-        <div className="flex justify-center items-center sm:h-[50vh] lg:h-[60vh]">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <h2
-              className={
-                "text-center mx-auto w-[70%] border-b-2 border-red-600 pb-2 text-white text-base sm:text-lg lg:text-xl uppercase font-bold mb-8"
-              }
+    <div className="h-[80vh]">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1, duration: 0.7 }}
+      className="flex flex-col items-center justify-center text-white h-full my-auto"
+    >
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.3, duration: 0.7 }}
+          className="mx-auto w-full md:w-[50%] xl:w-[30%] bg-[#ffffff0b] rounded-md flex flex-col p-5 shadow-box border border-gray-700"
+        >
+            <h2 className="text-center text-white text-xl md:text-3xl w-auto uppercase"
             >
               Reset Your Password
             </h2>
-            <form onSubmit={handlePasswordReset}>
-              <FormRow
-                text="Password"
-                name="password"
-                type="password"
-                value={password}
-                inputHandler={(e) => setPassword(e.target.value)}
-              />
-              <div className="w-full text-center mt-8">
-                <button
-                  type="submit"
-                  className="text-white font-medium text-lg border-b-2 border-white hover:text-gray-200"
-                >
-                  Reset Password
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-      </div>
-    </VantaBackground>
+          <Form method="post">
+            <FormRow
+              text="Password"
+              name="new_password"
+              type="password"
+            />
+            <SubmitBtn text={'Reset password'} />
+          </Form>
+        </motion.div>
+      </motion.div>
+    </div>
   );
 };
 

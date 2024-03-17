@@ -6,8 +6,6 @@ import LandingPage from "./pages/LandingPage";
 import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/Error/404";
 import Roadmap from "./pages/Roadmap";
-import PasswordResetPage from "./pages/PassReset";
-import PasswordRecoveryPage from "./pages/PassRecovery";
 import HomeLayout from "./pages/HomeLayout";
 import SharedAuth from "./pages/SharedAuth";
 import CaptchaPage from "./pages/CapthchaPage";
@@ -16,6 +14,8 @@ import { Toaster } from 'sonner';
 
 import { action as loginAction } from './pages/LoginPage';
 import { action as registerAction } from './pages/RegisterPage';
+import { action as resetAction } from './pages/PassReset';
+import { action as recoveryAction } from './pages/PassRecovery';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,8 +53,8 @@ const router = createBrowserRouter([
         ),
         action: registerAction,
       },
-      { path: "/reset-password", element: <PasswordResetPage /> },
-      { path: "/password-recovery", element: <PasswordRecoveryPage /> },
+      { path: "/password-recovery", element: <SharedAuth authType="recover" />, action: recoveryAction },
+      { path: "/reset-password/:token", element: <SharedAuth authType="reset" />, action: resetAction },
       { path: "/dashboard", element: <DashboardPage /> },
       { path: "/roadmap/:type", element: <Roadmap /> },
     ],
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
 const App = () => {
   return (<QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
-    <Toaster visibleToasts={1} position='top-right' richColors/>
+    <Toaster visibleToasts={1} position='top-right' richColors />
   </QueryClientProvider>);
 };
 

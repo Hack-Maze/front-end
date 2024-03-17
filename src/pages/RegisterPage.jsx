@@ -80,7 +80,7 @@ const RegisterPage = () => {
                 type="password"
               />
 
-              <SubmitBtn />
+              <SubmitBtn text={'Continue'}/>
               <div className="flex items-center my-4 w-[80%] mx-auto">
                 <hr className="flex-grow border-gray-500" />
                 <div className="mx-4 text-gray-500 text-lg uppercase">or</div>
