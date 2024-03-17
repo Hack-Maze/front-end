@@ -22,6 +22,7 @@ const FormRow = ({ type, name, inputHandler, text, value }) => {
               : name == "email"
               ? "Your email address"
               : "Your name"
+              
           }
           value={value}
           onChange={inputHandler}

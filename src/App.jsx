@@ -1,4 +1,5 @@
 // App.js
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
@@ -11,6 +12,18 @@ import HomeLayout from "./pages/HomeLayout";
 import SharedAuth from "./pages/SharedAuth";
 import CaptchaPage from "./pages/CapthchaPage";
 import VerificationMiddleware from "./components/Verification/VerificationMiddleware";
+import { Toaster } from 'sonner';
+
+import { action as loginAction } from './pages/LoginPage';
+import { action as registerAction } from './pages/RegisterPage';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -29,6 +42,7 @@ const router = createBrowserRouter([
             <SharedAuth authType="login" />
           </VerificationMiddleware>
         ),
+        action: loginAction,
       },
       {
         path: "/register",
@@ -37,6 +51,7 @@ const router = createBrowserRouter([
             <SharedAuth authType="register" />
           </VerificationMiddleware>
         ),
+        action: registerAction,
       },
       { path: "/reset-password", element: <PasswordResetPage /> },
       { path: "/password-recovery", element: <PasswordRecoveryPage /> },
@@ -49,7 +64,10 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (<QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+    <Toaster visibleToasts={1} position='top-right' richColors/>
+  </QueryClientProvider>);
 };
 
 export default App;

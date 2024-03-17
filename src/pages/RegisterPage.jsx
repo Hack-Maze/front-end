@@ -1,46 +1,42 @@
-import { useState } from "react";
-import { Form, Link, useNavigate, useActionData } from "react-router-dom";
+import { Form, Link, redirect } from "react-router-dom";
 import FormRow from "../components/FormRow";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { PiGithubLogoFill } from "react-icons/pi";
 import customFetch from "../../utils/CustomFetsh";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
+import SubmitBtn from "@/components/SubmitBtn";
+
+
+
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  console.log(data);
+  const password = data.password;
+  if (password.length < 6) {
+    toast.error("Password should be at least 6 characters long.");
+    return;
+  }
+
+  try {
+    await customFetch.post(`signup`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    toast.success('Registeration success.')
+    return redirect("/login");
+
+  } catch (error) {
+    toast.error(error.response.data.detail.toString());
+    return error;
+  }
+};
 
 const RegisterPage = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-  
-    if (password.length < 6) {
-      console.error("Password should be at least 6 characters long.");
-      return;
-    }
-  
-    try {
-      const formData = {
-        full_name: username,
-        email: email,
-        password: password
-      };
-  
-      const response = await customFetch.post(`signup`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (response.status === 200) {
-        navigate("/login");}
-    } catch (error) {
-      console.log(error.response.data.detail);
-    }
-  };
-  
-
   return (
     <div className="h-[80vh]">
       <motion.div
@@ -66,38 +62,25 @@ const RegisterPage = () => {
             <div className="bg-gray-300 h-[5px] rounded-sm w-[5px]"></div>
           </div>
           <div>
-            <Form onSubmit={submitHandler}>
+            <Form method="post">
               <FormRow
                 text="Username"
-                name="username"
+                name="full_name"
                 type="text"
-                value={username}
-                inputHandler={(e) => setUsername(e.target.value)}
               />
 
               <FormRow
                 text="Email"
                 name="email"
                 type="email"
-                value={email}
-                inputHandler={(e) => setEmail(e.target.value)}
               />
               <FormRow
                 text="Password"
                 name="password"
                 type="password"
-                value={password}
-                inputHandler={(e) => setPassword(e.target.value)}
               />
 
-              <div className="w-full text-center mt-6">
-                <button
-                  type="submit"
-                  className="cursor-pointer font-bold text-center border py-1 md:py-2 w-[40%] rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
-                >
-                  Continue
-                </button>
-              </div>
+              <SubmitBtn />
               <div className="flex items-center my-4 w-[80%] mx-auto">
                 <hr className="flex-grow border-gray-500" />
                 <div className="mx-4 text-gray-500 text-lg uppercase">or</div>

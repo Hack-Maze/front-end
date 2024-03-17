@@ -1,44 +1,34 @@
-import { useState } from "react";
-import { Form, Link, useNavigate } from "react-router-dom";
+import { Form, Link, redirect } from "react-router-dom";
 import FormRow from "../components/FormRow";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { PiGithubLogoFill } from "react-icons/pi";
 import customFetch from "../../utils/CustomFetsh";
 import { motion } from "framer-motion";
+import SubmitBtn from "@/components/SubmitBtn";
+import { toast } from "sonner";
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  const modifiedData = { ...data, username: data.email };
+  delete modifiedData.email;
+  try {
+    const response = await customFetch.post(`login/access-token`, modifiedData, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+    const accessToken = response.data.access_token;
+    localStorage.setItem('accessToken', accessToken);
+    console.log("Access Token:", accessToken);
+    return redirect("/dashboard");
+  } catch (error) {
+    toast.error(error.response.data.detail.toString());
+    return error;
+  }
+};
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-  
-    try {
-      const formData = new URLSearchParams();
-      formData.append('username', email);
-      formData.append('password', password);
-
-  
-      const response = await customFetch.post(`login/access-token`, formData.toString(), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-  
-      if (response.status === 200) {
-        const data = response.data;
-        const accessToken = data.access_token;
-        localStorage.setItem('accessToken', accessToken);
-        console.log("Access Token:", accessToken);
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      console.log(error.response.data.detail);
-    }
-  };
-  
-  
   return (
     <div className="h-[80vh]">
       <motion.div
@@ -67,20 +57,16 @@ const LoginPage = () => {
             <div className="bg-gray-300 h-[5px] rounded-sm w-[5px]"></div>
           </div>
           <div>
-            <Form onSubmit={submitHandler}>
+            <Form method="post">
               <FormRow
                 text="Email"
                 name="email"
                 type="email"
-                value={email}
-                inputHandler={(e) => setEmail(e.target.value)}
               />
               <FormRow
                 text="Password"
                 name="password"
                 type="password"
-                value={password}
-                inputHandler={(e) => setPassword(e.target.value)}
               />
               <div className="md:text-sm text-xs">
                 <Link
@@ -90,14 +76,7 @@ const LoginPage = () => {
                   Forgot Your Password?
                 </Link>
               </div>
-              <div className="w-full text-center mt-6">
-                <button
-                  type="submit"
-                  className="cursor-pointer font-bold text-center border py-1 md:py-2 w-[40%] rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
-                >
-                  Continue
-                </button>
-              </div>
+              <SubmitBtn />
               <div className="flex items-center my-4 w-[80%] mx-auto">
                 <hr className="flex-grow border-gray-500" />
                 <div className="mx-4 text-gray-500 text-lg uppercase">or</div>

@@ -32,7 +32,6 @@ const DashboardPage = () => {
     })
       .then(response => {
         const { full_name } = response.data;
-        console.log(full_name);
         setUsername(full_name);
       })
       .catch(error => {
