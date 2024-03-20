@@ -51,7 +51,7 @@ const SharedAuth = ({ authType }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed bottom-16 md:bottom-10 left-0 md:text-lg text-sm text-center w-full text-white"
+            className="md:text-lg text-sm text-center w-full text-white mt-4"
           >
             &copy; <span>2023 HackMaze</span>
           </motion.div>

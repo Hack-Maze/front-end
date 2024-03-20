@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 import SubmitBtn from "@/components/SubmitBtn";
 import { toast } from "sonner";
 
+
+
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
@@ -21,6 +23,7 @@ export const action = async ({ request }) => {
     const accessToken = response.data.access_token;
     localStorage.setItem('accessToken', accessToken);
     console.log("Access Token:", accessToken);
+    toast.success('Logging...');
     return redirect("/dashboard");
   } catch (error) {
     toast.error(error.response.data.detail.toString());

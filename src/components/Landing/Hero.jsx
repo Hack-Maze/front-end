@@ -35,7 +35,7 @@ const Hero = () => {
           <h2 className="sm:text-2xl lg:text-3xl text-white">HackMaze</h2>
         </div>
         <Link
-          to={"/login"}
+          to={"login"}
           className="cursor-pointer font-bold text-center border py-2 px-4 rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
         >
           login
@@ -57,7 +57,7 @@ const Hero = () => {
           </p>
           <div className="flex flex-row gap-10">
             <Link
-              to={"/register"}
+              to={"register"}
               className="cursor-pointer text-white font-semibold flex h-14 px-5 rounded-lg border-2 hover:text-[#5EE848] hover:bg-gray-700 border-[#5EE848] items-center"
             >
               <span className="mr-2">Get Started</span> &rarr;

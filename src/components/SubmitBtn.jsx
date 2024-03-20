@@ -1,7 +1,7 @@
 import { useNavigation } from 'react-router-dom';
 const SubmitBtn = ({text}) => {
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'submitting...';
+  const isSubmitting = navigation.state === 'submitting';
   return (
     <div className="w-full text-center mt-6">
     <button
