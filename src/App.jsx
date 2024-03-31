@@ -65,7 +65,7 @@ const router = createBrowserRouter([
           { path: '/learn', element: <Learn /> },
         ]
       },
-      // { path: "/roadmap/:type", element: <Roadmap /> },
+      { path: "/roadmap/:type", element: <Roadmap /> },
     ],
   },
   { path: "*", element: <ErrorPage /> },

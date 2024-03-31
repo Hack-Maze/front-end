@@ -1,1 +1,1 @@
-window.VITE_API_URL='https://ideal-sniffle-vwj496g6gww3pvg4-8000.app.github.dev/'
+window.VITE_API_URL='https://sturdy-sniffle-9x5v5775wggcqgw-8000.app.github.dev/'
