@@ -14,10 +14,10 @@ services:
   frontend:
     build:
       context: .
-    env_file:
-      - .env
     ports:
       - "80:80"
+    volumes:
+      - ./config.js:/usr/share/nginx/html/config.js
 
   db:
     image: postgres:12
@@ -33,3 +33,4 @@ services:
 
 volumes:
   db_data: {}
+

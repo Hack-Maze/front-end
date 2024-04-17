@@ -7,7 +7,7 @@ import Footer from "../components/Landing/Footer";
 const LandingPage = () => {
   return (
     <Background>
-      <div className="flex flex-col">
+      <div className="flex flex-col overflow-hidden">
         <Hero />
         <Body />
         <Footer />

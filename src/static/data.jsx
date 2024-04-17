@@ -122,3 +122,78 @@ export const RecPaths = [
     desc: "Hack your first website (legally in a safe environment) and experience an ethical hacker's job.",
   },
 ];
+
+export const learns = [
+  {
+    id: 1,
+    img: "/rec-path-1.png",
+    title: "Jr Penetration Tester",
+    level: 'fundamental',
+    desc: "This learning path covers the core technical skills that will allow you to succeed as a junior penetration tester. Upon completing this path, you will have the practical skills necessary to perform security assessments against web applications and enterprise infrastructure.",
+    // link: ''
+  },
+  {
+    id: 2,
+    img: "/rec-path-2.png",
+    title: "Linux Fundamentals",
+    level: 'fundamental',
+    desc: "Power-up your Linux skills and get hands-on with some common utilities that you are likely to use day-to-day!",
+    // link: ''
+  },
+  {
+    id: 3,
+    img: "/rec-path-3.png",
+    title: "Intro to Offensive Security",
+    level: 'fundamental',
+    desc: "Hack your first website (legally in a safe environment) and experience an ethical hacker's job.",
+    // link: ''
+  },
+  {
+    id: 4,
+    img: "/rec-path-1.png",
+    title: "Jr Penetration Tester",
+    level: 'fundamental',
+    desc: "This learning path covers the core technical skills that will allow you to succeed as a junior penetration tester. Upon completing this path, you will have the practical skills necessary to perform security assessments against web applications and enterprise infrastructure.",
+    // link: ''
+  },
+  {
+    id: 5,
+    img: "/rec-path-2.png",
+    title: "Linux Fundamentals",
+    level: 'fundamental',
+    desc: "Power-up your Linux skills and get hands-on with some common utilities that you are likely to use day-to-day!",
+    // link: ''
+  },
+  {
+    id: 6,
+    img: "/rec-path-3.png",
+    title: "Intro to Offensive Security",
+    level: 'medium',
+    desc: "Hack your first website (legally in a safe environment) and experience an ethical hacker's job.",
+    // link: ''
+  },
+  {
+    id: 7,
+    img: "/rec-path-1.png",
+    title: "Jr Penetration Tester",
+    level: 'easy',
+    desc: "This learning path covers the core technical skills that will allow you to succeed as a junior penetration tester. Upon completing this path, you will have the practical skills necessary to perform security assessments against web applications and enterprise infrastructure.",
+    // link: ''
+  },
+  {
+    id: 8,
+    img: "/rec-path-2.png",
+    title: "Linux Fundamentals",
+    level: 'hard',
+    desc: "Power-up your Linux skills and get hands-on with some common utilities that you are likely to use day-to-day!",
+    // link: ''
+  },
+  {
+    id: 9,
+    img: "/rec-path-3.png",
+    title: "Intro to Offensive Security",
+    level: 'hard',
+    desc: "Hack your first website (legally in a safe environment) and experience an ethical hacker's job.",
+    // link: ''
+  },
+];
