@@ -33,7 +33,7 @@ const Learn = () => {
   };
 
   return (
-    <div className='w-[80%] m-auto my-10'>
+    <div className='w-[80%] m-auto my-10 min-h-[75vh]'>
       <div className='flex justify-between'>
         <input
           type="text"
