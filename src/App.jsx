@@ -4,7 +4,7 @@ import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import ErrorPage from "./pages/Error/404";
-import Roadmap from "./pages/Roadmap";
+// import Roadmap from "./pages/Roadmap";
 import Layout from "./pages/Layout";
 import SharedAuth from "./pages/SharedAuth";
 import CaptchaPage from "./pages/CapthchaPage";
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
           { path: '/learn', element: <Learn /> },
         ]
       },
-      { path: "/roadmap/:type", element: <Roadmap /> },
+      // { path: "/roadmap/:type", element: <Roadmap /> },
     ],
   },
   { path: "*", element: <ErrorPage /> },

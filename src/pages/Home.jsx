@@ -2,9 +2,8 @@ import Background from "../components/Background/Background";
 import customFetch from "../../utils/CustomFetsh";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Outlet, redirect, useLoaderData, useNavigate } from "react-router-dom";
-import { createContext, useContext, useEffect, useState } from 'react';
-import LoadingItem from "@/components/LoadingItem";
+import { Outlet, redirect, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
+import { createContext, useContext, useEffect } from 'react';
 
 const HomeContext = createContext();
 
@@ -25,45 +24,36 @@ export const loader = async () => {
 const Home = () => {
   const navigate = useNavigate();
   const data = useLoaderData();
-  const [isLoading, setIsLoading] = useState(true);
 
-  const checkUserToken = () => {
-    const userToken = localStorage.getItem('accessToken');
-    if (!userToken || userToken === 'undefined') {
-      navigate('/login');
-    } else {
-      const timeout = setTimeout(() => {
-        setIsLoading(false);
-      }, 4000);
-  
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  };
   useEffect(() => {
+    const checkUserToken = () => {
+      const userToken = localStorage.getItem('accessToken');
+      if (!userToken || userToken === 'undefined') {
+        navigate('/login');
+      }
+    };
+
     checkUserToken();
+  
     const handleStorageChange = () => {
       checkUserToken();
     };
+  
     window.addEventListener('storage', handleStorageChange);
+  
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, [checkUserToken]);
+  }, [navigate]);
 
   return (
     <HomeContext.Provider value={{ data }}>
-      <Background>
-        {isLoading ? (
-          <LoadingItem />
-        ) :  (
+       <Background>
           <>
-            <Navbar />
-            <Outlet context={{ data }} />
+            <Navbar /> 
+            {<Outlet context={{ data }} />}
             <Footer />
           </>
-        )}
       </Background>
     </HomeContext.Provider>
   );

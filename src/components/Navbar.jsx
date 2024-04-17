@@ -4,8 +4,8 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { LuSwords } from "react-icons/lu";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { LuGraduationCap } from "react-icons/lu";
-import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
-import { useEffect, useState } from "react";
+import { FaAngleDown } from "react-icons/fa6";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { useHomeContext } from "@/pages/Home";
@@ -17,6 +17,7 @@ const Navbar = () => {
   const username = data.full_name;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     switch (location.pathname) {
@@ -34,6 +35,20 @@ const Navbar = () => {
         break;
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -74,31 +89,6 @@ const Navbar = () => {
 
             <LuGraduationCap className="mr-1" size={30} />
             Learn
-            {/* {activeItem === "learn" && (
-                <div className="absolute top-full left-0 mt-1 bg-white shadow-md rounded-md">
-                  <ul>
-                    <Link
-                      to={`/roadmap/offensive`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <li className="py-2 px-4 hover:bg-slate-200 rounded-md">
-                        Offensive
-                      </li>
-                    </Link>
-
-                    <Link
-                      to={`/roadmap/defensive`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <li className="py-2 px-4 hover:bg-slate-200 rounded-md">
-                        Defensive
-                      </li>
-                    </Link>
-                  </ul>
-                </div>
-              )} */}
           </li>
         </Link>
         <Link to={'/compete'} >
@@ -116,19 +106,19 @@ const Navbar = () => {
       </ul>
     </div>
     <div className="flex items-center">
-      <div className="cursor-pointer">
-        <HiOutlineMagnifyingGlass size={35} />
-      </div>
       <div className="mx-6 cursor-pointer">
         <IoMdNotificationsOutline size={35} />
       </div>
-      <div className="cursor-pointer border border-[#5de848] rounded-full hover:border-[#5de8487e]" onClick={toggleDropdown}>
+      <div className="flex items-center gap-3 cursor-pointer" onClick={toggleDropdown} ref={dropdownRef}>
+      <div className="border border-[#5de848] rounded-full" >
         <img
           className="p-2"
           src={`https://api.dicebear.com/7.x/initials/svg?size=25&seed=${username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100`}
           alt="profile"
         />
         {isDropdownOpen && <Dropdown />}
+      </div>
+      <FaAngleDown />
       </div>
     </div>
   </header>)

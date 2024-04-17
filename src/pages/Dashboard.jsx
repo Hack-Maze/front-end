@@ -13,15 +13,6 @@ const Dashboard = () => {
                         <p className="text-xl ">
                             Continue with the intro of Cyber Security paths
                         </p>
-                        {/* <div className="flex flex-col">
-                  <span className="text-sm">Your Progress : 70%</span>
-                  <div className="relative h-2 w-full bg-white rounded-lg mt-1">
-                    <div
-                      className="absolute top-0 left-0 h-full bg-red-500 rounded-lg"
-                      style={{ width: "70%" }}
-                    ></div>
-                  </div>
-                </div> */}
                     </div>
                     {Paths.map((path, index) => (
                         <Link

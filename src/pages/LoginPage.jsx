@@ -23,11 +23,15 @@ export const action = async ({ request }) => {
     const accessToken = response.data.access_token;
     localStorage.setItem('accessToken', accessToken);
     console.log("Access Token:", accessToken);
-    toast.success('Logging...');
     return redirect("/dashboard");
   } catch (error) {
-    toast.error(error.response.data.detail.toString());
-    return error;
+    if (error.response) {
+      toast.error(error.response.data.detail.toString());
+      return error;
+    } else {
+      toast.error(error.message);
+      return error;
+    }
   }
 };
 
