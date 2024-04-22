@@ -4,7 +4,6 @@ import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import ErrorPage from "./pages/Error/404";
-// import Roadmap from "./pages/Roadmap";
 import Layout from "./pages/Layout";
 import SharedAuth from "./pages/SharedAuth";
 import CaptchaPage from "./pages/CapthchaPage";
@@ -14,7 +13,7 @@ import { action as loginAction } from "./pages/LoginPage";
 import { action as registerAction } from "./pages/RegisterPage";
 import { action as resetAction } from "./pages/PassReset";
 import { action as recoveryAction } from "./pages/PassRecovery";
-// import { loader as homeLoader } from "./pages/Home";
+import { loader as homeLoader } from "./pages/Home";
 import Home from "./pages/Home";
 import Learn from "./pages/Learn";
 import Dashboard from "./pages/Dashboard";
@@ -69,7 +68,7 @@ const router = createBrowserRouter([
       },
       {
         element: <Home />,
-        // loader: homeLoader,
+        loader: homeLoader,
         children: [
           { path: "/dashboard", index: true, element: <Dashboard /> },
           { path: "/learn", element: <Learn /> },

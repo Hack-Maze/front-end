@@ -1,5 +1,3 @@
-// import { FaFireAlt } from "react-icons/fa";
-// import { CiTrophy } from "react-icons/ci";
 import { MdOutlineDashboard } from "react-icons/md";
 import { LuSwords } from "react-icons/lu";
 import { IoMdNotificationsOutline } from "react-icons/io";
@@ -8,12 +6,12 @@ import { FaAngleDown } from "react-icons/fa6";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Dropdown from "./Dropdown";
-// import { useHomeContext } from "@/pages/Home";
+import { useHomeContext } from "@/pages/Home";
 
 const Navbar = () => {
   const [activeItem, setActiveItem] = useState("");
-  // const { data } = useHomeContext();
-  // const username = data.full_name;
+  const { data } = useHomeContext();
+  const username = data.full_name;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
   const dropdownRef = useRef(null);
@@ -117,11 +115,11 @@ const Navbar = () => {
           ref={dropdownRef}
         >
           <div className="border border-[#5de848] rounded-full">
-            {/* <img
+            <img
               className="p-2"
               src={`https://api.dicebear.com/7.x/initials/svg?size=25&seed=${username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100`}
               alt="profile"
-            /> */}
+            />
             {isDropdownOpen && <Dropdown />}
           </div>
           <FaAngleDown />

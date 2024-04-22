@@ -11,60 +11,59 @@ import {
 } from "react-router-dom";
 import { createContext, useContext, useEffect } from "react";
 
-// const HomeContext = createContext();
+const HomeContext = createContext();
 
-// export const loader = async () => {
-//   const accessToken = localStorage.getItem('accessToken');
-//   try {
-//     const { data } = await customFetch.get('users/me', {
-//       headers: {
-//         Authorization: `Bearer ${accessToken}`
-//       }
-//     });
-//     return data;
-//   } catch (error) {
-//    return redirect('/login');
-//   }
-// }
+export const loader = async () => {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+    const { data } = await customFetch.get("users/me", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    return redirect("/login");
+  }
+};
 
 const Home = () => {
-  // const navigate = useNavigate();
-  // const data = useLoaderData();
+  const navigate = useNavigate();
+  const data = useLoaderData();
 
-  // useEffect(() => {
-  //   const checkUserToken = () => {
-  //     const userToken = localStorage.getItem('accessToken');
-  //     if (!userToken || userToken === 'undefined') {
-  //       navigate('/login');
-  //     }
-  //   };
+  useEffect(() => {
+    const checkUserToken = () => {
+      const userToken = localStorage.getItem("accessToken");
+      if (!userToken || userToken === "undefined") {
+        navigate("/login");
+      }
+    };
 
-  //   checkUserToken();
+    checkUserToken();
 
-  //   const handleStorageChange = () => {
-  //     checkUserToken();
-  //   };
+    const handleStorageChange = () => {
+      checkUserToken();
+    };
 
-  //   window.addEventListener('storage', handleStorageChange);
+    window.addEventListener("storage", handleStorageChange);
 
-  //   return () => {
-  //     window.removeEventListener('storage', handleStorageChange);
-  //   };
-  // }, [navigate]);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [navigate]);
 
   return (
-    // <HomeContext.Provider value={{ data }}>
-    <Background>
-      <>
-        <Navbar />
-        {/* {<Outlet context={{ data }} />} */}
-        {<Outlet />}
-        <Footer />
-      </>
-    </Background>
-    // </HomeContext.Provider>
+    <HomeContext.Provider value={{ data }}>
+      <Background>
+        <>
+          <Navbar />
+          {<Outlet context={{ data }} />}
+          <Footer />
+        </>
+      </Background>
+    </HomeContext.Provider>
   );
 };
 
-// export const useHomeContext = () => useContext(HomeContext);
+export const useHomeContext = () => useContext(HomeContext);
 export default Home;
