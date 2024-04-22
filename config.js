@@ -1,1 +1,1 @@
-window.VITE_API_URL='https://super-fiesta-v5r4r66rp4x3p9pr-8000.app.github.dev/'
+window.VITE_API_URL = "https://jh18cwmt-8000.euw.devtunnels.ms/";
