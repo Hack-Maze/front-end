@@ -66,9 +66,10 @@ const Learn = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {filteredLearns.slice(0, displayedLearns).map((learn, index) => (
-              <div
+              <Link
+                to={`/learn/${learn.title.toLowerCase().replace(/\s/g, "-")}`}
                 key={index}
-                className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md max-w-md shadow-box"
+                className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md max-w-md shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
               >
                 <img src={learn.img} alt="image" className="w-30" />
                 <h2 className="text-xl my-3 text-white font-semibold">
@@ -86,13 +87,7 @@ const Learn = () => {
                 >
                   {learn.level}
                 </p>
-                <Link
-                  to={`/learn/${learn.title.toLowerCase().replace(/\s/g, "-")}`}
-                  className="text-white py-2 px-4 border rounded-md mt-4 hover:bg-slate-800"
-                >
-                  Explore
-                </Link>
-              </div>
+              </Link>
             ))}
           </div>
         )}

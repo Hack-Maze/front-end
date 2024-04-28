@@ -12,7 +12,7 @@ import logo from "/logo.png";
 const Maze = () => {
   const { title, mazePage } = useParams();
   const [selectedSectionIndex, setSelectedSectionIndex] = useState(0);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [completedSections, setCompletedSections] = useState([]);
   const navigate = useNavigate();
 
@@ -44,6 +44,14 @@ const Maze = () => {
       selectedSectionIndex,
     ];
     setCompletedSections(updateCompletedSections);
+
+    if (selectedSectionIndex < sections.length - 1) {
+      const nextIndex = selectedSectionIndex + 1;
+      setSelectedSectionIndex(nextIndex);
+      navigate(
+        `/learn/${title}/${sections[nextIndex].title.replace(/\s/g, "-")}`
+      );
+    }
   };
 
   const sectionsList = sections.map((section, index) => (
@@ -94,7 +102,7 @@ const Maze = () => {
             <h1 className="text-3xl font-semibold mb-4">{section.title}</h1>
             <p className="text-gray-300">{section.desc}</p>
           </div>
-          <div className="w-[80%] px-5 py-6 rounded-md border border-[#81a77c94] flex flex-row justify-between">
+          <div className="w-[80%] px-5 py-6 rounded-md border border-[#81a77c94] flex flex-row justify-between shadow-box bg-[#0f20183f]">
             <div className="flex">
               {selectedSectionIndex > 0 && (
                 <button
@@ -108,15 +116,17 @@ const Maze = () => {
                 </button>
               )}
               <img src={logo} alt="logo" className="w-12" />
-              <button
-                className="capitalize border border-gray-400 py-2 px-8 text-lg rounded-md hover:bg-slate-800 ml-4 flex items-center"
-                onClick={handleNextBtn}
-              >
-                next
-                <span>
-                  <RxTrackNext size={20} className="ml-3" />
-                </span>
-              </button>
+              {selectedSectionIndex !== sections.length - 1 && (
+                <button
+                  className="capitalize border border-gray-400 py-2 px-8 text-lg rounded-md hover:bg-slate-800 ml-4 flex items-center"
+                  onClick={handleNextBtn}
+                >
+                  next
+                  <span>
+                    <RxTrackNext size={20} className="ml-3" />
+                  </span>
+                </button>
+              )}
             </div>
             {!completedSections.includes(selectedSectionIndex) && (
               <button
@@ -134,7 +144,7 @@ const Maze = () => {
         <div
           className={` border-2 ${
             isExpanded ? "h-full" : "h-[7vh]"
-          }  border-[#81a77c94] p-4 w-[35%] rounded-md shadow-xl `}
+          }  border-[#81a77c94] p-4 w-[35%] rounded-md shadow-box bg-[#0f20183f]`}
         >
           <div
             className="flex justify-between items-center mb-3 cursor-pointer"

@@ -48,7 +48,7 @@ const Explore = () => {
   return (
     <div className="w-[75vw] min-h-[85vh] m-auto my-10 text-white">
       <div key={course.id}>
-        <div className="border-2 border-[#81a77c94] p-4 pb-6 flex rounded-md justify-between items-center mb-10 shadow-xl">
+        <div className="border-2 border-[#81a77c94] p-4 pb-6 flex rounded-md justify-between items-center mb-10 shadow-box bg-[#0f20183f]">
           <div className="flex gap-5 items-center">
             <img src={course.img} alt={course.title} />
             <div className="w-[50%]">
@@ -86,7 +86,7 @@ const Explore = () => {
               {formattedSummary}
             </div>
           </div>
-          <div className="border-2 border-[#81a77c94] p-8  w-[80%] rounded-md shadow-xl">
+          <div className="border-2 border-[#81a77c94] p-8  w-[80%] rounded-md shadow-box bg-[#0f20183f]">
             <div className="flex">
               <GiMaze size={30} />
 
@@ -109,9 +109,10 @@ const Explore = () => {
               </p>
             </div>
             {recommendedMazes.map((maze) => (
-              <div
+              <Link
+                to={`/learn/${maze.title.toLowerCase().replace(/\s/g, "-")}`}
                 key={maze.id}
-                className="border-2 border-[#81a77c94] p-4 pb-6 flex rounded-lg justify-between items-center mb-10 shadow-xl"
+                className="border-2 border-[#81a77c94] p-4 pb-6 flex rounded-lg justify-between items-center mb-10 shadow-box bg-[#0f20183f] hover:border-[#5de84844] transition duration-300 ease-in-out"
               >
                 <div className="flex gap-5 items-center">
                   <img src={maze.img} alt={maze.title} />
@@ -130,16 +131,8 @@ const Explore = () => {
                   >
                     {maze.level}
                   </p>
-                  <Link
-                    to={`/learn/${maze.title
-                      .toLowerCase()
-                      .replace(/\s/g, "-")}`}
-                    className="border py-1 px-10 text-lg font-semibold rounded-md hover:bg-slate-800"
-                  >
-                    Explore
-                  </Link>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

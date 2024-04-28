@@ -14,6 +14,7 @@
     "@marsidev/react-turnstile": "^0.5.3",
     "@reduxjs/toolkit": "^2.2.1",
     "@tanstack/react-query": "^5.28.4",
+    "@uiw/react-heat-map": "^2.2.2",
     "axios": "^1.6.7",
     "chart.js": "^4.4.1",
     "dompurify": "^3.0.6",

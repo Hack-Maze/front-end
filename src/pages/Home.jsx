@@ -58,9 +58,11 @@ const Home = () => {
         <>
           <Navbar />
           {<Outlet context={{ data }} />}
+          {/* {<Outlet />} */}
           <Footer />
         </>
       </Background>
+      //{" "}
     </HomeContext.Provider>
   );
 };

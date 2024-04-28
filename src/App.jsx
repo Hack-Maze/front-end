@@ -4,6 +4,7 @@ import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import ErrorPage from "./pages/Error/404";
+// import Roadmap from "./pages/Roadmap";
 import Layout from "./pages/Layout";
 import SharedAuth from "./pages/SharedAuth";
 import CaptchaPage from "./pages/CapthchaPage";
@@ -19,6 +20,7 @@ import Learn from "./pages/Learn";
 import Dashboard from "./pages/Dashboard";
 import Explore from "./pages/Explore";
 import Maze from "./pages/Maze";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,6 +76,7 @@ const router = createBrowserRouter([
           { path: "/learn", element: <Learn /> },
           { path: "/learn/:title", element: <Explore /> },
           { path: "/learn/:title/:mazePage", element: <Maze /> },
+          { path: "/profile", element: <Profile /> },
         ],
       },
     ],
