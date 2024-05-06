@@ -7,43 +7,30 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import SubmitBtn from "@/components/SubmitBtn";
 
-
-
-
 export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  console.log(data);
+  const password = data.password;
+  if (password.length < 8) {
+    toast.error("Password should be at least 8 characters long.");
+    return null;
+  }
+
   try {
-    const formData = await request.formData();
-    const data = Object.fromEntries(formData);
-    console.log(data);
-
-    const password = data.password;
-    if (password.length < 8) {
-      throw new Error("Password should be at least 8 characters long.");
-    }
-
     await customFetch.post(`signup`, data, {
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    toast.success('Registration success.');
+    toast.success("Registeration success.");
     return redirect("/login");
-
   } catch (error) {
-    console.error('Registration failed:', error);
-
-    // Check if the error is CORS-related
-    if (error.message.includes('CORS')) {
-      toast.error('Failed to connect to the server. Please try again later.');
-    } else if (error.response && error.response.data && error.response.data.detail) {
-      toast.error(error.response.data.detail.toString());
-    } else {
-      toast.error('Registration failed. Please try again later.');
-    }
+    toast.error(error.response.data.detail.toString());
+    return error;
   }
 };
-
 
 const RegisterPage = () => {
   return (
@@ -76,20 +63,23 @@ const RegisterPage = () => {
                 text="Username"
                 name="full_name"
                 type="text"
+                placeholder="Full Name"
               />
 
               <FormRow
                 text="Email"
                 name="email"
                 type="email"
+                placeholder="Your Email"
               />
               <FormRow
                 text="Password"
                 name="password"
                 type="password"
+                placeholder="Your Password"
               />
 
-              <SubmitBtn text={'Continue'}/>
+              <SubmitBtn text={"Continue"} />
               <div className="flex items-center my-4 w-[80%] mx-auto">
                 <hr className="flex-grow border-gray-500" />
                 <div className="mx-4 text-gray-500 text-lg uppercase">or</div>

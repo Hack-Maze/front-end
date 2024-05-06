@@ -16,6 +16,12 @@ const Dropdown = () => {
       >
         Profile
       </Link>
+      <Link
+        to={"/editProfile"}
+        className="block w-full text-center px-4 py-2 text-gray-800 hover:bg-gray-200"
+      >
+        Edit Profile
+      </Link>
       <button
         type="button"
         className="block w-full text-center px-4 py-2 text-gray-800 hover:bg-gray-200"

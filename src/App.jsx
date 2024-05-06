@@ -21,6 +21,7 @@ import Dashboard from "./pages/Dashboard";
 import Explore from "./pages/Explore";
 import Maze from "./pages/Maze";
 import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -77,6 +78,7 @@ const router = createBrowserRouter([
           { path: "/learn/:title", element: <Explore /> },
           { path: "/learn/:title/:mazePage", element: <Maze /> },
           { path: "/profile", element: <Profile /> },
+          { path: "/editProfile", element: <EditProfile /> },
         ],
       },
     ],
