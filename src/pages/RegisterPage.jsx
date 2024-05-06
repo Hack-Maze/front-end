@@ -11,30 +11,39 @@ import SubmitBtn from "@/components/SubmitBtn";
 
 
 export const action = async ({ request }) => {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  console.log(data);
-  const password = data.password;
-  if (password.length < 8) {
-    toast.error("Password should be at least 8 characters long.");
-    return null;
-  }
-
   try {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+    console.log(data);
+
+    const password = data.password;
+    if (password.length < 8) {
+      throw new Error("Password should be at least 8 characters long.");
+    }
+
     await customFetch.post(`signup`, data, {
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    toast.success('Registeration success.')
+    toast.success('Registration success.');
     return redirect("/login");
 
   } catch (error) {
-    toast.error(error.response.data.detail.toString());
-    return error;
+    console.error('Registration failed:', error);
+
+    // Check if the error is CORS-related
+    if (error.message.includes('CORS')) {
+      toast.error('Failed to connect to the server. Please try again later.');
+    } else if (error.response && error.response.data && error.response.data.detail) {
+      toast.error(error.response.data.detail.toString());
+    } else {
+      toast.error('Registration failed. Please try again later.');
+    }
   }
 };
+
 
 const RegisterPage = () => {
   return (

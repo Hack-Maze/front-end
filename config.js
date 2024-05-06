@@ -1,1 +1,1 @@
-window.VITE_API_URL = "https://jh18cwmt-8000.euw.devtunnels.ms/";
+window.VITE_API_URL = "http://hackmazevps.uksouth.cloudapp.azure.com:8000/";

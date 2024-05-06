@@ -12,26 +12,25 @@ import { toast } from "sonner";
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const modifiedData = { ...data, username: data.email };
-  delete modifiedData.email;
+  console.log(data);
+  const password = data.password;
+  if (password.length < 8) {
+    toast.error("Password should be at least 8 characters long.");
+    return null;
+  }
+
   try {
-    const response = await customFetch.post(`login/access-token`, modifiedData, {
+    await customFetch.post(`signup`, data, {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
       },
     });
-    const accessToken = response.data.access_token;
-    localStorage.setItem('accessToken', accessToken);
-    console.log("Access Token:", accessToken);
-    return redirect("/dashboard");
+
+    toast.success("Registeration success.");
+    return redirect("/login");
   } catch (error) {
-    if (error.response) {
-      toast.error(error.response.data.detail.toString());
-      return error;
-    } else {
-      toast.error(error.message);
-      return error;
-    }
+    toast.error(error.response.data.detail.toString());
+    return error;
   }
 };
 
