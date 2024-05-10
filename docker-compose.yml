@@ -10,6 +10,8 @@ services:
     image: mostafaewida/hackmaze_backend:latest
     depends_on:
       - db
+    volumes:
+    - ./files:/app/files
 
   frontend:
     build:
