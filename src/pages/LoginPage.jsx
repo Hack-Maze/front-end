@@ -7,21 +7,23 @@ import { motion } from "framer-motion";
 import SubmitBtn from "@/components/SubmitBtn";
 import { toast } from "sonner";
 
-
-
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   const modifiedData = { ...data, username: data.email };
   delete modifiedData.email;
   try {
-    const response = await customFetch.post(`login/access-token`, modifiedData, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    });
+    const response = await customFetch.post(
+      `login/access-token`,
+      modifiedData,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
     const accessToken = response.data.access_token;
-    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem("accessToken", accessToken);
     console.log("Access Token:", accessToken);
     return redirect("/dashboard");
   } catch (error) {
@@ -69,11 +71,13 @@ const LoginPage = () => {
                 text="Email"
                 name="email"
                 type="email"
+                placeholder="Your email address"
               />
               <FormRow
                 text="Password"
                 name="password"
                 type="password"
+                placeholder="Your Password"
               />
               <div className="md:text-sm text-xs">
                 <Link
@@ -83,7 +87,7 @@ const LoginPage = () => {
                   Forgot Your Password?
                 </Link>
               </div>
-              <SubmitBtn text={'Continue'}/>
+              <SubmitBtn text={"Continue"} />
               <div className="flex items-center my-4 w-[80%] mx-auto">
                 <hr className="flex-grow border-gray-500" />
                 <div className="mx-4 text-gray-500 text-lg uppercase">or</div>

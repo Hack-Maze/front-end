@@ -7,9 +7,6 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import SubmitBtn from "@/components/SubmitBtn";
 
-
-
-
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
@@ -27,9 +24,8 @@ export const action = async ({ request }) => {
       },
     });
 
-    toast.success('Registeration success.')
+    toast.success("Registeration success.");
     return redirect("/login");
-
   } catch (error) {
     toast.error(error.response.data.detail.toString());
     return error;
@@ -67,20 +63,23 @@ const RegisterPage = () => {
                 text="Username"
                 name="full_name"
                 type="text"
+                placeholder="Full Name"
               />
 
               <FormRow
                 text="Email"
                 name="email"
                 type="email"
+                placeholder="Your Email"
               />
               <FormRow
                 text="Password"
                 name="password"
                 type="password"
+                placeholder="Your Password"
               />
 
-              <SubmitBtn text={'Continue'}/>
+              <SubmitBtn text={"Continue"} />
               <div className="flex items-center my-4 w-[80%] mx-auto">
                 <hr className="flex-grow border-gray-500" />
                 <div className="mx-4 text-gray-500 text-lg uppercase">or</div>

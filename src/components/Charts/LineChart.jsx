@@ -5,10 +5,18 @@ const LinearChart = () => {
   const chartRef = useRef(null);
 
   const data = {
-    labels: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"],
+    labels: [
+      "Saturday",
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+    ],
     datasets: [
       {
-        label: "solved this week",
+        label: "solved",
         data: Array.from({ length: 7 }, () => Math.floor(Math.random() * 100)),
         borderColor: "#5de848",
         backgroundColor: "transparent",
@@ -33,6 +41,7 @@ const LinearChart = () => {
         type: "line",
         data: data,
         options: {
+          maintainAspectRatio: false,
           plugins: {
             legend: {
               labels: {
@@ -81,7 +90,7 @@ const LinearChart = () => {
     };
   }, [data]);
 
-  return <canvas ref={chartRef} height={300} />;
+  return <canvas ref={chartRef} />;
 };
 
 export default LinearChart;

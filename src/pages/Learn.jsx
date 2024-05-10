@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { learns } from "@/static/data";
 import { Link } from "react-router-dom";
+import learnImg from "/Learn.png";
+import { FaPlus } from "react-icons/fa6";
 
 const Learn = () => {
   const [filter, setFilter] = useState("All");
@@ -36,6 +38,29 @@ const Learn = () => {
 
   return (
     <div className="w-[80%] m-auto my-10 min-h-[75vh]">
+      <div className="flex justify-between items-center my-5">
+        <p className="text-xl text-gray-400 w-[50%] leading-9">
+          Explore our engaging content featuring interactive exercises inspired
+          by real-world scenarios. From hacking machines to investigating
+          attacks, we provide comprehensive coverage to sharpen your skills.
+        </p>
+        <img src={learnImg} alt="learn" className="h-[20vh]" />
+      </div>
+      <div className="flex justify-between my-10">
+        <div className="flex flex-col">
+          <h2 className="capitalize text-xl mb-2 text-white">learning mazes</h2>
+          <p className="text-gray-400">
+            Work your way through a structured learning maze.
+          </p>
+        </div>
+        <Link
+          to={"/learn/createMaze"}
+          className="h-fit flex gap-4 p-3 text-[#5EE848] border border-[#5EE848] rounded-md items-center font-medium hover:bg-[#5de84817]"
+        >
+          <FaPlus />
+          Create your maze
+        </Link>
+      </div>
       <div className="flex justify-between">
         <input
           type="text"

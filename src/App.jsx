@@ -1,10 +1,9 @@
 // App.js
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import ErrorPage from "./pages/Error/404";
-// import Roadmap from "./pages/Roadmap";
 import Layout from "./pages/Layout";
 import SharedAuth from "./pages/SharedAuth";
 import CaptchaPage from "./pages/CapthchaPage";
@@ -21,6 +20,12 @@ import Dashboard from "./pages/Dashboard";
 import Explore from "./pages/Explore";
 import Maze from "./pages/Maze";
 import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
+import CreateMaze from "./pages/CreateMaze";
+import CreateMazeContent from "./pages/CreateMazeContent";
+import MazePreview from "./pages/MazePreview";
+import MazeSuccess from "./pages/MazeSuccess";
+import Leaderboard from "./pages/Leaderboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -73,10 +78,27 @@ const router = createBrowserRouter([
         loader: homeLoader,
         children: [
           { path: "/dashboard", index: true, element: <Dashboard /> },
-          { path: "/learn", element: <Learn /> },
-          { path: "/learn/:title", element: <Explore /> },
-          { path: "/learn/:title/:mazePage", element: <Maze /> },
+          { path: "/leaderboard", index: true, element: <Leaderboard /> },
+
+          {
+            path: "/learn",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <Learn /> },
+              { path: "/learn/:title", element: <Explore /> },
+              { path: "/learn/:title/:mazePage", element: <Maze /> },
+              { path: "/learn/createMaze", element: <CreateMaze /> },
+              {
+                path: "/learn/createMaze/content",
+                element: <CreateMazeContent />,
+              },
+              { path: "/learn/createMaze/preview", element: <MazePreview /> },
+              { path: "/learn/createMaze/success", element: <MazeSuccess /> },
+            ],
+          },
           { path: "/profile", element: <Profile /> },
+          { path: "/editProfile", element: <EditProfile /> },
+          ,
         ],
       },
     ],
