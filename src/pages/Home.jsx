@@ -1,5 +1,5 @@
 import Background from "../components/Background/Background";
-// import customFetch from "../../utils/CustomFetsh";
+import customFetch from "../../utils/CustomFetsh";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {

@@ -17,7 +17,7 @@ services:
     build:
       context: .
     ports:
-      - "80:80"
+      - "4040:80"
     volumes:
       - ./config.js:/usr/share/nginx/html/config.js
 
