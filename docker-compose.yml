@@ -1,33 +1,34 @@
-version: "3.8"
-
 services:
   backend:
     restart: always
     env_file:
       - .env
     ports:
-      - "8000:80"
-    image: mostafaewida/hackmaze_backend:latest
+      - "4444:4444"
+    image: mostafaewida/hackmaze_backend_spring:latest
     depends_on:
       - db
-    volumes:
-    - ./files:/app/files
 
   frontend:
     build:
       context: .
     ports:
-      - "4040:80"
+      - "80:80"
     volumes:
       - ./config.js:/usr/share/nginx/html/config.js
 
   db:
-    image: postgres:12
+    image: postgres:16
     restart: always
     env_file:
       - .env
     ports:
       - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
