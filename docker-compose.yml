@@ -6,6 +6,8 @@ services:
     ports:
       - "4444:4444"
     image: mostafaewida/hackmaze_backend_spring:latest
+      - "4444:4444"
+    image: mostafaewida/hackmaze_backend_spring:latest
     depends_on:
       - db
 
@@ -18,6 +20,7 @@ services:
       - ./config.js:/usr/share/nginx/html/config.js
 
   db:
+    image: postgres:16
     image: postgres:16
     restart: always
     env_file:
