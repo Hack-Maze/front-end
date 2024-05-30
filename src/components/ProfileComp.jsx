@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaLinkedin } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import { PiArrowSquareOut } from "react-icons/pi";
+import customFetch from "../../utils/CustomFetsh";
+// import { useHomeContext } from "@/pages/Home";
 
 const ProfileComp = () => {
+  const [profileData, setProfileData] = useState([]);
+  // const { data } = useHomeContext();
+  console.log(data.id);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await customFetch("profile", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response.data);
+        setProfileData(response.data);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
   return (
     <div className="flex justify-between">
       <div className="flex flex-col items-start w-[50%]">

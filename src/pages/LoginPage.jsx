@@ -10,25 +10,21 @@ import { toast } from "sonner";
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const modifiedData = { ...data, username: data.email };
-  delete modifiedData.email;
+
   try {
-    const response = await customFetch.post(
-      `login/access-token`,
-      modifiedData,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
-    const accessToken = response.data.access_token;
+    const response = await customFetch.post(`auth/login`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Response:", response);
+    const accessToken = response.data.token;
     localStorage.setItem("accessToken", accessToken);
     console.log("Access Token:", accessToken);
     return redirect("/dashboard");
   } catch (error) {
     if (error.response) {
-      toast.error(error.response.data.detail.toString());
+      toast.error(error.response.data.toString());
       return error;
     } else {
       toast.error(error.message);
@@ -128,5 +124,6 @@ const LoginPage = () => {
     </div>
   );
 };
+// This motion.div fades in and moves up over 0.7s after a 1s delay.
 
 export default LoginPage;

@@ -47,7 +47,7 @@ const Dashboard = () => {
               </h2>
             </div>
             <div className="flex flex-col gap-5 items-center justify-center h-[50vh]">
-              <PiCoffeeLight size={150} color="#928e8eb2" />
+              <PiCoffeeLight size={120} color="#928e8eb2" />
               <h3 className="text-xl text-gray-200">
                 It's time to kickstart your journey.
               </h3>

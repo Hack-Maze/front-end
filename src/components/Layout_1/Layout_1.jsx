@@ -51,8 +51,8 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
     <>
       <div className="flex flex-col text-white">
         <div
-          className={`border bg-[#0f20183f] px-5 py-4 pb-10 mb-6 shadow-box w-[300px] border-[#5874593a] rounded-md transition-height duration-300${
-            isCard2Open ? "h-[300px]" : "overflow-hidden h-0"
+          className={`border bg-[#0f20183f] px-5 py-4 pb-10 mb-6 shadow-box w-[350px] border-[#5874593a] rounded-md transition-height duration-300 ${
+            isCard2Open ? "h-[400px]" : "overflow-hidden h-0"
           }`}
         >
           <div onClick={handleSkillsToggle} className="cursor-pointer pb-2">
@@ -66,7 +66,7 @@ const Layout_1 = ({ freinds = true, box_1_title, box_2_title, button }) => {
           {isCard2Open && shouldRenderCards.card2 && <ProgressChart />}
         </div>
         <div
-          className={`border bg-[#0f20183f] px-5 py-4 my-6 shadow-box w-[300px] border-[#5874593a] rounded-md transition-height duration-300 ${
+          className={`border bg-[#0f20183f] px-5 py-4 my-6 shadow-box w-[350px] border-[#5874593a] rounded-md transition-height duration-300 ${
             isCard1Open ? "h-[400px]" : "overflow-hidden h-0 pb-10"
           }`}
         >

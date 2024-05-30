@@ -1,13 +1,34 @@
-import React, { useState } from "react";
-import { learns } from "@/static/data";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import learnImg from "/Learn.png";
 import { FaPlus } from "react-icons/fa6";
+import customFetch from "../../utils/CustomFetsh";
 
 const Learn = () => {
   const [filter, setFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
-  const [displayedLearns, setDisplayedLearns] = useState(6);
+  const [displayedRooms, setDisplayedRooms] = useState(6);
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    const fetchRooms = async () => {
+      try {
+        const response = await customFetch(`maze`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        console.log(response.data);
+        setRooms(response.data);
+      } catch (error) {
+        console.error("Error fetching rooms:", error);
+      }
+    };
+
+    fetchRooms();
+  }, []);
 
   const handleFilterChange = (filterValue) => {
     setFilter(filterValue);
@@ -24,16 +45,15 @@ const Learn = () => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredLearns = learns.filter((learn) => {
+  const filteredRooms = rooms.filter((room) => {
     return (
-      (filter === "All" ||
-        learn.level.toLowerCase() === filter.toLowerCase()) &&
-      learn.title.toLowerCase().includes(searchTerm.toLowerCase())
+      (filter === "All" || room.level.toLowerCase() === filter.toLowerCase()) &&
+      room.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
   const loadMoreItems = () => {
-    setDisplayedLearns((prev) => prev + 6);
+    setDisplayedRooms((prev) => prev + 6);
   };
 
   return (
@@ -86,37 +106,37 @@ const Learn = () => {
         </div>
       </div>
       <div className="mt-10 w-[70%] m-auto">
-        {filteredLearns.length === 0 ? (
+        {filteredRooms.length === 0 ? (
           <div className="text-white text-center">No results found.</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {filteredLearns.slice(0, displayedLearns).map((learn, index) => (
+            {filteredRooms.slice(0, displayedRooms).map((room) => (
               <Link
-                to={`/learn/${learn.title.toLowerCase().replace(/\s/g, "-")}`}
-                key={index}
+                to={`/learn/${room.title.toLowerCase().replace(/\s/g, "-")}`}
+                key={room.id}
                 className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md max-w-md shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
               >
-                <img src={learn.img} alt="image" className="w-30" />
+                <img src={room.img} alt="image" className="w-30" />
                 <h2 className="text-xl my-3 text-white font-semibold">
-                  {learn.title}
+                  {room.title}
                 </h2>
                 <p className="text-gray-400 px-3 text-sm leading-7">
-                  {learn.desc.length > 130
-                    ? `${learn.desc.substring(0, 130)}...`
-                    : learn.desc}
+                  {room.description.length > 130
+                    ? `${room.description.substring(0, 130)}...`
+                    : room.description}
                 </p>
                 <p
                   className={`p-2 font-bold capitalize my-4 rounded-md tracking-wider ${
-                    levelColors[learn.level.toLowerCase()].color
-                  } ${levelColors[learn.level.toLowerCase()].bgColor}`}
+                    levelColors[room.level.toLowerCase()].color
+                  } ${levelColors[room.level.toLowerCase()].bgColor}`}
                 >
-                  {learn.level}
+                  {room.level}
                 </p>
               </Link>
             ))}
           </div>
         )}
-        {filteredLearns.length > displayedLearns && (
+        {filteredRooms.length > displayedRooms && (
           <div className="flex justify-center mt-4">
             <button
               className="text-white font-bold py-2 px-4 rounded mt-3 underline"

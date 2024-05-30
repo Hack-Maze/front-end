@@ -1,5 +1,5 @@
 import Background from "../components/Background/Background";
-// import customFetch from "../../utils/CustomFetsh";
+import customFetch from "../../utils/CustomFetsh";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
@@ -9,27 +9,28 @@ import {
   useNavigate,
   useNavigation,
 } from "react-router-dom";
-import { createContext, useContext, useEffect } from "react";
+// import { createContext, useContext, useEffect } from "react";
+import { useEffect } from "react";
 
-const HomeContext = createContext();
+// const HomeContext = createContext();
 
-export const loader = async () => {
-  const accessToken = localStorage.getItem("accessToken");
-  try {
-    const { data } = await customFetch.get("users/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return data;
-  } catch (error) {
-    return redirect("/login");
-  }
-};
+// export const loader = async () => {
+//   const accessToken = localStorage.getItem("accessToken");
+//   try {
+//     const { data } = await customFetch.get("users/me", {
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+//     return data;
+//   } catch (error) {
+//     return redirect("/login");
+//   }
+// };
 
 const Home = () => {
   const navigate = useNavigate();
-  const data = useLoaderData();
+  // const data = useLoaderData();
 
   useEffect(() => {
     const checkUserToken = () => {
@@ -53,18 +54,18 @@ const Home = () => {
   }, [navigate]);
 
   return (
-    <HomeContext.Provider value={{ data }}>
-      <Background>
-        <>
-          <Navbar />
-          {<Outlet context={{ data }} />}
-          {/* {<Outlet />} */}
-          <Footer />
-        </>
-      </Background>
-    </HomeContext.Provider>
+    // <HomeContext.Provider value={{ data }}>
+    <Background>
+      <>
+        <Navbar />
+        {/* {<Outlet context={{ data }} />} */}
+        {<Outlet />}
+        <Footer />
+      </>
+    </Background>
+    //  </HomeContext.Provider>
   );
 };
 
-export const useHomeContext = () => useContext(HomeContext);
+// export const useHomeContext = () => useContext(HomeContext);
 export default Home;

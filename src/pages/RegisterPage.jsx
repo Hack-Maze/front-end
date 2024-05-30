@@ -18,7 +18,7 @@ export const action = async ({ request }) => {
   }
 
   try {
-    await customFetch.post(`signup`, data, {
+    await customFetch.post(`auth/register`, data, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -27,7 +27,7 @@ export const action = async ({ request }) => {
     toast.success("Registeration success.");
     return redirect("/login");
   } catch (error) {
-    toast.error(error.response.data.detail.toString());
+    toast.error(error.response.data.toString());
     return error;
   }
 };
@@ -61,7 +61,7 @@ const RegisterPage = () => {
             <Form method="post">
               <FormRow
                 text="Username"
-                name="full_name"
+                name="username"
                 type="text"
                 placeholder="Full Name"
               />
