@@ -17,10 +17,10 @@ export const action = async ({ request }) => {
         "Content-Type": "application/json",
       },
     });
-    console.log("Response:", response);
-    const accessToken = response.data.token;
-    localStorage.setItem("accessToken", accessToken);
-    console.log("Access Token:", accessToken);
+    const { token, role, username } = response.data;
+    localStorage.setItem("accessToken", token);
+    localStorage.setItem("username", username);
+    localStorage.setItem("role", role);
     return redirect("/dashboard");
   } catch (error) {
     if (error.response) {

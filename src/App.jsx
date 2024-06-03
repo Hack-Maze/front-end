@@ -13,7 +13,8 @@ import { action as loginAction } from "./pages/LoginPage";
 import { action as registerAction } from "./pages/RegisterPage";
 import { action as resetAction } from "./pages/PassReset";
 import { action as recoveryAction } from "./pages/PassRecovery";
-// import { loader as homeLoader } from "./pages/Home";
+import { loader as homeLoader } from "./pages/Home";
+import { action as profileAction } from "./pages/EditProfile";
 import Home from "./pages/Home";
 import Learn from "./pages/Learn";
 import Dashboard from "./pages/Dashboard";
@@ -23,7 +24,6 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import CreateMaze from "./pages/CreateMaze";
 import CreateMazeContent from "./pages/CreateMazeContent";
-import MazePreview from "./pages/MazePreview";
 import MazeSuccess from "./pages/MazeSuccess";
 import Leaderboard from "./pages/Leaderboard";
 
@@ -75,7 +75,7 @@ const router = createBrowserRouter([
       },
       {
         element: <Home />,
-        // loader: homeLoader,
+        loader: homeLoader,
         children: [
           { path: "/dashboard", index: true, element: <Dashboard /> },
           { path: "/leaderboard", index: true, element: <Leaderboard /> },
@@ -85,19 +85,25 @@ const router = createBrowserRouter([
             element: <Outlet />,
             children: [
               { index: true, element: <Learn /> },
-              { path: "/learn/:title", element: <Explore /> },
-              { path: "/learn/:title/:mazePage", element: <Maze /> },
-              { path: "/learn/createMaze", element: <CreateMaze /> },
+              { path: "/learn/:mazeId/:title", element: <Explore /> },
+              { path: "/learn/:mazeId/:title/:mazePage", element: <Maze /> },
+              {
+                path: "/learn/createMaze",
+                element: <CreateMaze />,
+              },
               {
                 path: "/learn/createMaze/content",
                 element: <CreateMazeContent />,
               },
-              { path: "/learn/createMaze/preview", element: <MazePreview /> },
               { path: "/learn/createMaze/success", element: <MazeSuccess /> },
             ],
           },
           { path: "/profile", element: <Profile /> },
-          { path: "/editProfile", element: <EditProfile /> },
+          {
+            path: "/editProfile",
+            element: <EditProfile />,
+            action: profileAction,
+          },
           ,
         ],
       },

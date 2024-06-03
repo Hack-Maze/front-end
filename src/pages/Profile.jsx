@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { CgProfile } from "react-icons/cg";
 import SolvedChallenges from "@/components/SolvedChallenges";
 import CreatedChallenges from "@/components/CreatedChallenges";
 import Activity from "@/components/Activity";
 import ProfileComp from "@/components/ProfileComp";
 
+import { useHomeContext } from "@/pages/Home";
+
 const Profile = () => {
   const [activeItem, setActiveItem] = useState("profile");
+  const { data } = useHomeContext();
   const handleItemClick = (item) => {
     setActiveItem(item);
   };
@@ -14,14 +16,24 @@ const Profile = () => {
     <div className="text-white w-[80%] m-auto my-10 min-h-[75vh]">
       <div className="flex flex-col justify-center items-center gap-16">
         <div className="flex flex-col gap-5 items-center text-center w-[40%]">
-          <CgProfile size={100} />
-          <h2 className="text-xl font-semibold">Hack Maze</h2>
-          <p className="text-gray-300">
+          <div className="border border-[#5de848] rounded-full w-40 h-40">
+            {!data.image ? (
+              <img className="w-40 h-40" src={`${data.image}`} alt="profile" />
+            ) : (
+              <img
+                className="w-40 h-40"
+                src={`https://api.dicebear.com/7.x/initials/svg?size=25&seed=${data.username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=50&fontWeight=100`}
+                alt="profile"
+              />
+            )}
+          </div>
+          <h2 className="text-2xl font-semibold capitalize">{data.username}</h2>
+          {/* <p className="text-gray-300">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil
             possimus et molestiae aperiam magnam itaque eligendi odit, vel
             reprehenderit error.
           </p>
-          <span className="text-sm">Joined March 2024</span>
+          <span className="text-sm">Joined March 2024</span> */}
         </div>
         <ul className="flex gap-8 text-2xl">
           <li

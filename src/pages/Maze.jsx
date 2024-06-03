@@ -8,34 +8,67 @@ import { RxTrackNext } from "react-icons/rx";
 import { RxTrackPrevious } from "react-icons/rx";
 
 import logo from "/logo.png";
+import customFetch from "../../utils/CustomFetsh";
+import { toast } from "sonner";
+import LoadingItem from "@/components/LoadingItem";
 
 const Maze = () => {
-  const { title, mazePage } = useParams();
+  const { mazeId, title, mazePage } = useParams();
   const [selectedSectionIndex, setSelectedSectionIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(true);
   const [completedSections, setCompletedSections] = useState([]);
+  const [mazeData, setMazeData] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    const fetchMazeData = async () => {
+      try {
+        const response = await customFetch.get(`page/maze/${mazeId}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (response.status === 200) {
+          setMazeData(response.data);
+          console.log(response.data);
+        } else {
+          toast.error("Error fetching maze data");
+        }
+      } catch (error) {
+        console.log("Error fetching maze data:", error);
+      }
+    };
+
+    fetchMazeData();
+  }, [mazeId]);
+
+  useEffect(() => {
+    if (mazeData) {
+      const foundIndex = mazeData.findIndex(
+        (page) => page.title.toLowerCase().replace(/\s/g, "-") === mazePage
+      );
+      setSelectedSectionIndex((prevIndex) =>
+        foundIndex !== -1 ? foundIndex : prevIndex
+      );
+    }
+  }, [mazeData, mazePage]);
+
+  if (!mazeData) {
+    return (
+      <div className="text-center">
+        <LoadingItem />
+      </div>
+    );
+  }
 
   const formattedTitle = title.replace(/-/g, " ");
 
-  const sections =
-    learns.find((learn) => learn.title.toLowerCase() === formattedTitle)
-      ?.sections || [];
-
-  const section = sections[selectedSectionIndex];
-
-  useEffect(() => {
-    const foundIndex = sections.findIndex(
-      (section) => section.title.toLowerCase().replace(/\s/g, "-") === mazePage
-    );
-    setSelectedSectionIndex((prevIndex) => {
-      return foundIndex !== -1 ? foundIndex : prevIndex;
-    });
-  }, [mazePage, sections]);
+  const section = mazeData[selectedSectionIndex];
 
   const handleSectionClick = (index) => {
     setSelectedSectionIndex(index);
-    navigate(`/learn/${title}/${sections[index].title.replace(/\s/g, "-")}`);
+    navigate(
+      `/learn/${mazeId}/${title}/${mazeData[index].title.replace(/\s/g, "-")}`
+    );
   };
 
   const handleComplete = () => {
@@ -45,16 +78,19 @@ const Maze = () => {
     ];
     setCompletedSections(updateCompletedSections);
 
-    if (selectedSectionIndex < sections.length - 1) {
+    if (selectedSectionIndex < mazeData.length - 1) {
       const nextIndex = selectedSectionIndex + 1;
       setSelectedSectionIndex(nextIndex);
       navigate(
-        `/learn/${title}/${sections[nextIndex].title.replace(/\s/g, "-")}`
+        `/learn/${mazeId}/${title}/${mazeData[nextIndex].title.replace(
+          /\s/g,
+          "-"
+        )}`
       );
     }
   };
 
-  const sectionsList = sections.map((section, index) => (
+  const sectionsList = mazeData.map((page, index) => (
     <li
       key={index}
       className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md cursor-pointer flex items-center justify-between ${
@@ -62,24 +98,27 @@ const Maze = () => {
       }`}
       onClick={() => handleSectionClick(index)}
     >
-      {section.title}
+      {page.title}
       {completedSections.includes(index) && (
         <IoCheckmarkCircleOutline className="text-[#5EE848] ml-2" size={20} />
       )}
     </li>
   ));
+  console.log(sectionsList);
 
   const toggleTableOfContents = () => {
     setIsExpanded(!isExpanded);
   };
 
   const handleNextBtn = () => {
-    console.log("Next button clicked");
-    if (selectedSectionIndex < sections.length - 1) {
+    if (selectedSectionIndex < mazeData.length - 1) {
       const nextIndex = selectedSectionIndex + 1;
       setSelectedSectionIndex(nextIndex);
       navigate(
-        `/learn/${title}/${sections[nextIndex].title.replace(/\s/g, "-")}`
+        `/learn/${mazeId}/${title}/${mazeData[nextIndex].title.replace(
+          /\s/g,
+          "-"
+        )}`
       );
     }
   };
@@ -89,7 +128,10 @@ const Maze = () => {
       const previousIndex = selectedSectionIndex - 1;
       setSelectedSectionIndex(previousIndex);
       navigate(
-        `/learn/${title}/${sections[previousIndex].title.replace(/\s/g, "-")}`
+        `/learn/${mazeId}/${title}/${mazeData[previousIndex].title.replace(
+          /\s/g,
+          "-"
+        )}`
       );
     }
   };
@@ -100,7 +142,7 @@ const Maze = () => {
         <div className="w-full flex flex-col justify-between">
           <div className="w-[80%] leading-9 min-h-[70vh]">
             <h1 className="text-3xl font-semibold mb-4">{section.title}</h1>
-            <p className="text-gray-300">{section.desc}</p>
+            <p className="text-gray-300">{section.content}</p>
           </div>
           <div className="w-[80%] px-5 py-6 rounded-md border border-[#81a77c94] flex flex-row justify-between shadow-box bg-[#0f20183f]">
             <div className="flex">
@@ -116,7 +158,7 @@ const Maze = () => {
                 </button>
               )}
               <img src={logo} alt="logo" className="w-12" />
-              {selectedSectionIndex !== sections.length - 1 && (
+              {selectedSectionIndex !== mazeData.length - 1 && (
                 <button
                   className="capitalize border border-gray-400 py-2 px-8 text-lg rounded-md hover:bg-slate-800 ml-4 flex items-center"
                   onClick={handleNextBtn}
@@ -143,7 +185,7 @@ const Maze = () => {
         </div>
         <div
           className={` border-2 ${
-            isExpanded ? "h-full" : "h-[7vh]"
+            isExpanded ? "h-fit" : "h-[7vh]"
           }  border-[#81a77c94] p-4 w-[35%] rounded-md shadow-box bg-[#0f20183f]`}
         >
           <div
@@ -154,7 +196,7 @@ const Maze = () => {
             {isExpanded ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />}
           </div>
           <ul
-            className={`text-gray-200 h-[80vh] overflow-scroll ${
+            className={`text-gray-200 h-fit overflow-scroll ${
               isExpanded ? "block mt-5 pr-5" : "hidden"
             }`}
           >

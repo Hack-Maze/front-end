@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import learnImg from "/Learn.png";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaTrash } from "react-icons/fa6";
 import customFetch from "../../utils/CustomFetsh";
 
 const Learn = () => {
@@ -14,7 +14,7 @@ const Learn = () => {
     const accessToken = localStorage.getItem("accessToken");
     const fetchRooms = async () => {
       try {
-        const response = await customFetch(`maze`, {
+        const response = await customFetch.get(`maze`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
@@ -34,7 +34,7 @@ const Learn = () => {
     setFilter(filterValue);
   };
 
-  const levelColors = {
+  const difficultyColors = {
     fundamental: { color: "text-green-600", bgColor: "bg-[#336c4794]" },
     easy: { color: "text-blue-600", bgColor: "bg-[#2e4868a1]" },
     medium: { color: "text-yellow-600", bgColor: "bg-[#6c652c8c]" },
@@ -47,13 +47,27 @@ const Learn = () => {
 
   const filteredRooms = rooms.filter((room) => {
     return (
-      (filter === "All" || room.level.toLowerCase() === filter.toLowerCase()) &&
+      (filter === "All" || room.difficulty === filter.toUpperCase()) &&
       room.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
   const loadMoreItems = () => {
     setDisplayedRooms((prev) => prev + 6);
+  };
+
+  const handleDeleteMaze = async (mazeId) => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      await customFetch.delete(`maze/${mazeId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setRooms((prevRooms) => prevRooms.filter((room) => room.id !== mazeId));
+    } catch (error) {
+      console.log("Error deleting maze:", error);
+    }
   };
 
   return (
@@ -111,28 +125,44 @@ const Learn = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {filteredRooms.slice(0, displayedRooms).map((room) => (
-              <Link
-                to={`/learn/${room.title.toLowerCase().replace(/\s/g, "-")}`}
-                key={room.id}
-                className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md max-w-md shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
-              >
-                <img src={room.img} alt="image" className="w-30" />
-                <h2 className="text-xl my-3 text-white font-semibold">
-                  {room.title}
-                </h2>
-                <p className="text-gray-400 px-3 text-sm leading-7">
-                  {room.description.length > 130
-                    ? `${room.description.substring(0, 130)}...`
-                    : room.description}
-                </p>
-                <p
-                  className={`p-2 font-bold capitalize my-4 rounded-md tracking-wider ${
-                    levelColors[room.level.toLowerCase()].color
-                  } ${levelColors[room.level.toLowerCase()].bgColor}`}
+              <div className="relative" key={room.id}>
+                <div
+                  className="absolute right-4 top-4 cursor-pointer"
+                  onClick={() => handleDeleteMaze(room.id)}
                 >
-                  {room.level}
-                </p>
-              </Link>
+                  <FaTrash size={20} color="red" />
+                </div>
+                <Link
+                  to={`/learn/${room.id}/${room.title.toLowerCase().replace(/\s/g, "-")}`}
+                  className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md max-w-md shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
+                >
+                  <img src={room.image} alt="image" className="w-30" />
+                  <h2 className="text-xl my-3 text-white font-semibold">
+                    {room.title}
+                  </h2>
+                  <p className="text-gray-400 px-3 text-sm leading-7">
+                    {room.description.length > 130
+                      ? `${room.description.substring(0, 130)}...`
+                      : room.description}
+                  </p>
+                  <p
+                    className={`p-2 font-bold capitalize my-4 rounded-md tracking-wider ${
+                      room.difficulty &&
+                      difficultyColors[room.difficulty.toLowerCase()]
+                        ? `${
+                            difficultyColors[room.difficulty.toLowerCase()]
+                              .color
+                          } ${
+                            difficultyColors[room.difficulty.toLowerCase()]
+                              .bgColor
+                          }`
+                        : ""
+                    }`}
+                  >
+                    {room.difficulty}
+                  </p>
+                </Link>
+              </div>
             ))}
           </div>
         )}

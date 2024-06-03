@@ -1,16 +1,19 @@
-import { useNavigation } from 'react-router-dom';
-const SubmitBtn = ({text}) => {
+import { useNavigation } from "react-router-dom";
+const SubmitBtn = ({ text, isDisabled }) => {
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'submitting';
+  console.log(navigation);
+  const isSubmitting = navigation.state === "submitting";
+  console.log(isSubmitting);
+  console.log(isDisabled);
   return (
     <div className="w-full text-center mt-6">
-    <button
-      type='submit'
-      className="cursor-pointer font-bold text-center border py-1 md:py-2 w-[40%] rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
-      disabled={isSubmitting}
-    >
-      {isSubmitting ? 'submitting...' : text}
-    </button>
+      <button
+        type="submit"
+        className="cursor-pointer font-bold text-center border py-1 md:py-2 w-[40%] rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
+        disabled={isSubmitting || isDisabled}
+      >
+        {isSubmitting ? "submitting..." : text}
+      </button>
     </div>
   );
 };

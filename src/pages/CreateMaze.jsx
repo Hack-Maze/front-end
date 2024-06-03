@@ -1,27 +1,89 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPencilRuler } from "react-icons/fa";
 import { HiOutlineDocumentPlus } from "react-icons/hi2";
 import { LiaShareAltSolid } from "react-icons/lia";
-import FormRow from "@/components/FormRow";
-import { Link } from "react-router-dom";
+import customFetch from "../../utils/CustomFetsh";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import SubmitBtn from "@/components/SubmitBtn";
+import LoadingItem from "@/components/LoadingItem";
+
 const CreateMaze = () => {
-  const [check, setChecked] = useState(0);
-  const handleCheck = (value) => {
-    setChecked(value);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  // const [check, setChecked] = useState(0);
+  const navigate = useNavigate();
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [uploadImage, setUploadImage] = useState("");
+  const [uploadFile, setUploadFile] = useState("");
+  const [checkLevel, setCheckLevel] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const [fileName, setFileName] = useState("");
+  // const handleCheck = (value) => {
+  //   setChecked(value);
+  // };
 
-  const handleFileChange = (e) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleFileChange = (e, fileType) => {
     const file = e.target.files[0];
     if (file) {
-      setFileName(file.name);
-    } else {
-      setFileName("");
+      if (fileType === "image") {
+        setUploadImage(file);
+      } else {
+        setUploadFile(file);
+      }
     }
   };
+
+  const handleSelectedLevel = (level) => {
+    setSelectedLevel(level);
+    setCheckLevel(true);
+  };
+
+  const onSubmit = async (data) => {
+    if (!selectedLevel) {
+      setCheckLevel(false);
+      return;
+    }
+    setLoading(true);
+    const accessToken = localStorage.getItem("accessToken");
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("summary", data.summary);
+    formData.append("difficulty", selectedLevel.toUpperCase());
+    formData.append("image", uploadImage);
+    formData.append("file", uploadFile);
+    try {
+      const response = await customFetch.post("maze", formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      localStorage.setItem("mazeId", response.data);
+      toast.success("Maze preview created");
+      navigate("/learn/createMaze/content");
+    } catch (error) {
+      toast.error(error.response.data.toString());
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="w-[70%] m-auto my-10 min-h-[75vh] text-white">
+    <div className="w-[70%] m-auto my-10 min-h-[75vh] text-white relative">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <LoadingItem />
+        </div>
+      )}
       <div className="flex justify-evenly m-auto mb-10">
         <div className="flex flex-col gap-3 py-5 px-10 justify-center border border-[#5874593a] bg-[#0f20183f]  rounded-md items-center w-[30%] text-center">
           <div className="flex flex-col gap-5 items-center">
@@ -50,94 +112,214 @@ const CreateMaze = () => {
           </p>
         </div>
       </div>
-      <div className="border border-[#5874593a] bg-[#0f20183f] rounded-md p-5 mb-10">
-        <FormRow
-          type="text"
-          text="Title"
-          name="title"
-          placeholder="#CrowCTF23"
-        />
-        <FormRow
-          type="text"
-          text="Summary"
-          name="title"
-          placeholder="Summary description of the maze"
-        />
-        <div className="flex flex-col items-start">
-          <label className="text-lg mb-2">Type</label>
-          <div className="flex">
+      <form
+        method="post"
+        encType="multipart/form-data"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="border border-[#5874593a] bg-[#0f20183f] rounded-md p-5 mb-10">
+          <div className="mt-4 mb-2">
+            <label className="md:text-lg text-base">Title</label>
             <input
-              type="radio"
-              name="type"
-              id="vm"
-              className="mr-1"
-              onClick={() => handleCheck(0)}
-              checked={check === 0}
+              {...register("title", {
+                required: "Please enter a title for the maze.",
+              })}
+              type="text"
+              placeholder="#CrowCTF23"
+              className="border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none mt-3"
             />
-            <label
-              htmlFor="vm"
-              className={`text-lg mr-5 ${
-                check === 0 ? "text-white" : "text-gray-400"
-              }`}
-            >
-              VM.
-            </label>
-            <input
-              type="radio"
-              name="type"
-              id="file"
-              className="mr-1"
-              onClick={() => handleCheck(1)}
-              checked={check === 1}
-            />
-            <label
-              htmlFor="file"
-              className={`text-lg ${
-                check === 1 ? "text-white" : "text-gray-400"
-              }`}
-            >
-              Downloadable File.
-            </label>
+            {errors.title && (
+              <p className="text-red-500 mt-2">{errors.title.message}</p>
+            )}
           </div>
-          <div className="flex flex-col w-full">
-            <label htmlFor="upload" className="text-lg mt-4 mb-2">
-              Uplaod{" "}
+          <div className="mt-4 mb-2">
+            <label className="md:text-lg text-base">Subtitle</label>
+            <input
+              {...register("description", {
+                required: "Please enter a subtitle for the maze.",
+              })}
+              type="text"
+              placeholder="#Short description"
+              className="border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none mt-3"
+            />
+            {errors.description && (
+              <p className="text-red-500 mt-2">{errors.description.message}</p>
+            )}
+          </div>
+          <div className="mt-4 mb-2">
+            <label className="md:text-lg text-base">Summary</label>
+            <input
+              {...register("summary", {
+                required: "Please provide a summary of the maze.",
+              })}
+              type="text"
+              placeholder="Summary description of the maze"
+              className="border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none mt-3"
+            />
+            {errors.summary && (
+              <p className="text-red-500 mt-2">{errors.summary.message}</p>
+            )}
+          </div>
+          <div className="mt-4 mb-2">
+            <label htmlFor="upload" className="text-lg">
+              Maze Logo{" "}
               <span className="text-gray-400 text-sm">
-                (Accepted file types: .ova)
+                (Accepted file types: .svg, .png, .jpg)
               </span>
             </label>
-            <div className="w-full">
+            <div className="w-full mt-3">
               <span
                 className="border border-[#58745975] bg-[#081b1b] w-full rounded-md pl-2 flex justify-between items-center text-gray-500"
                 style={{ overflow: "hidden" }}
               >
-                {fileName || "Choose file"}
+                {uploadImage.name || "Choose image"}
                 <label
-                  htmlFor="upload"
+                  htmlFor="image"
                   className="cursor-pointer border-l border-[#58745975] bg-[#13321b] p-2 text-gray-400 hover:bg-[#13321b7a] hover:text-gray-300"
                 >
                   Browse
                   <input
+                    {...register("image", {
+                      required: "Please select an image file.",
+                    })}
                     type="file"
-                    name="upload"
-                    id="upload"
+                    id="image"
                     className="hidden"
-                    onChange={handleFileChange}
-                    accept=".ova"
+                    onChange={(e) => handleFileChange(e, "image")}
+                    accept=".svg,.png,.jpg"
                   />
                 </label>
               </span>
+              {errors.image && !uploadImage && (
+                <p className="text-red-500 mt-2">{errors.image.message}</p>
+              )}
             </div>
           </div>
-          <Link
-            to="/learn/createMaze/content"
-            className="py-2 px-5 border border-[#5EE848] rounded-md mt-10 text-lg text-[#5EE848] hover:bg-[#5de8481c]"
-          >
-            Next
-          </Link>
+          <div className="flex flex-col items-start">
+            {/* <label className="text-lg mb-2 mt-2">Type</label>
+            <div className="flex">
+              <input
+                type="radio"
+                name="type"
+                id="vm"
+                className="mr-1"
+                onClick={() => handleCheck(0)}
+                checked={check === 0}
+              />
+              <label
+                htmlFor="vm"
+                className={`text-lg mr-5 ${
+                  check === 0 ? "text-white" : "text-gray-400"
+                }`}
+              >
+                VM.
+              </label>
+              <input
+                type="radio"
+                name="type"
+                id="file"
+                className="mr-1"
+                onClick={() => handleCheck(1)}
+                checked={check === 1}
+              />
+              <label
+                htmlFor="file"
+                className={`text-lg ${
+                  check === 1 ? "text-white" : "text-gray-400"
+                }`}
+              >
+                Downloadable File.
+              </label>
+            </div> */}
+            <div className="flex flex-col w-full">
+              {/* <label htmlFor="upload" className="text-lg mt-4 mb-2">
+                Uplaod{" "}
+                <span className="text-gray-400 text-sm">
+                  (Accepted file types: .ova)
+                </span>
+              </label>
+              <div className="w-full">
+                <span
+                  className="border border-[#58745975] bg-[#081b1b] w-full rounded-md pl-2 flex justify-between items-center text-gray-500"
+                  style={{ overflow: "hidden" }}
+                >
+                  {uploadFile.name || "Choose file"}
+                  <label
+                    htmlFor="file"
+                    className="cursor-pointer border-l border-[#58745975] bg-[#13321b] p-2 text-gray-400 hover:bg-[#13321b7a] hover:text-gray-300"
+                  >
+                    Browse
+                    <input
+                      {...register("file")}
+                      type="file"
+                      id="file"
+                      className="hidden"
+                      onChange={(e) => handleFileChange(e, "file")}
+                      accept=".ova"
+                    />
+                  </label>
+                </span>
+              </div> */}
+              <div className="flex flex-col w-full">
+                <div className="flex flex-col">
+                  <h2 className="text-lg my-4">Maze Level</h2>
+                  <div className="flex gap-4">
+                    <span
+                      className={`capitalize p-2 border rounded-md  cursor-pointer hover:bg-gray-800 ${
+                        selectedLevel === "fundamental"
+                          ? "border-[#5EE848] border-2"
+                          : "border-gray-400"
+                      }`}
+                      onClick={() => handleSelectedLevel("fundamental")}
+                    >
+                      fundamental
+                    </span>
+                    <span
+                      className={`capitalize p-2 border rounded-md  cursor-pointer hover:bg-gray-800 ${
+                        selectedLevel === "easy"
+                          ? "border-[#5EE848] border-2"
+                          : "border-gray-400"
+                      }`}
+                      onClick={() => handleSelectedLevel("easy")}
+                    >
+                      easy
+                    </span>
+                    <span
+                      className={`capitalize p-2 border rounded-md  cursor-pointer hover:bg-gray-800 ${
+                        selectedLevel === "medium"
+                          ? "border-[#5EE848] border-2"
+                          : "border-gray-400"
+                      }`}
+                      onClick={() => handleSelectedLevel("medium")}
+                    >
+                      medium
+                    </span>
+                    <span
+                      className={`capitalize p-2 border rounded-md  cursor-pointer hover:bg-gray-800 ${
+                        selectedLevel === "hard"
+                          ? "border-[#5EE848] border-2"
+                          : "border-gray-400"
+                      }`}
+                      onClick={() => handleSelectedLevel("hard")}
+                    >
+                      hard
+                    </span>
+                  </div>
+                  {!checkLevel && (
+                    <p className="text-red-500 mt-2">
+                      Please select maze level
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="border border-[#5874593a] bg-[#0f20183f] rounded-md p-5 flex flex-col">
+        <div className="w-[50%] mx-auto">
+          <SubmitBtn text={"Add maze content"} />
+        </div>
+      </form>
+      <div className="border border-[#5874593a] bg-[#0f20183f] rounded-md p-5 flex flex-col mt-8">
         <div>
           <h3 className="text-xl font-bold mb-1">Upload Instructions</h3>
           <p className="text-gray-400 mb-2">

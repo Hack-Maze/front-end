@@ -9,28 +9,30 @@ import {
   useNavigate,
   useNavigation,
 } from "react-router-dom";
-// import { createContext, useContext, useEffect } from "react";
-import { useEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
 
-// const HomeContext = createContext();
+const HomeContext = createContext();
 
-// export const loader = async () => {
-//   const accessToken = localStorage.getItem("accessToken");
-//   try {
-//     const { data } = await customFetch.get("users/me", {
-//       headers: {
-//         Authorization: `Bearer ${accessToken}`,
-//       },
-//     });
-//     return data;
-//   } catch (error) {
-//     return redirect("/login");
-//   }
-// };
+export const loader = async () => {
+  const accessToken = localStorage.getItem("accessToken");
+  const username = localStorage.getItem("username");
+
+  try {
+    const { data } = await customFetch.get(`profile/username/${username}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    return redirect("/login");
+  }
+};
 
 const Home = () => {
   const navigate = useNavigate();
-  // const data = useLoaderData();
+  const data = useLoaderData();
 
   useEffect(() => {
     const checkUserToken = () => {
@@ -54,18 +56,18 @@ const Home = () => {
   }, [navigate]);
 
   return (
-    // <HomeContext.Provider value={{ data }}>
-    <Background>
-      <>
-        <Navbar />
-        {/* {<Outlet context={{ data }} />} */}
-        {<Outlet />}
-        <Footer />
-      </>
-    </Background>
-    //  </HomeContext.Provider>
+    <HomeContext.Provider value={{ data }}>
+      <Background>
+        <>
+          <Navbar />
+          {<Outlet context={{ data }} />}
+          {/* {<Outlet />} */}
+          <Footer />
+        </>
+      </Background>
+    </HomeContext.Provider>
   );
 };
 
-// export const useHomeContext = () => useContext(HomeContext);
+export const useHomeContext = () => useContext(HomeContext);
 export default Home;
