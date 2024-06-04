@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GrContactInfo } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
 import { TbListDetails } from "react-icons/tb";
@@ -12,6 +12,19 @@ import { toast } from "sonner";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
+  const username = formData.get("username");
+  const email = formData.get("email");
+
+  if (!username.trim() && !email.trim()) {
+    toast.error("Email and username are required.");
+    return null;
+  } else if (!username.trim()) {
+    toast.error("Username is required.");
+    return null;
+  } else if (!email.trim()) {
+    toast.error("Email is required.");
+    return null;
+  }
   const accessToken = localStorage.getItem("accessToken");
   try {
     await customFetch.put("profile/update", formData, {
@@ -26,6 +39,10 @@ export const action = async ({ request }) => {
 };
 
 const EditProfile = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { data } = useHomeContext();
   console.log(data);
   const {

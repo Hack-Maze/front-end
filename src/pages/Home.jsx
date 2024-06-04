@@ -9,10 +9,9 @@ const HomeContext = createContext();
 
 export const loader = async () => {
   const accessToken = localStorage.getItem("accessToken");
-  const username = localStorage.getItem("username");
 
   try {
-    const { data } = await customFetch.get(`profile/username/${username}`, {
+    const { data } = await customFetch.get(`/profile/current`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
