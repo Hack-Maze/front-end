@@ -133,10 +133,18 @@ const Learn = () => {
                   <FaTrash size={20} color="red" />
                 </div>
                 <Link
-                  to={`/learn/${room.id}/${room.title.toLowerCase().replace(/\s/g, "-")}`}
+                  to={`/learn/${room.id}/${room.title
+                    .toLowerCase()
+                    .replace(/\s/g, "-")}`}
                   className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md max-w-md shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
                 >
-                  <img src={room.image} alt="image" className="w-30" />
+                  <img
+                    src={room.image}
+                    alt="image"
+                    className="h-40 w-64"
+                    loading="lazy"
+                  />
+
                   <h2 className="text-xl my-3 text-white font-semibold">
                     {room.title}
                   </h2>

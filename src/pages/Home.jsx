@@ -2,13 +2,7 @@ import Background from "../components/Background/Background";
 import customFetch from "../../utils/CustomFetsh";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import {
-  Outlet,
-  redirect,
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
+import { Outlet, redirect, useLoaderData, useNavigate } from "react-router-dom";
 import { createContext, useContext, useEffect } from "react";
 
 const HomeContext = createContext();

@@ -89,7 +89,12 @@ const Explore = () => {
       <div key={mazeData.id}>
         <div className="border-2 border-[#81a77c94] p-4 pb-6 flex rounded-md justify-between items-center mb-10 shadow-box bg-[#0f20183f]">
           <div className="flex gap-5 items-center">
-            <img src={mazeData.image} alt={mazeData.title} className="w-48" />
+            <img
+              src={mazeData.image}
+              alt={mazeData.title}
+              className="h-32 w-64"
+              loading="lazy"
+            />
             <div className="w-[50%]">
               <h1 className="text-2xl font-semibold mb-2 capitalize">
                 {mazeData.title}
@@ -107,7 +112,7 @@ const Explore = () => {
             </p>
             <Link
               to={`/learn/${mazeId}/${title}/${
-                mazeData.pages[0].title.replace(/\s/g, "-") || ""
+                mazeData?.pages[0]?.title.replace(/\s/g, "-") || ""
               }`}
               className="border py-1 px-10 text-lg font-semibold rounded-md hover:bg-slate-800"
             >
@@ -144,16 +149,21 @@ const Explore = () => {
                 <span className="text-[#5EE848]">Mazes</span>
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center justify-center">
               {recommendedMazes.map((maze, index) => (
                 <Link
                   key={index}
                   to={`/learn/${maze.id}/${maze.title
                     .toLowerCase()
                     .replace(/\s/g, "-")}`}
-                  className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md max-w-md shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
+                  className="flex flex-col text-center justify-center mx-auto border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md w-[80%] shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
                 >
-                  <img src={maze.image} alt="image" className="w-30" />
+                  <img
+                    src={maze.image}
+                    alt="image"
+                    className="h-40 w-72"
+                    loading="lazy"
+                  />
                   <h2 className="text-xl my-3 text-white font-semibold">
                     {maze.title}
                   </h2>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { GrContactInfo } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
 import { TbListDetails } from "react-icons/tb";
@@ -20,12 +20,14 @@ export const action = async ({ request }) => {
     toast.success("Profile updated.");
   } catch (error) {
     toast.error(error.response.data.toString());
+    console.log(error);
   }
   return null;
 };
 
 const EditProfile = () => {
   const { data } = useHomeContext();
+  console.log(data);
   const {
     username,
     email,
@@ -35,6 +37,21 @@ const EditProfile = () => {
     personalWebsite,
     image,
   } = data;
+
+  const [imagePreview, setImagePreview] = useState(
+    image === "image" ? "" : image
+  );
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div className="text-white w-[75%] m-auto my-10 min-h-[75vh]">
@@ -49,17 +66,15 @@ const EditProfile = () => {
             </div>
             <div className="w-[70%] m-auto">
               <div className="flex my-5 items-center">
-                {!image ? (
-                  <img src={`${image}`} className="h-14 w-14" alt="Profile" />
-                ) : (
-                  <div className="border border-[#5de848] rounded-full">
-                    <img
-                      className="p-2"
-                      src={`https://api.dicebear.com/7.x/initials/svg?size=25&seed=${username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100`}
-                      alt="profile"
-                    />
-                  </div>
-                )}
+                <img
+                  className="p-2 h-32 w-32 rounded-full border-2 border-[#81a77c94] shadow-box bg-[#0f20183f]"
+                  src={
+                    imagePreview ||
+                    `https://api.dicebear.com/7.x/initials/svg?size=25&seed=${username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100`
+                  }
+                  alt="profile"
+                  loading="lazy"
+                />
                 <span className="flex flex-col ml-5">
                   <label className="text-xs capitalize border p-2 rounded-md flex items-center gap-2 hover:bg-slate-800 cursor-pointer">
                     <GrUploadOption />
@@ -69,6 +84,7 @@ const EditProfile = () => {
                       accept="image/*"
                       className="hidden"
                       name="image"
+                      onChange={handleImageChange}
                     />
                   </label>
                 </span>

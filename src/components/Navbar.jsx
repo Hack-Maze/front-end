@@ -118,9 +118,13 @@ const Navbar = () => {
         >
           <div className="border border-[#5de848] rounded-full">
             <img
-              className="p-2"
-              src={`https://api.dicebear.com/7.x/initials/svg?size=25&seed=${username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100`}
+              className="p-1 w-12 h-12 rounded-full"
+              src={
+                data.image ||
+                `https://api.dicebear.com/7.x/initials/svg?size=25&seed=${username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100`
+              }
               alt="profile"
+              loading="lazy"
             />
             {isDropdownOpen && <Dropdown />}
           </div>
