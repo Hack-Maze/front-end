@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { learns } from "@/static/data";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaAngleDown } from "react-icons/fa6";
-import { FaAngleUp } from "react-icons/fa6";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { RxTrackNext } from "react-icons/rx";
 import { RxTrackPrevious } from "react-icons/rx";
-
+import { FaRegQuestionCircle } from "react-icons/fa";
 import logo from "/logo.png";
 import customFetch from "../../utils/CustomFetsh";
 import { toast } from "sonner";
@@ -18,6 +16,9 @@ const Maze = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [completedSections, setCompletedSections] = useState([]);
   const [mazeData, setMazeData] = useState(null);
+  const [answers, setAnswers] = useState({});
+  const [hints, setHints] = useState({});
+  const [expandedQuestions, setExpandedQuestions] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,8 +61,6 @@ const Maze = () => {
     );
   }
 
-  const formattedTitle = title.replace(/-/g, " ");
-
   const section = mazeData[selectedSectionIndex];
 
   const handleSectionClick = (index) => {
@@ -90,6 +89,72 @@ const Maze = () => {
     }
   };
 
+  const handleAnswerChange = (questionId, value) => {
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: value,
+    }));
+  };
+
+  const accessToken = localStorage.getItem("accessToken");
+
+  const handleAnswerSubmit = async (pageId, questionId, answer) => {
+    try {
+      const response = await customFetch.post(
+        `progress/solve-question/${pageId}/${questionId}?answer=${answer}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        toast.success("Answer submitted successfully");
+      } else {
+        toast.error("Error submitting answer");
+      }
+    } catch (error) {
+      console.log("Error submitting answer:", error);
+      toast.error("Error submitting answer");
+    }
+  };
+
+  const handleToggleHint = async (questionId) => {
+    if (hints[questionId]) {
+      setHints((prevHints) => ({
+        ...prevHints,
+        [questionId]: null,
+      }));
+    } else {
+      try {
+        const response = await customFetch.get(`question/hint/${questionId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        if (response.status === 200) {
+          setHints((prevHints) => ({
+            ...prevHints,
+            [questionId]: response.data,
+          }));
+        } else {
+          toast.error("Error fetching hint");
+        }
+      } catch (error) {
+        console.log("Error fetching hint:", error);
+        toast.error("Error fetching hint");
+      }
+    }
+  };
+
+  const toggleQuestion = (questionId) => {
+    setExpandedQuestions((prevExpandedQuestions) => ({
+      ...prevExpandedQuestions,
+      [questionId]: !prevExpandedQuestions[questionId],
+    }));
+  };
+
   const sectionsList = mazeData.map((page, index) => (
     <li
       key={index}
@@ -104,7 +169,6 @@ const Maze = () => {
       )}
     </li>
   ));
-  console.log(sectionsList);
 
   const toggleTableOfContents = () => {
     setIsExpanded(!isExpanded);
@@ -143,6 +207,68 @@ const Maze = () => {
           <div className="w-[80%] leading-9 min-h-[70vh]">
             <h1 className="text-3xl font-semibold mb-4">{section.title}</h1>
             <p className="text-gray-300">{section.content}</p>
+            <div className="flex flex-col">
+              {section.questions.map((question, index) => (
+                <div
+                  key={index}
+                  className="border border-[#81a77c94] px-4 py-3 my-4 rounded-md shadow-box bg-[#0f20183f]"
+                >
+                  <h2
+                    className="text-xl font-semibold flex items-center justify-between cursor-pointer"
+                    onClick={() => toggleQuestion(question.id)}
+                  >
+                    <span className="flex items-center">
+                      <FaRegQuestionCircle className="mr-2" size={20} />
+                      {question.content}
+                    </span>
+                    {expandedQuestions[question.id] ? (
+                      <FaAngleUp size={20} />
+                    ) : (
+                      <FaAngleDown size={20} />
+                    )}
+                  </h2>
+                  {expandedQuestions[question.id] && (
+                    <div>
+                      <input
+                        type="text"
+                        name="answer"
+                        placeholder="Your answer"
+                        value={answers[question.id] || ""}
+                        onChange={(e) =>
+                          handleAnswerChange(question.id, e.target.value)
+                        }
+                        className="mt-4 border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none"
+                      />
+                      <div className="flex gap-7 items-center mt-4">
+                        <button
+                          onClick={() =>
+                            handleAnswerSubmit(
+                              section.id,
+                              question.id,
+                              answers[question.id]
+                            )
+                          }
+                          className="cursor-pointer font-bold text-center border px-2 w-fit rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
+                        >
+                          Submit Answer
+                        </button>
+                        <button
+                          onClick={() => handleToggleHint(question.id)}
+                          className="text-green-700 underline mb-2"
+                        >
+                          {hints[question.id] ? "Hide Hint" : "Show Hint"}
+                        </button>
+                      </div>
+                      {hints[question.id] && (
+                        <p className="text-gray-300 mt-4 bg-[#092020] w-fit px-3">
+                          {hints[question.id]}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
           <div className="w-[80%] px-5 py-6 rounded-md border border-[#81a77c94] flex flex-row justify-between shadow-box bg-[#0f20183f]">
             <div className="flex">
@@ -184,9 +310,9 @@ const Maze = () => {
           </div>
         </div>
         <div
-          className={` border-2 ${
+          className={`border-2 ${
             isExpanded ? "h-fit" : "h-[7vh]"
-          }  border-[#81a77c94] p-4 w-[35%] rounded-md shadow-box bg-[#0f20183f]`}
+          } border-[#81a77c94] p-4 w-[35%] rounded-md shadow-box bg-[#0f20183f]`}
         >
           <div
             className="flex justify-between items-center mb-3 cursor-pointer"
