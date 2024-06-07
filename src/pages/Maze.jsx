@@ -110,13 +110,11 @@ const Maze = () => {
         }
       );
       if (response.status === 200) {
-        toast.success("Answer submitted successfully");
-      } else {
-        toast.error("Error submitting answer");
+        toast.success("Correct answer");
+        toggleQuestion(questionId);
       }
     } catch (error) {
-      console.log("Error submitting answer:", error);
-      toast.error("Error submitting answer");
+      toast.error(error.response.data);
     }
   };
 
