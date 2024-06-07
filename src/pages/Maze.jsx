@@ -9,6 +9,7 @@ import logo from "/logo.png";
 import customFetch from "../../utils/CustomFetsh";
 import { toast } from "sonner";
 import LoadingItem from "@/components/LoadingItem";
+import "react-quill/dist/quill.snow.css";
 
 const Maze = () => {
   const { mazeId, title, mazePage } = useParams();
@@ -204,7 +205,7 @@ const Maze = () => {
         <div className="w-full flex flex-col justify-between">
           <div className="w-[80%] leading-9 min-h-[70vh]">
             <h1 className="text-3xl font-semibold mb-4">{section.title}</h1>
-            <p className="text-gray-300">{section.content}</p>
+            <div dangerouslySetInnerHTML={{ __html: section.content }} />
             <div className="flex flex-col">
               {section.questions.map((question, index) => (
                 <div
