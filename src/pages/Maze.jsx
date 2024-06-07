@@ -205,7 +205,10 @@ const Maze = () => {
         <div className="w-full flex flex-col justify-between">
           <div className="w-[80%] leading-9 min-h-[70vh]">
             <h1 className="text-3xl font-semibold mb-4">{section.title}</h1>
-            <div dangerouslySetInnerHTML={{ __html: section.content }} />
+            <div
+              className="list-disc"
+              dangerouslySetInnerHTML={{ __html: section.content }}
+            />
             <div className="flex flex-col">
               {section.questions.map((question, index) => (
                 <div

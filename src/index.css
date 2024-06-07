@@ -8,6 +8,10 @@
   font-family: "Space Grotesk", "sans-serif";
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -19,8 +23,4 @@
 
 ::-webkit-scrollbar-track {
   background: linear-gradient(to bottom, rgb(9, 23, 28), rgb(11, 17, 26));
-}
-
-html {
-  scroll-behavior: smooth;
 }
