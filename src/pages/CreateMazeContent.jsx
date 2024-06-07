@@ -215,13 +215,16 @@ const CreateMazeContent = () => {
       if (response.status === 200) {
         const updatedSections = sections.filter((_, i) => i !== index);
         setSections(updatedSections);
-        toast.success("Section deleted successfully");
+        toast.success("Page deleted successfully");
       } else {
-        toast.error("Failed to delete section");
+        toast.error("Failed to delete page");
       }
     } catch (error) {
       toast.error(`Error: ${error.message}`);
     }
+    setSectionTitle("");
+    setSectionContent("");
+    setIsEditingContent(false);
   };
 
   const handleDeleteQuestion = async (sectionIndex, questionIndex) => {
@@ -387,13 +390,13 @@ const CreateMazeContent = () => {
   ));
 
   return (
-    <div className="w-[70%] m-auto my-10 text-white">
+    <div className="w-[80%] m-auto my-10 text-white">
       <h1 className="text-3xl font-semibold">
         {!createQuestion ? "Create Page" : "Create Question"}{" "}
       </h1>
       <div className="flex justify-between my-10 ">
-        <div className="w-full flex flex-col justify-between">
-          <div className="w-[85%] flex flex-col h-[63vh]">
+        <div className="w-[80%] flex flex-col justify-between">
+          <div className="w-[80%] flex flex-col h-[63vh]">
             {!createQuestion ? (
               <>
                 <input
@@ -414,7 +417,6 @@ const CreateMazeContent = () => {
                     formats={formats}
                     placeholder="Add content..."
                     style={{
-                      maxWidth: "100%",
                       height: "50vh",
                       marginBottom: "10px",
                       padding: "10px",
@@ -469,7 +471,7 @@ const CreateMazeContent = () => {
             )}
           </div>
         </div>
-        <div className="w-[35%] flex flex-col">
+        <div className="w-[25%] flex flex-col">
           <div
             className={`border-2 ${
               isExpanded ? "h-fit" : "h-[7vh]"
