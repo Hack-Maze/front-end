@@ -195,7 +195,7 @@ const Maze = () => {
   const sectionsList = mazeData.map((page, index) => (
     <li
       key={index}
-      className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md cursor-pointer flex items-center justify-between ${
+      className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md cursor-pointer flex items-center justify-between capitalize ${
         selectedSectionIndex === index ? "text-[#5EE848]" : ""
       }`}
       onClick={() => handleSectionClick(index)}
@@ -242,7 +242,9 @@ const Maze = () => {
       <div className="flex justify-between my-10">
         <div className="w-full flex flex-col justify-between">
           <div className="w-[80%] leading-9 min-h-[70vh]">
-            <h1 className="text-3xl font-semibold mb-4">{section.title}</h1>
+            <h1 className="text-3xl font-semibold mb-4 capitalize">
+              {section.title}
+            </h1>
             <div
               className="custom-html-content"
               dangerouslySetInnerHTML={{ __html: section.content }}
@@ -254,7 +256,7 @@ const Maze = () => {
                   className="border border-[#81a77c94] px-4 py-3 my-4 rounded-md shadow-box bg-[#0f20183f]"
                 >
                   <h2
-                    className="text-xl font-semibold flex items-center justify-between cursor-pointer"
+                    className="text-xl font-semibold flex items-center justify-between cursor-pointer capitalize"
                     onClick={() => toggleQuestion(question.id)}
                   >
                     <span className="flex items-center">
