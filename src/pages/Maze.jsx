@@ -21,7 +21,7 @@ const Maze = () => {
   const [answers, setAnswers] = useState({});
   const [hints, setHints] = useState({});
   const [expandedQuestions, setExpandedQuestions] = useState({});
-  const [correctAnswers, setCorrectAnswers] = useState({});
+  const [progressData, setProgressData] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +33,6 @@ const Maze = () => {
         });
         if (response.status === 200) {
           setMazeData(response.data);
-          console.log(response.data);
         } else {
           toast.error("Error fetching maze data");
         }
@@ -41,8 +40,26 @@ const Maze = () => {
         console.log("Error fetching maze data:", error);
       }
     };
+    const fetchProgressData = async () => {
+      try {
+        const response = await customFetch.get(
+          `progress/get-profile-page-progress`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+        if (response.status === 200) {
+          setProgressData(response.data);
+        } else {
+          toast.error("Error fetching progress data");
+        }
+      } catch (error) {
+        console.log("Error fetching progress data:", error);
+      }
+    };
 
     fetchMazeData();
+    fetchProgressData();
   }, [mazeId]);
 
   useEffect(() => {
@@ -55,38 +72,6 @@ const Maze = () => {
       );
     }
   }, [mazeData, mazePage]);
-
-  useEffect(() => {
-    if (mazeData) {
-      mazeData.forEach((section) => {
-        section.questions.forEach((question) => {
-          fetchAnswer(question.id);
-        });
-      });
-    }
-  }, [mazeData]);
-
-  const fetchAnswer = async (questionId) => {
-    try {
-      const response = await customFetch.get(`question/answer/${questionId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      if (response.status === 200) {
-        setCorrectAnswers((prev) => ({
-          ...prev,
-          [questionId]: response.data,
-        }));
-        setAnswers((prev) => ({
-          ...prev,
-          [questionId]: response.data,
-        }));
-      }
-    } catch (error) {
-      console.log("Error fetching answer:", error);
-    }
-  };
 
   if (!mazeData) {
     return (
@@ -106,11 +91,10 @@ const Maze = () => {
   };
 
   const handleComplete = () => {
-    const updateCompletedSections = [
-      ...completedSections,
+    setCompletedSections((prevCompletedSections) => [
+      ...prevCompletedSections,
       selectedSectionIndex,
-    ];
-    setCompletedSections(updateCompletedSections);
+    ]);
 
     if (selectedSectionIndex < mazeData.length - 1) {
       const nextIndex = selectedSectionIndex + 1;
@@ -146,10 +130,6 @@ const Maze = () => {
       );
       if (response.status === 200) {
         toast.success("Correct answer");
-        setCorrectAnswers((prev) => ({
-          ...prev,
-          [questionId]: answer,
-        }));
         toggleQuestion(questionId);
       }
     } catch (error) {
@@ -158,10 +138,11 @@ const Maze = () => {
   };
 
   const handleToggleHint = async (questionId) => {
-    if (hints[questionId]) {
+    const cachedHint = localStorage.getItem(`hint-${questionId}`);
+    if (cachedHint) {
       setHints((prevHints) => ({
         ...prevHints,
-        [questionId]: null,
+        [questionId]: prevHints[questionId] ? null : cachedHint,
       }));
     } else {
       try {
@@ -171,9 +152,10 @@ const Maze = () => {
           },
         });
         if (response.status === 200) {
+          const hint = response.data;
           setHints((prevHints) => ({
             ...prevHints,
-            [questionId]: response.data,
+            [questionId]: hint,
           }));
         } else {
           toast.error("Error fetching hint");
@@ -192,10 +174,19 @@ const Maze = () => {
     }));
   };
 
+  const isQuestionSolved = (questionId) => {
+    return (
+      progressData &&
+      progressData[0].questions.some(
+        (question) => question.question.id === questionId && question.solvedAt
+      )
+    );
+  };
+
   const sectionsList = mazeData.map((page, index) => (
     <li
       key={index}
-      className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md cursor-pointer flex items-center justify-between capitalize ${
+      className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md cursor-pointer flex items-center justify-between ${
         selectedSectionIndex === index ? "text-[#5EE848]" : ""
       }`}
       onClick={() => handleSectionClick(index)}
@@ -242,9 +233,7 @@ const Maze = () => {
       <div className="flex justify-between my-10">
         <div className="w-full flex flex-col justify-between">
           <div className="w-[80%] leading-9 min-h-[70vh]">
-            <h1 className="text-3xl font-semibold mb-4 capitalize">
-              {section.title}
-            </h1>
+            <h1 className="text-3xl font-semibold mb-4">{section.title}</h1>
             <div
               className="custom-html-content"
               dangerouslySetInnerHTML={{ __html: section.content }}
@@ -256,7 +245,7 @@ const Maze = () => {
                   className="border border-[#81a77c94] px-4 py-3 my-4 rounded-md shadow-box bg-[#0f20183f]"
                 >
                   <h2
-                    className="text-xl font-semibold flex items-center justify-between cursor-pointer capitalize"
+                    className="text-xl font-semibold flex items-center justify-between cursor-pointer"
                     onClick={() => toggleQuestion(question.id)}
                   >
                     <span className="flex items-center">
@@ -275,16 +264,20 @@ const Maze = () => {
                         type="text"
                         name="answer"
                         placeholder="Your answer"
-                        value={answers[question.id] || ""}
+                        value={
+                          progressData[0].questions.find(
+                            (q) => q.question.id === question.id
+                          )?.question.answer || ""
+                        }
                         onChange={(e) =>
                           handleAnswerChange(question.id, e.target.value)
                         }
                         className={`mt-4 border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none ${
-                          correctAnswers[question.id] !== undefined
-                            ? "disabled:opacity-50 text-gray-300 cursor-not-allowed"
+                          isQuestionSolved(question.id)
+                            ? "cursor-not-allowed text-gray-500"
                             : ""
                         }`}
-                        disabled={correctAnswers[question.id] !== undefined}
+                        disabled={isQuestionSolved(question.id)}
                       />
                       <div className="flex gap-7 items-center mt-4">
                         <button
@@ -296,14 +289,14 @@ const Maze = () => {
                             )
                           }
                           className={`cursor-pointer font-bold text-center border px-2 w-fit rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white ${
-                            correctAnswers[question.id] !== undefined
-                              ? "disabled:opacity-50 text-gray-500 cursor-not-allowed hover:bg-transparent hover:text-gray-500"
+                            isQuestionSolved(question.id)
+                              ? "cursor-not-allowed text-gray-500 hover:text-gray-500 hover:bg-transparent"
                               : ""
                           }`}
-                          disabled={correctAnswers[question.id] !== undefined}
+                          disabled={isQuestionSolved(question.id)}
                         >
-                          {correctAnswers[question.id] !== undefined
-                            ? "Answer Submitted"
+                          {isQuestionSolved(question.id)
+                            ? "Answer submitted"
                             : "Submit Answer"}
                         </button>
                         <button

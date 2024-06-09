@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import learnImg from "/Learn.png";
 import { FaPlus, FaTrash } from "react-icons/fa6";
 import customFetch from "../../utils/CustomFetsh";
+import LoadingItem from "@/components/LoadingItem";
 
 const Learn = () => {
   const [filter, setFilter] = useState("All");
@@ -20,7 +21,6 @@ const Learn = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        console.log(response.data);
         setRooms(response.data);
       } catch (error) {
         console.error("Error fetching rooms:", error);
@@ -29,6 +29,16 @@ const Learn = () => {
 
     fetchRooms();
   }, []);
+
+  console.log(rooms);
+
+  if (rooms.length === 0) {
+    return (
+      <div className="text-center">
+        <LoadingItem />
+      </div>
+    );
+  }
 
   const handleFilterChange = (filterValue) => {
     setFilter(filterValue);
