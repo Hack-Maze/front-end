@@ -21,6 +21,7 @@ const Maze = () => {
   const [answers, setAnswers] = useState({});
   const [hints, setHints] = useState({});
   const [expandedQuestions, setExpandedQuestions] = useState({});
+  const [correctAnswers, setCorrectAnswers] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,6 +55,38 @@ const Maze = () => {
       );
     }
   }, [mazeData, mazePage]);
+
+  useEffect(() => {
+    if (mazeData) {
+      mazeData.forEach((section) => {
+        section.questions.forEach((question) => {
+          fetchAnswer(question.id);
+        });
+      });
+    }
+  }, [mazeData]);
+
+  const fetchAnswer = async (questionId) => {
+    try {
+      const response = await customFetch.get(`question/answer/${questionId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      if (response.status === 200) {
+        setCorrectAnswers((prev) => ({
+          ...prev,
+          [questionId]: response.data,
+        }));
+        setAnswers((prev) => ({
+          ...prev,
+          [questionId]: response.data,
+        }));
+      }
+    } catch (error) {
+      console.log("Error fetching answer:", error);
+    }
+  };
 
   if (!mazeData) {
     return (
@@ -113,6 +146,10 @@ const Maze = () => {
       );
       if (response.status === 200) {
         toast.success("Correct answer");
+        setCorrectAnswers((prev) => ({
+          ...prev,
+          [questionId]: answer,
+        }));
         toggleQuestion(questionId);
       }
     } catch (error) {
@@ -240,7 +277,12 @@ const Maze = () => {
                         onChange={(e) =>
                           handleAnswerChange(question.id, e.target.value)
                         }
-                        className="mt-4 border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none"
+                        className={`mt-4 border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none ${
+                          correctAnswers[question.id] !== undefined
+                            ? "disabled:opacity-50 text-gray-300 cursor-not-allowed"
+                            : ""
+                        }`}
+                        disabled={correctAnswers[question.id] !== undefined}
                       />
                       <div className="flex gap-7 items-center mt-4">
                         <button
@@ -251,9 +293,16 @@ const Maze = () => {
                               answers[question.id]
                             )
                           }
-                          className="cursor-pointer font-bold text-center border px-2 w-fit rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white"
+                          className={`cursor-pointer font-bold text-center border px-2 w-fit rounded-md border-[#585B74] text-gray-400 hover:bg-gray-500 hover:text-white ${
+                            correctAnswers[question.id] !== undefined
+                              ? "disabled:opacity-50 text-gray-500 cursor-not-allowed hover:bg-transparent hover:text-gray-500"
+                              : ""
+                          }`}
+                          disabled={correctAnswers[question.id] !== undefined}
                         >
-                          Submit Answer
+                          {correctAnswers[question.id] !== undefined
+                            ? "Answer Submitted"
+                            : "Submit Answer"}
                         </button>
                         <button
                           onClick={() => handleToggleHint(question.id)}
