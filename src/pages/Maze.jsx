@@ -186,7 +186,7 @@ const Maze = () => {
   const sectionsList = mazeData.map((page, index) => (
     <li
       key={index}
-      className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md cursor-pointer flex items-center justify-between ${
+      className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md cursor-pointer flex items-center justify-between capitalize ${
         selectedSectionIndex === index ? "text-[#5EE848]" : ""
       }`}
       onClick={() => handleSectionClick(index)}
@@ -233,7 +233,9 @@ const Maze = () => {
       <div className="flex justify-between my-10">
         <div className="w-full flex flex-col justify-between">
           <div className="w-[80%] leading-9 min-h-[70vh]">
-            <h1 className="text-3xl font-semibold mb-4">{section.title}</h1>
+            <h1 className="text-3xl font-semibold mb-4 capitalize">
+              {section.title}
+            </h1>
             <div
               className="custom-html-content"
               dangerouslySetInnerHTML={{ __html: section.content }}
@@ -267,17 +269,19 @@ const Maze = () => {
                         value={
                           progressData[0]?.questions.find(
                             (q) => q.question.id === question.id
-                          )?.question.answer || ""
+                          )?.question.answer || answers[question.id]
                         }
                         onChange={(e) =>
                           handleAnswerChange(question.id, e.target.value)
                         }
-                        className={`mt-4 border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none ${
+                        className={`mt-4 border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none 
+                        ${
                           isQuestionSolved(question.id)
                             ? "cursor-not-allowed text-gray-500"
                             : ""
-                        }`}
-                        disabled={isQuestionSolved(question.id)}
+                        }
+                        `}
+                        // disabled={isQuestionSolved(question.id)}
                       />
                       <div className="flex gap-7 items-center mt-4">
                         <button
