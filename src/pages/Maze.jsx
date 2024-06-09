@@ -177,7 +177,7 @@ const Maze = () => {
   const isQuestionSolved = (questionId) => {
     return (
       progressData &&
-      progressData[0].questions.some(
+      progressData[0]?.questions.some(
         (question) => question.question.id === questionId && question.solvedAt
       )
     );
@@ -265,7 +265,7 @@ const Maze = () => {
                         name="answer"
                         placeholder="Your answer"
                         value={
-                          progressData[0].questions.find(
+                          progressData[0]?.questions.find(
                             (q) => q.question.id === question.id
                           )?.question.answer || ""
                         }
