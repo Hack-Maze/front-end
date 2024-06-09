@@ -10,6 +10,7 @@ import customFetch from "../../utils/CustomFetsh";
 import { toast } from "sonner";
 import LoadingItem from "@/components/LoadingItem";
 import "react-quill/dist/quill.snow.css";
+import "../assets/style.css";
 
 const Maze = () => {
   const { mazeId, title, mazePage } = useParams();
@@ -206,7 +207,7 @@ const Maze = () => {
           <div className="w-[80%] leading-9 min-h-[70vh]">
             <h1 className="text-3xl font-semibold mb-4">{section.title}</h1>
             <div
-              className="list-disc"
+              className="custom-html-content"
               dangerouslySetInnerHTML={{ __html: section.content }}
             />
             <div className="flex flex-col">

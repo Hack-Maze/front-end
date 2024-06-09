@@ -38,3 +38,48 @@
   height: 300px;
   justify-content: center;
 }
+
+/* customStyles.css */
+.custom-html-content {
+  /* Define your desired styles here */
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  padding: 0;
+}
+
+.custom-html-content p {
+  margin-bottom: 0.5rem;
+  color: #e5e7eb;
+}
+
+.custom-html-content h1,
+.custom-html-content h2,
+.custom-html-content h3 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.custom-html-content h1 {
+  font-size: 20px;
+}
+
+.custom-html-content a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.custom-html-content ul,
+.custom-html-content ol {
+  margin-left: 2rem;
+  /* font-size: normal; */
+}
+
+.custom-html-content ul {
+  list-style: disc;
+}
+
+.custom-html-content ol {
+  list-style: decimal;
+}
