@@ -30,16 +30,6 @@ const Learn = () => {
     fetchRooms();
   }, []);
 
-  console.log(rooms);
-
-  if (rooms.length === 0) {
-    return (
-      <div className="text-center">
-        <LoadingItem />
-      </div>
-    );
-  }
-
   const handleFilterChange = (filterValue) => {
     setFilter(filterValue);
   };
