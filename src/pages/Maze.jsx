@@ -138,31 +138,42 @@ const Maze = () => {
   };
 
   const handleToggleHint = async (questionId) => {
-    const cachedHint = localStorage.getItem(`hint-${questionId}`);
-    if (cachedHint) {
+    if (hints[questionId]) {
       setHints((prevHints) => ({
         ...prevHints,
-        [questionId]: prevHints[questionId] ? null : cachedHint,
+        [questionId]: prevHints[questionId] ? null : hints[questionId],
       }));
     } else {
-      try {
-        const response = await customFetch.get(`question/hint/${questionId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        if (response.status === 200) {
-          const hint = response.data;
-          setHints((prevHints) => ({
-            ...prevHints,
-            [questionId]: hint,
-          }));
-        } else {
+      const cachedHint = localStorage.getItem(`hint-${questionId}`);
+      if (cachedHint) {
+        setHints((prevHints) => ({
+          ...prevHints,
+          [questionId]: cachedHint,
+        }));
+      } else {
+        try {
+          const response = await customFetch.get(
+            `question/hint/${questionId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          if (response.status === 200) {
+            const hint = response.data;
+            localStorage.setItem(`hint-${questionId}`, hint);
+            setHints((prevHints) => ({
+              ...prevHints,
+              [questionId]: hint,
+            }));
+          } else {
+            toast.error("Error fetching hint");
+          }
+        } catch (error) {
+          console.log("Error fetching hint:", error);
           toast.error("Error fetching hint");
         }
-      } catch (error) {
-        console.log("Error fetching hint:", error);
-        toast.error("Error fetching hint");
       }
     }
   };
@@ -175,6 +186,11 @@ const Maze = () => {
   };
 
   const isQuestionSolved = (questionId) => {
+    // console.log(
+    //   progressData[0]?.questions.some(
+    //     (q) => q.question.id === questionId && q.solvedAt
+    //   )
+    // );
     return (
       progressData &&
       progressData[0]?.questions.some(
@@ -183,6 +199,7 @@ const Maze = () => {
     );
   };
 
+  console.log(progressData);
   const sectionsList = mazeData.map((page, index) => (
     <li
       key={index}
@@ -250,8 +267,8 @@ const Maze = () => {
                     className="text-xl font-semibold flex items-center justify-between cursor-pointer"
                     onClick={() => toggleQuestion(question.id)}
                   >
-                    <span className="flex items-center">
-                      <FaRegQuestionCircle className="mr-2" size={20} />
+                    <span className="flex items-center capitalize mr-5">
+                      <FaRegQuestionCircle className="mr-3" size={25} />
                       {question.content}
                     </span>
                     {expandedQuestions[question.id] ? (
@@ -281,7 +298,7 @@ const Maze = () => {
                             : ""
                         }
                         `}
-                        // disabled={isQuestionSolved(question.id)}
+                        disabled={isQuestionSolved(question.id)}
                       />
                       <div className="flex gap-7 items-center mt-4">
                         <button
