@@ -40,27 +40,34 @@ const Maze = () => {
         console.log("Error fetching maze data:", error);
       }
     };
-    const fetchProgressData = async () => {
-      try {
-        const response = await customFetch.get(
-          `progress/get-profile-page-progress`,
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
-        if (response.status === 200) {
-          setProgressData(response.data);
-        } else {
-          toast.error("Error fetching progress data");
-        }
-      } catch (error) {
-        console.log("Error fetching progress data:", error);
-      }
-    };
 
     fetchMazeData();
-    fetchProgressData();
   }, [mazeId]);
+
+  useEffect(() => {
+    if (mazeData) {
+      const accessToken = localStorage.getItem("accessToken");
+      const fetchProgressData = async () => {
+        try {
+          const response = await customFetch.get(
+            `progress/get-profile-page-progress/${mazeData[selectedSectionIndex].id}`,
+            {
+              headers: { Authorization: `Bearer ${accessToken}` },
+            }
+          );
+          if (response.status === 200) {
+            setProgressData(response.data);
+          } else {
+            toast.error("Error fetching progress data");
+          }
+        } catch (error) {
+          console.log("Error fetching progress data:", error);
+        }
+      };
+
+      fetchProgressData();
+    }
+  }, [mazeData, selectedSectionIndex]);
 
   useEffect(() => {
     if (mazeData) {
@@ -88,24 +95,6 @@ const Maze = () => {
     navigate(
       `/learn/${mazeId}/${title}/${mazeData[index].title.replace(/\s/g, "-")}`
     );
-  };
-
-  const handleComplete = () => {
-    setCompletedSections((prevCompletedSections) => [
-      ...prevCompletedSections,
-      selectedSectionIndex,
-    ]);
-
-    if (selectedSectionIndex < mazeData.length - 1) {
-      const nextIndex = selectedSectionIndex + 1;
-      setSelectedSectionIndex(nextIndex);
-      navigate(
-        `/learn/${mazeId}/${title}/${mazeData[nextIndex].title.replace(
-          /\s/g,
-          "-"
-        )}`
-      );
-    }
   };
 
   const handleAnswerChange = (questionId, value) => {
@@ -186,37 +175,56 @@ const Maze = () => {
   };
 
   const isQuestionSolved = (questionId) => {
-    // console.log(
-    //   progressData[0]?.questions.some(
-    //     (q) => q.question.id === questionId && q.solvedAt
-    //   )
-    // );
     return (
       progressData &&
-      progressData[0]?.questions.some(
-        (question) => question.question.id === questionId && question.solvedAt
+      progressData?.questions.some(
+        (q) => q.question.id === questionId && q.solvedAt
       )
     );
   };
 
-  console.log(progressData);
-  const sectionsList = mazeData.map((page, index) => (
-    <li
-      key={index}
-      className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md cursor-pointer flex items-center justify-between capitalize ${
-        selectedSectionIndex === index ? "text-[#5EE848]" : ""
-      }`}
-      onClick={() => handleSectionClick(index)}
-    >
-      {page.title}
-      {completedSections.includes(index) && (
-        <IoCheckmarkCircleOutline className="text-[#5EE848] ml-2" size={20} />
-      )}
-    </li>
-  ));
+  const sectionsList = mazeData.map((page, index) => {
+    const isCompleted =
+      progressData?.isCompleted || completedSections.includes(index);
+
+    return (
+      <li
+        key={index}
+        className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md cursor-pointer flex items-center justify-between capitalize ${
+          selectedSectionIndex === index ? "text-[#5EE848]" : ""
+        }`}
+        onClick={() => handleSectionClick(index)}
+      >
+        {page.title}
+        {isCompleted ? (
+          <IoCheckmarkCircleOutline className="text-[#5EE848] ml-2" size={20} />
+        ) : (
+          ""
+        )}
+      </li>
+    );
+  });
 
   const toggleTableOfContents = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const handleComplete = () => {
+    setCompletedSections((prevCompletedSections) => [
+      ...prevCompletedSections,
+      selectedSectionIndex,
+    ]);
+
+    if (selectedSectionIndex < mazeData.length - 1) {
+      const nextIndex = selectedSectionIndex + 1;
+      setSelectedSectionIndex(nextIndex);
+      navigate(
+        `/learn/${mazeId}/${title}/${mazeData[nextIndex].title.replace(
+          /\s/g,
+          "-"
+        )}`
+      );
+    }
   };
 
   const handleNextBtn = () => {
@@ -284,7 +292,7 @@ const Maze = () => {
                         name="answer"
                         placeholder="Your answer"
                         value={
-                          progressData[0]?.questions.find(
+                          progressData?.questions.find(
                             (q) => q.question.id === question.id
                           )?.question.answer || answers[question.id]
                         }
@@ -364,17 +372,18 @@ const Maze = () => {
                 </button>
               )}
             </div>
-            {!completedSections.includes(selectedSectionIndex) && (
-              <button
-                className="capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
-                onClick={handleComplete}
-              >
-                mark as complete
-                <span>
-                  <IoCheckmarkCircleOutline size={25} className="ml-3" />
-                </span>
-              </button>
-            )}
+            {!completedSections.includes(selectedSectionIndex) &&
+              !progressData?.isCompleted && (
+                <button
+                  className="capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
+                  onClick={handleComplete}
+                >
+                  mark as complete
+                  <span>
+                    <IoCheckmarkCircleOutline size={25} className="ml-3" />
+                  </span>
+                </button>
+              )}
           </div>
         </div>
         <div

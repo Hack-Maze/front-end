@@ -98,7 +98,7 @@ const router = createBrowserRouter([
               { path: "/learn/createMaze/success", element: <MazeSuccess /> },
             ],
           },
-          { path: "/profile", element: <Profile /> },
+          { path: "/profile/:username?", element: <Profile /> },
           {
             path: "/editProfile",
             element: <EditProfile />,

@@ -56,19 +56,19 @@ const Learn = () => {
     setDisplayedRooms((prev) => prev + 6);
   };
 
-  const handleDeleteMaze = async (mazeId) => {
-    try {
-      const accessToken = localStorage.getItem("accessToken");
-      await customFetch.delete(`maze/${mazeId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      setRooms((prevRooms) => prevRooms.filter((room) => room.id !== mazeId));
-    } catch (error) {
-      console.log("Error deleting maze:", error);
-    }
-  };
+  // const handleDeleteMaze = async (mazeId) => {
+  //   try {
+  //     const accessToken = localStorage.getItem("accessToken");
+  //     await customFetch.delete(`maze/${mazeId}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     });
+  //     setRooms((prevRooms) => prevRooms.filter((room) => room.id !== mazeId));
+  //   } catch (error) {
+  //     console.log("Error deleting maze:", error);
+  //   }
+  // };
 
   return (
     <div className="w-[80%] m-auto my-10 min-h-[75vh]">
@@ -126,12 +126,12 @@ const Learn = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {filteredRooms.slice(0, displayedRooms).map((room) => (
               <div className="relative" key={room.id}>
-                <div
+                {/* <div
                   className="absolute right-4 top-4 cursor-pointer"
                   onClick={() => handleDeleteMaze(room.id)}
                 >
                   <FaTrash size={20} color="red" />
-                </div>
+                </div> */}
                 <Link
                   to={`/learn/${room.id}/${room.title
                     .toLowerCase()
@@ -150,7 +150,7 @@ const Learn = () => {
                   </h2>
                   <p className="text-gray-400 px-3 text-sm leading-7">
                     {room.description.length > 130
-                      ? `${room.description.substring(0, 130)}...`
+                      ? `${room.description.substring(0, 100)}...`
                       : room.description}
                   </p>
                   <p
@@ -168,6 +168,15 @@ const Learn = () => {
                     }`}
                   >
                     {room.difficulty}
+                  </p>
+                  <p className="text-white">
+                    By:{" "}
+                    <Link
+                      to={`/profile/${room.author.username}`}
+                      className="text-green-600"
+                    >
+                      {room.author.username}
+                    </Link>
                   </p>
                 </Link>
               </div>
