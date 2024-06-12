@@ -540,17 +540,101 @@ jobs:
         env:
           SHA: ${{ env.SHA }}
 
+########################################################################################################
+
+  check_website:
+    needs: [push_to_Docker_Hub]
+    runs-on: ubuntu-latest
+    outputs:
+      website_up: ${{ steps.check.outputs.website_up }}
+    steps:
+    - id: check
+      run: |
+        RESPONSE=$(curl --write-out '%{http_code}' --silent --output /dev/null http://hm-1337.eastus.cloudapp.azure.com/)
+        if [[ "$RESPONSE" =~ ^5 ]]; then
+          echo "::set-output name=website_up::false"
+        else
+          echo "::set-output name=website_up::true"
+        fi
+    - name: Save website status
+      uses: actions/upload-artifact@v2
+      with:
+        name: website-status
+        path: .
+      if: ${{ steps.check.outputs.website_up == 'true' }}
 
 
+############################################################################
+
+  deploy:
+    if: github.actor != 'dependabot[bot]' && github.event_name == 'push' && needs.check_website.outputs.website_up == 'true'
+    needs: [push_to_Docker_Hub,check_website]
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: short-sha
+      uses: benjlevesque/short-sha@v2.2
+      env:
+        SHA: ${{ steps.short-sha.outputs.sha }}
+        
+            
+    - name: preparing the ssh
+      run: |
+          eval $(ssh-agent -s)
+          mkdir ~/.ssh
+          echo "${{ secrets.JUMP_KEY }}" > ~/.ssh/jumpkey.pem
+          chmod 600 ~/.ssh/jumpkey.pem
+          ssh-add ~/.ssh/jumpkey.pem
 
 
+    - name: deploying frontend to the cluster
+      run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/jumpkey.pem ${{ secrets.SSH_USER }}@${{ secrets.JUMP_IP }}  "ssh -i ${{ secrets.JUMP_PRIVATE_KEY_FILE }} ${{ secrets.SSH_USER }}@control ${{ secrets.DEPLOY_COMMAND }}"
+
+
+    
+
+    - name: notify deploy Stage Succeeded
+      uses: rjstone/discord-webhook-notify@v1.0.4
+      if: success()
+      with:
+          severity: info
+          details: "##  > - **deploy stage Succeeded** "
+          footer: sha ${{ env.SHA }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      env:
+        SHA: ${{ env.SHA }}
+          
+    - name: Test Failure
+      uses: rjstone/discord-webhook-notify@v1.0.4
+      if: failure()
+      with:
+          severity: error
+          details: "##  > - **deploy stage Failed**"
+          footer: you can try ut now
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      env:
+        SHA: ${{ env.SHA }}
+    - name: Test Cancelled
+      uses: rjstone/discord-webhook-notify@v1.0.4
+      if: cancelled()
+      with:
+          severity: warn
+          details: "##  > - **deploy Cancelled!**"
+          footer: sha ${{ env.SHA }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      env:
+        SHA: ${{ env.SHA }}
+        
+########################################################################################################
 
   notify_Discord_CI_finish:
     if: github.actor!= 'dependabot[bot]'
-    needs: [push_to_Docker_Hub]
+    needs: [deploy]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: notify Frontend CI Workflow finished
         uses: rjstone/discord-webhook-notify@v1.0.4
@@ -562,12 +646,13 @@ jobs:
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
 
+########################################################################################################
 
 
   deploy-azure:
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]' && github.event_name == 'push' && github.ref == 'refs/heads/deploy'
-    needs: [push_to_Docker_Hub]
+    if: github.actor != 'dependabot[bot]' && github.event_name == 'push' && github.ref == 'refs/heads/deploy' && github.ref == 'refs/heads/deploy' && needs.check_website.outputs.website_up == 'false'
+    needs: [push_to_Docker_Hub,check_website]
     steps:
     
       - name: deploy to azure
