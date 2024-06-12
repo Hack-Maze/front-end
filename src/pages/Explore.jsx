@@ -3,18 +3,20 @@ import { Link, useParams } from "react-router-dom";
 import { GiMaze } from "react-icons/gi";
 import customFetch from "../../utils/CustomFetsh";
 import LoadingItem from "@/components/LoadingItem";
+import { toast } from "sonner";
 
 const Explore = () => {
   const { mazeId, title } = useParams();
   const [mazeData, setMazeData] = useState();
+  const [mazeEnrolled, setMazeEnrolled] = useState();
   const [rooms, setRooms] = useState([]);
+  const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [mazeData]);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
     const fetchMazeData = async () => {
       try {
         const response = await customFetch.get(`maze/${mazeId}`, {
@@ -26,10 +28,31 @@ const Explore = () => {
           toast.error("Error fetching maze data");
         }
       } catch (error) {
-        console.log("Error deleting maze:", error);
+        console.log("Error fetching maze:", error);
       }
     };
     fetchMazeData();
+  }, [mazeId]);
+
+  useEffect(() => {
+    const fetchEnrollmentStatus = async () => {
+      try {
+        const response = await customFetch.get(
+          `maze/is-current-user-enrolled/${mazeId}`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+        if (response.status === 200) {
+          setMazeEnrolled(response.data);
+        } else {
+          toast.error("Error fetching maze enrollment status");
+        }
+      } catch (error) {
+        console.log("Error fetching maze enrollment status:", error);
+      }
+    };
+    fetchEnrollmentStatus();
   }, [mazeId]);
 
   useEffect(() => {
@@ -42,7 +65,6 @@ const Explore = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        console.log(response.data);
         setRooms(response.data);
       } catch (error) {
         console.error("Error fetching rooms:", error);
@@ -84,6 +106,23 @@ const Explore = () => {
     );
   });
 
+  // const handleEnrollMaze = async () => {
+  //   try {
+  //     const response = await customFetch.post(
+  //       `progress/enroll-user-to-maze/${mazeId}`,
+  //       {},
+  //       {
+  //         headers: { Authorization: `Bearer ${accessToken}` },
+  //       }
+  //     );
+  //     if(response.status === 200){}
+  //     toast.success("Enrolled successfully");
+  //     setMazeEnrolled(true);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   return (
     <div className="w-[75vw] min-h-[85vh] m-auto my-10 text-white">
       <div key={mazeData.id}>
@@ -110,14 +149,17 @@ const Explore = () => {
             >
               {mazeData.difficulty}
             </p>
-            <Link
-              to={`/learn/${mazeId}/${title}/${
-                mazeData?.pages[0]?.title.replace(/\s/g, "-") || ""
-              }`}
-              className="border py-1 px-10 text-lg font-semibold rounded-md hover:bg-slate-800"
-            >
-              Enroll
-            </Link>
+            {!mazeEnrolled && (
+              <Link
+                to={`/learn/${mazeId}/${title}/${
+                  mazeData?.pages[0]?.title.replace(/\s/g, "-") || ""
+                }`}
+                className="border py-1 px-10 text-lg font-semibold rounded-md hover:bg-slate-800"
+                // onClick={handleEnrollMaze}
+              >
+                Enroll
+              </Link>
+            )}
           </div>
         </div>
         <div className="flex justify-between my-10 h-[50vh]">

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { GrContactInfo } from "react-icons/gr";
-import { CgProfile } from "react-icons/cg";
+import { GrContactInfo, GrUploadOption } from "react-icons/gr";
 import { TbListDetails } from "react-icons/tb";
 import customFetch from "../../utils/CustomFetsh";
-import { GrUploadOption } from "react-icons/gr";
 import FormRow from "@/components/FormRow";
 import SubmitBtn from "@/components/SubmitBtn";
 import { useHomeContext } from "@/pages/Home";
@@ -25,12 +23,19 @@ export const action = async ({ request }) => {
     toast.error("Email is required.");
     return null;
   }
+
   const accessToken = localStorage.getItem("accessToken");
   try {
+    const image = formData.get("image");
+    if (!image || image.size === 0) {
+      formData.delete("image");
+    }
+
     await customFetch.put("profile/update", formData, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     toast.success("Profile updated.");
+    console.log(formData);
   } catch (error) {
     toast.error(error.response.data.toString());
     console.log(error);
@@ -44,7 +49,7 @@ const EditProfile = () => {
   }, []);
 
   const { data } = useHomeContext();
-  console.log(data);
+
   const {
     username,
     email,
@@ -54,6 +59,8 @@ const EditProfile = () => {
     personalWebsite,
     image,
   } = data;
+
+  console.log(data);
 
   const [imagePreview, setImagePreview] = useState(
     image === "image" ? "" : image
@@ -78,7 +85,7 @@ const EditProfile = () => {
             <div className="flex mb-6">
               <GrContactInfo size={30} />
               <span className="capitalize ml-3 text-xl font-semibold">
-                general info
+                General Info
               </span>
             </div>
             <div className="w-[70%] m-auto">
@@ -128,12 +135,6 @@ const EditProfile = () => {
                   placeholder="Tell us more about you"
                   defaultValue={bio}
                 />
-                {/* <FormRow
-                  text="Password"
-                  name="password"
-                  type="password"
-                  placeholder="Update Password"
-                /> */}
               </div>
             </div>
           </div>
@@ -161,7 +162,7 @@ const EditProfile = () => {
                   defaultValue={githubLink}
                 />
                 <FormRow
-                  text="Personal website"
+                  text="Personal Website"
                   name="personalWebsite"
                   type="url"
                   placeholder="Add your website link"

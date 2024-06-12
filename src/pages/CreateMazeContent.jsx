@@ -19,6 +19,7 @@ const CreateMazeContent = () => {
   const [isEditingContent, setIsEditingContent] = useState(false);
   const [isEditingQuestion, setIsEditingQuestion] = useState(false);
   const [selectedSectionIndex, setSelectedSectionIndex] = useState(null);
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
   const [createQuestion, setCreateQuestion] = useState(false);
 
   useEffect(() => {
@@ -110,7 +111,7 @@ const CreateMazeContent = () => {
     setSectionContent("");
   };
 
-  const handleAddOrUpdateQuestion = async () => {
+  const handleAddOrUpdateQuestion = async (questionIndex) => {
     const sectionId = sections[selectedSectionIndex]?.id;
     const accessToken = localStorage.getItem("accessToken");
     if (sectionQuestion.trim() === "" || sectionAnswer.trim() === "") {
@@ -127,7 +128,8 @@ const CreateMazeContent = () => {
       let response;
       if (isEditingQuestion) {
         if (sections[selectedSectionIndex]?.questions?.length > 0) {
-          const questionId = sections[selectedSectionIndex].questions[0].id;
+          const questionId =
+            sections[selectedSectionIndex].questions[selectedQuestionIndex].id;
           const updatedSections = [...sections];
           updatedSections[selectedSectionIndex] = {
             ...newQuestion,
@@ -147,7 +149,9 @@ const CreateMazeContent = () => {
           );
           if (response.status === 200) {
             const updatedSections = [...sections];
-            updatedSections[selectedSectionIndex].questions[0] = {
+            updatedSections[selectedSectionIndex].questions[
+              selectedQuestionIndex
+            ] = {
               ...newQuestion,
               id: questionId,
             };
@@ -261,12 +265,16 @@ const CreateMazeContent = () => {
   const handleSectionClick = (index) => {
     setSelectedSectionIndex(index);
   };
+  const handleQuestionClick = (index) => {
+    setSelectedQuestionIndex(index);
+  };
 
   const handleEditSection = (index) => {
     setIsEditingContent(true);
     const section = sections[index];
     setSectionTitle(section.title);
     setSectionContent(section.content);
+    setSelectedSectionIndex(index);
   };
 
   const handleEditQuestion = async (index, questionIndex) => {
@@ -279,6 +287,7 @@ const CreateMazeContent = () => {
       });
       if (questionResponse.status === 200) {
         const questionData = sections[index].questions[questionIndex];
+        handleQuestionClick(questionIndex);
         setSelectedSectionIndex(index);
         setIsEditingQuestion(true);
         setCreateQuestion(true);
