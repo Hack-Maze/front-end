@@ -24,7 +24,15 @@ const Profile = () => {
     const fetchProfileData = async () => {
       try {
         if (username) {
-          const response = await customFetch.get(`profile/${username}`);
+          const accessToken = localStorage.getItem("accessToken");
+          const response = await customFetch.get(
+            `profile/username/${username}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
           setProfileData(response.data);
         } else {
           setProfileData(homeData);
