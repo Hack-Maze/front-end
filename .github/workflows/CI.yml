@@ -541,29 +541,43 @@ jobs:
           SHA: ${{ env.SHA }}
 
 ########################################################################################################
-
   check_website:
     needs: [push_to_Docker_Hub]
     runs-on: ubuntu-latest
     outputs:
       website_up: ${{ steps.check.outputs.website_up }}
     steps:
+    
+    - name: check status trough a file 
+      run: |
+              echo '#!/bin/bash
+
+              # Perform the curl command to check website availability
+              curl --output /dev/null --silent --head --fail http://hm-1337.eastus.cloudapp.azure.com/ > /dev/null
+
+              # Capture the exit status of the curl command
+              status=$?
+              echo $status' > status.sh 
+              chmod +x status.sh 
+              ./status.sh > status.txt
+              
     - id: check
       run: |
-        RESPONSE=$(curl --write-out '%{http_code}' --silent --output /dev/null http://hm-1337.eastus.cloudapp.azure.com/)
-        if [[ "$RESPONSE" =~ ^5 ]]; then
-          echo "::set-output name=website_up::false"
-        else
-          echo "::set-output name=website_up::true"
-        fi
-    - name: Save website status
-      uses: actions/upload-artifact@v2
-      with:
-        name: website-status
-        path: .
-      if: ${{ steps.check.outputs.website_up == 'true' }}
 
-
+            status=$(cat status.txt 2>/dev/null || echo "")
+            
+            if [ -z "$status" ]; then
+              echo "status.txt is empty or not found. Assuming the website is down."
+              echo "Website is down"
+              echo "::set-output name=website_up::false"
+            elif [ $status -eq 0 ]; then
+              echo "Website is up"
+              echo "::set-output name=website_up::true"
+            else
+              echo "Website is down"
+              echo "::set-output name=website_up::false"
+            fi
+            
 ############################################################################
 
   deploy:

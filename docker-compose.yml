@@ -16,8 +16,10 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./config.js:/usr/share/nginx/html/config.js
-
+      - ./src/assets/config.js:/usr/share/nginx/html/config.js
+    depends_on:
+      - backend
+      
   db:
     image: postgres:16
     pull_policy: always
