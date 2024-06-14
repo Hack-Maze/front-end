@@ -111,7 +111,7 @@ const CreateMazeContent = () => {
     setSectionContent("");
   };
 
-  const handleAddOrUpdateQuestion = async (questionIndex) => {
+  const handleAddOrUpdateQuestion = async () => {
     const sectionId = sections[selectedSectionIndex]?.id;
     const accessToken = localStorage.getItem("accessToken");
     if (sectionQuestion.trim() === "" || sectionAnswer.trim() === "") {

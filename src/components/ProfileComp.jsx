@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FaLinkedin } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import { PiArrowSquareOut } from "react-icons/pi";
-import { useHomeContext } from "@/pages/Home";
 import { TbWorld } from "react-icons/tb";
 
-const ProfileComp = () => {
-  const [profileData, setProfileData] = useState([]);
-  const { data } = useHomeContext();
+const ProfileComp = ({ data }) => {
   return (
     <div className="flex justify-between w-full">
       <div className="flex  flex-col items-start w-[50%]">

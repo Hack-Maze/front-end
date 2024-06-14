@@ -3,11 +3,10 @@ import SolvedChallenges from "@/components/SolvedChallenges";
 import CreatedChallenges from "@/components/CreatedChallenges";
 import Activity from "@/components/Activity";
 import ProfileComp from "@/components/ProfileComp";
-
 import { useHomeContext } from "@/pages/Home";
 import { useParams } from "react-router-dom";
 import customFetch from "../../utils/CustomFetsh";
-import LoadingItem from "@/components/LoadingItem"; // Assuming you have a LoadingItem component
+import LoadingItem from "@/components/LoadingItem";
 
 const Profile = () => {
   const [activeItem, setActiveItem] = useState("profile");
@@ -22,6 +21,7 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchProfileData = async () => {
+      setLoading(true);
       try {
         if (username) {
           const accessToken = localStorage.getItem("accessToken");
@@ -48,6 +48,8 @@ const Profile = () => {
   }, [username, homeData]);
 
   const data = profileData || homeData;
+
+  console.log(data);
 
   return (
     <div className="text-white w-[80%] m-auto my-10 min-h-[75vh]">
@@ -123,7 +125,7 @@ const Profile = () => {
               </ul>
             </>
             {activeItem === "profile" ? (
-              <ProfileComp />
+              <ProfileComp data={data} />
             ) : activeItem === "solved" ? (
               <SolvedChallenges />
             ) : activeItem === "created" ? (

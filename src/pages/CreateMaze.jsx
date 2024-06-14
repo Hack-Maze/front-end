@@ -8,8 +8,32 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import SubmitBtn from "@/components/SubmitBtn";
 import LoadingItem from "@/components/LoadingItem";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const CreateMaze = () => {
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link"],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "link",
+  ];
+
   const {
     register,
     handleSubmit,
@@ -22,6 +46,8 @@ const CreateMaze = () => {
   const [uploadFile, setUploadFile] = useState("");
   const [checkLevel, setCheckLevel] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [summaryError, setSummaryError] = useState(false);
+  const [summary, setSummary] = useState("");
 
   // const handleCheck = (value) => {
   //   setChecked(value);
@@ -50,6 +76,17 @@ const CreateMaze = () => {
   const onSubmit = async (data) => {
     if (!selectedLevel) {
       setCheckLevel(false);
+    } else {
+      setCheckLevel(true);
+    }
+
+    if (summary.trim() === "") {
+      setSummaryError(true);
+    } else {
+      setSummaryError(false);
+    }
+
+    if (!selectedLevel || summary.trim() === "") {
       return;
     }
     setLoading(true);
@@ -57,7 +94,7 @@ const CreateMaze = () => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
-    formData.append("summary", data.summary);
+    formData.append("summary", summary);
     formData.append("difficulty", selectedLevel.toUpperCase());
     formData.append("image", uploadImage);
     formData.append("file", uploadFile);
@@ -148,16 +185,25 @@ const CreateMaze = () => {
           </div>
           <div className="mt-4 mb-2">
             <label className="md:text-lg text-base">Summary</label>
-            <input
-              {...register("summary", {
-                required: "Please provide a summary of the maze.",
-              })}
-              type="text"
-              placeholder="Summary description of the maze"
-              className="border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none mt-3"
-            />
-            {errors.summary && (
-              <p className="text-red-500 mt-2">{errors.summary.message}</p>
+            <div className="my-4">
+              <ReactQuill
+                theme="snow"
+                value={summary}
+                onChange={setSummary}
+                modules={modules}
+                formats={formats}
+                placeholder="Summary description of the maze"
+                style={{
+                  height: "fit-content",
+                  marginBottom: "10px",
+                  backgroundColor: "#081b1b",
+                  color: "white",
+                }}
+                className="quill-editor border-[#58745975]"
+              />
+            </div>
+            {summaryError && (
+              <p className="text-red-500 mt-2">Please enter summary for maze</p>
             )}
           </div>
           <div className="mt-4 mb-2">

@@ -5,7 +5,7 @@ import customFetch from "../../utils/CustomFetsh";
 import FormRow from "@/components/FormRow";
 import SubmitBtn from "@/components/SubmitBtn";
 import { useHomeContext } from "@/pages/Home";
-import { Form } from "react-router-dom";
+import { Form, redirect } from "react-router-dom";
 import { toast } from "sonner";
 
 export const action = async ({ request }) => {
@@ -35,7 +35,6 @@ export const action = async ({ request }) => {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     toast.success("Profile updated.");
-    console.log(formData);
   } catch (error) {
     toast.error(error.response.data.toString());
     console.log(error);

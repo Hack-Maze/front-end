@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { GiMaze } from "react-icons/gi";
 import customFetch from "../../utils/CustomFetsh";
 import LoadingItem from "@/components/LoadingItem";
 import { toast } from "sonner";
-
+import "../assets/style.css";
 const Explore = () => {
   const { mazeId, title } = useParams();
   const [mazeData, setMazeData] = useState();
   const [mazeEnrolled, setMazeEnrolled] = useState();
   const [rooms, setRooms] = useState([]);
+  const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -43,11 +44,7 @@ const Explore = () => {
             headers: { Authorization: `Bearer ${accessToken}` },
           }
         );
-        if (response.status === 200) {
-          setMazeEnrolled(response.data);
-        } else {
-          toast.error("Error fetching maze enrollment status");
-        }
+        setMazeEnrolled(response.data);
       } catch (error) {
         console.log("Error fetching maze enrollment status:", error);
       }
@@ -89,10 +86,6 @@ const Explore = () => {
     hard: { color: "text-red-700", bgColor: "bg-[#62282875]" },
   };
 
-  const formattedSummary = mazeData.summary
-    .split("\n")
-    .map((paragraph, index) => <p key={index}>{paragraph}</p>);
-
   const sectionsList = mazeData.pages.map((page, index) => (
     <li key={index} className="list-disc leading-7">
       {page.title}
@@ -106,22 +99,28 @@ const Explore = () => {
     );
   });
 
-  // const handleEnrollMaze = async () => {
-  //   try {
-  //     const response = await customFetch.post(
-  //       `progress/enroll-user-to-maze/${mazeId}`,
-  //       {},
-  //       {
-  //         headers: { Authorization: `Bearer ${accessToken}` },
-  //       }
-  //     );
-  //     if(response.status === 200){}
-  //     toast.success("Enrolled successfully");
-  //     setMazeEnrolled(true);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleEnrollMaze = async () => {
+    try {
+      const response = await customFetch.post(
+        `progress/enroll-user-to-maze/${mazeId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+      if (response.status === 200) {
+        navigate(
+          `/learn/${mazeId}/${title}/${mazeData?.pages[0]?.title.replace(
+            /\s/g,
+            "-"
+          )}`
+        );
+        toast.success("Enrolled successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-[75vw] min-h-[85vh] m-auto my-10 text-white">
@@ -149,15 +148,22 @@ const Explore = () => {
             >
               {mazeData.difficulty}
             </p>
-            {!mazeEnrolled && (
-              <Link
-                to={`/learn/${mazeId}/${title}/${
-                  mazeData?.pages[0]?.title.replace(/\s/g, "-") || ""
-                }`}
+            {!mazeEnrolled ? (
+              <button
                 className="border py-1 px-10 text-lg font-semibold rounded-md hover:bg-slate-800"
-                // onClick={handleEnrollMaze}
+                onClick={handleEnrollMaze}
               >
                 Enroll
+              </button>
+            ) : (
+              <Link
+                to={`/learn/${mazeId}/${title}/${mazeData?.pages[0]?.title.replace(
+                  /\s/g,
+                  "-"
+                )}`}
+                className="border py-1 px-10 text-lg font-semibold rounded-md hover:bg-slate-800"
+              >
+                Enter Maze
               </Link>
             )}
           </div>
@@ -165,9 +171,10 @@ const Explore = () => {
         <div className="flex justify-between my-10 h-[50vh]">
           <div className="w-[70%]">
             <h2 className="text-3xl font-semibold mb-2">Maze Summary</h2>
-            <div className="text-gray-300 leading-9 w-full">
-              {formattedSummary}
-            </div>
+            <div
+              className="custom-html-content"
+              dangerouslySetInnerHTML={{ __html: mazeData.summary }}
+            />
           </div>
           <div className="h-fit border-2 border-[#81a77c94] p-5 w-[23%] rounded-md shadow-box bg-[#0f20183f]">
             <div className="flex">

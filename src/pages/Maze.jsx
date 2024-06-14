@@ -255,9 +255,9 @@ const Maze = () => {
 
   return (
     <div className="w-[75vw] min-h-[85vh] m-auto my-10 text-white">
-      <div className="flex justify-between my-10">
-        <div className="w-full flex flex-col justify-between">
-          <div className="w-[80%] leading-9 min-h-[70vh]">
+      <div className="flex justify-between my-10 gap-10">
+        <div className="w-[80%] flex flex-col justify-between">
+          <div className="w-full leading-9 min-h-[70vh]">
             <h1 className="text-3xl font-semibold mb-4 capitalize">
               {section.title}
             </h1>
@@ -269,7 +269,7 @@ const Maze = () => {
               {section.questions.map((question, index) => (
                 <div
                   key={index}
-                  className="border border-[#81a77c94] px-4 py-3 my-4 rounded-md shadow-box bg-[#0f20183f]"
+                  className="border border-[#81a77c94] px-4 py-3 my-9 rounded-md shadow-box bg-[#0f20183f] w-[80%]"
                 >
                   <h2
                     className="text-xl font-semibold flex items-center justify-between cursor-pointer"
@@ -389,7 +389,7 @@ const Maze = () => {
         <div
           className={`border-2 ${
             isExpanded ? "h-fit" : "h-[7vh]"
-          } border-[#81a77c94] p-4 w-[35%] rounded-md shadow-box bg-[#0f20183f]`}
+          } border-[#81a77c94] p-4 w-[30%] rounded-md shadow-box bg-[#0f20183f]`}
         >
           <div
             className="flex justify-between items-center mb-3 cursor-pointer"
