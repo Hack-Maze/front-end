@@ -24,8 +24,27 @@ const Maze = () => {
   const [progressData, setProgressData] = useState(null);
   const navigate = useNavigate();
 
+  const accessToken = localStorage.getItem("accessToken");
+
+  const fetchProgressData = async (pageId) => {
+    try {
+      const response = await customFetch.get(
+        `progress/get-profile-page-progress/${pageId}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+      if (response.status === 200) {
+        setProgressData(response.data);
+      } else {
+        toast.error("Error fetching progress data");
+      }
+    } catch (error) {
+      console.log("Error fetching progress data:", error);
+    }
+  };
+
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
     const fetchMazeData = async () => {
       try {
         const response = await customFetch.get(`page/maze/${mazeId}`, {
@@ -42,32 +61,13 @@ const Maze = () => {
     };
 
     fetchMazeData();
-  }, [mazeId]);
+  }, [mazeId, accessToken]);
 
   useEffect(() => {
     if (mazeData) {
-      const accessToken = localStorage.getItem("accessToken");
-      const fetchProgressData = async () => {
-        try {
-          const response = await customFetch.get(
-            `progress/get-profile-page-progress/${mazeData[selectedSectionIndex].id}`,
-            {
-              headers: { Authorization: `Bearer ${accessToken}` },
-            }
-          );
-          if (response.status === 200) {
-            setProgressData(response.data);
-          } else {
-            toast.error("Error fetching progress data");
-          }
-        } catch (error) {
-          console.log("Error fetching progress data:", error);
-        }
-      };
-
-      fetchProgressData();
+      fetchProgressData(mazeData[selectedSectionIndex].id);
     }
-  }, [mazeData, selectedSectionIndex]);
+  }, [mazeData, selectedSectionIndex, accessToken]);
 
   useEffect(() => {
     if (mazeData) {
@@ -104,12 +104,10 @@ const Maze = () => {
     }));
   };
 
-  const accessToken = localStorage.getItem("accessToken");
-
   const handleAnswerSubmit = async (pageId, questionId, answer) => {
     try {
       const response = await customFetch.post(
-        `progress/solve-question/${pageId}/${questionId}?answer=${answer}`,
+        `progress/solve-question/${questionId}?answer=${answer}`,
         {},
         {
           headers: {
@@ -120,6 +118,7 @@ const Maze = () => {
       if (response.status === 200) {
         toast.success("Correct answer");
         toggleQuestion(questionId);
+        fetchProgressData(pageId);
       }
     } catch (error) {
       toast.error(error.response.data);
@@ -175,11 +174,9 @@ const Maze = () => {
   };
 
   const isQuestionSolved = (questionId) => {
-    return (
-      progressData &&
-      progressData?.questions.some(
-        (q) => q.question.id === questionId && q.solvedAt
-      )
+    console.log(progressData?.solvedQuestions);
+    return progressData?.solvedQuestions?.find(
+      (q) => q.id === questionId && q.solvedAt
     );
   };
 
@@ -292,9 +289,9 @@ const Maze = () => {
                         name="answer"
                         placeholder="Your answer"
                         value={
-                          progressData?.questions.find(
-                            (q) => q.question.id === question.id
-                          )?.question.answer || answers[question.id]
+                          progressData?.solvedQuestions?.find(
+                            (q) => q.id === question.id
+                          )?.answer || answers[question.id]
                         }
                         onChange={(e) =>
                           handleAnswerChange(question.id, e.target.value)
