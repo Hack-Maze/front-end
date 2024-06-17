@@ -14,7 +14,6 @@ import { action as registerAction } from "./pages/RegisterPage";
 import { action as resetAction } from "./pages/PassReset";
 import { action as recoveryAction } from "./pages/PassRecovery";
 import { loader as homeLoader } from "./pages/Home";
-import { action as profileAction } from "./pages/EditProfile";
 import Home from "./pages/Home";
 import Learn from "./pages/Learn";
 import Dashboard from "./pages/Dashboard";
@@ -102,7 +101,6 @@ const router = createBrowserRouter([
           {
             path: "/editProfile",
             element: <EditProfile />,
-            action: profileAction,
           },
           ,
         ],

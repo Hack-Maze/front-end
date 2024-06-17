@@ -1,5 +1,5 @@
 import React from "react";
-import { FaLinkedin } from "react-icons/fa";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import { PiArrowSquareOut } from "react-icons/pi";
 import { TbWorld } from "react-icons/tb";
@@ -19,8 +19,9 @@ const ProfileComp = ({ data }) => {
               <span className="flex gap-3 items-center">
                 <FaLinkedin size={25} />
                 <a
-                  href=""
+                  href={data.linkedinLink}
                   className="flex w-[15vw] items-center justify-between border border-[#5EE848] rounded-md p-2 bg-[#5de84821]"
+                  target="_blank"
                 >
                   <span className="w-[13vw] h-[2.5vh] overflow-hidden text-base">
                     {data.linkedinLink}
@@ -43,12 +44,28 @@ const ProfileComp = ({ data }) => {
                 </a>
               </span>
             )}
+            {data.githubLink && (
+              <span className="flex gap-3 items-center">
+                <FaGithub size={25} />
+                <a
+                  href={data.githubLink}
+                  className="flex w-[15vw] items-center justify-between border border-[#5EE848] rounded-md p-2 bg-[#5de84821]"
+                  target="_blank"
+                >
+                  <span className="w-[13vw] h-[2.5vh] overflow-hidden text-base">
+                    {data.githubLink}
+                  </span>
+                  <PiArrowSquareOut />
+                </a>
+              </span>
+            )}
             {data.personalWebsite && (
               <span className="flex gap-3 items-center">
                 <TbWorld size={25} />
                 <a
-                  href=""
+                  href={data.personalWebsite}
                   className="flex w-[15vw] items-center justify-between border border-[#5EE848] rounded-md p-2 bg-[#5de84821]"
+                  target="_blank"
                 >
                   <span className="w-[13vw] h-[2.5vh] overflow-hidden text-base">
                     {data.personalWebsite}

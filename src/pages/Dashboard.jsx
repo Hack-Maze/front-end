@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Paths, RecPaths } from "../static/data";
 import { Link } from "react-router-dom";
 import Layout_1 from "../components/Layout_1/Layout_1";
@@ -8,6 +8,9 @@ import { GiLaurelCrown } from "react-icons/gi";
 import { CgProfile } from "react-icons/cg";
 
 const Dashboard = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const topThreeHackers = [
     {
       img: <CgProfile size={50} />,

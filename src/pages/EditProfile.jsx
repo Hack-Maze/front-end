@@ -5,49 +5,17 @@ import customFetch from "../../utils/CustomFetsh";
 import FormRow from "@/components/FormRow";
 import SubmitBtn from "@/components/SubmitBtn";
 import { useHomeContext } from "@/pages/Home";
-import { Form, redirect } from "react-router-dom";
 import { toast } from "sonner";
-
-export const action = async ({ request }) => {
-  const formData = await request.formData();
-  const username = formData.get("username");
-  const email = formData.get("email");
-
-  if (!username.trim() && !email.trim()) {
-    toast.error("Email and username are required.");
-    return null;
-  } else if (!username.trim()) {
-    toast.error("Username is required.");
-    return null;
-  } else if (!email.trim()) {
-    toast.error("Email is required.");
-    return null;
-  }
-
-  const accessToken = localStorage.getItem("accessToken");
-  try {
-    const image = formData.get("image");
-    if (!image || image.size === 0) {
-      formData.delete("image");
-    }
-
-    await customFetch.put("profile/update", formData, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    toast.success("Profile updated.");
-  } catch (error) {
-    toast.error(error.response.data.toString());
-    console.log(error);
-  }
-  return null;
-};
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
+  const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const { data } = useHomeContext();
+  const navigate = useNavigate();
 
   const {
     username,
@@ -59,8 +27,17 @@ const EditProfile = () => {
     image,
   } = data;
 
-  console.log(data);
+  const [formValues, setFormValues] = useState({
+    username: username || "",
+    email: email || "",
+    bio: bio || "",
+    linkedinLink: linkedinLink || "",
+    githubLink: githubLink || "",
+    personalWebsite: personalWebsite || "",
+    image: image || "",
+  });
 
+  const [initialValues] = useState({ ...formValues });
   const [imagePreview, setImagePreview] = useState(
     image === "image" ? "" : image
   );
@@ -71,14 +48,56 @@ const EditProfile = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
+        setFormValues((prevValues) => ({
+          ...prevValues,
+          image: file,
+        }));
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (JSON.stringify(formValues) === JSON.stringify(initialValues)) {
+      toast.error("No changes detected.");
+      return;
+    }
+
+    const formData = new FormData();
+    for (const key in formValues) {
+      formData.append(key, formValues[key]);
+    }
+
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+      setDisabled(true);
+      await customFetch.put("profile/update", formData, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      toast.success("Profile updated.");
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error(
+        error.response ? error.response.data.toString() : error.message
+      );
+      console.log(error);
+    } finally {
+      setDisabled(false);
+    }
+  };
+
   return (
     <div className="text-white w-[75%] m-auto my-10 min-h-[75vh]">
-      <Form method="post" encType="multipart/form-data">
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="flex flex-col gap-10">
           <div className="rounded-md border border-[#81a77c94] shadow-box bg-[#0f20183f] p-5">
             <div className="flex mb-6">
@@ -118,21 +137,24 @@ const EditProfile = () => {
                   name="username"
                   type="text"
                   placeholder="Username"
-                  defaultValue={username}
+                  defaultValue={formValues.username}
+                  onChange={handleChange}
                 />
                 <FormRow
                   text="Email"
                   name="email"
                   type="email"
                   placeholder="Email Address"
-                  defaultValue={email}
+                  defaultValue={formValues.email}
+                  onChange={handleChange}
                 />
                 <FormRow
                   text="About"
                   name="bio"
                   type="text"
                   placeholder="Tell us more about you"
-                  defaultValue={bio}
+                  defaultValue={formValues.bio}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -151,30 +173,33 @@ const EditProfile = () => {
                   name="linkedinLink"
                   type="url"
                   placeholder="Add your linkedin profile link"
-                  defaultValue={linkedinLink}
+                  defaultValue={formValues.linkedinLink}
+                  onChange={handleChange}
                 />
                 <FormRow
                   text="Github"
                   name="githubLink"
                   type="url"
                   placeholder="Add your github profile link"
-                  defaultValue={githubLink}
+                  defaultValue={formValues.githubLink}
+                  onChange={handleChange}
                 />
                 <FormRow
                   text="Personal Website"
                   name="personalWebsite"
                   type="url"
                   placeholder="Add your website link"
-                  defaultValue={personalWebsite}
+                  defaultValue={formValues.personalWebsite}
+                  onChange={handleChange}
                 />
               </div>
             </div>
           </div>
           <div className="w-[50%] mx-auto">
-            <SubmitBtn text={"Save Changes"} />
+            <SubmitBtn text={"Save Changes"} isDisabled={disabled} />
           </div>
         </div>
-      </Form>
+      </form>
     </div>
   );
 };

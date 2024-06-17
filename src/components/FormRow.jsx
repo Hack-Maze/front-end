@@ -2,7 +2,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 import "../assets/style.css";
 
-const FormRow = ({ type, name, text, placeholder, defaultValue }) => {
+const FormRow = ({ type, name, text, placeholder, defaultValue, onChange }) => {
   const isPasswordInput = name === "password";
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
@@ -19,6 +19,7 @@ const FormRow = ({ type, name, text, placeholder, defaultValue }) => {
           placeholder={placeholder}
           className="border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none"
           defaultValue={defaultValue}
+          onChange={onChange}
         />
         {isPasswordInput && (
           <>

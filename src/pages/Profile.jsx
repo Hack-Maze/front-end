@@ -1,10 +1,11 @@
+// Profile.jsx
 import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import SolvedChallenges from "@/components/SolvedChallenges";
 import CreatedChallenges from "@/components/CreatedChallenges";
 import Activity from "@/components/Activity";
 import ProfileComp from "@/components/ProfileComp";
 import { useHomeContext } from "@/pages/Home";
-import { useParams } from "react-router-dom";
 import customFetch from "../../utils/CustomFetsh";
 import LoadingItem from "@/components/LoadingItem";
 
@@ -14,6 +15,7 @@ const Profile = () => {
   const { data: homeData } = useHomeContext();
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const handleItemClick = (item) => {
     setActiveItem(item);
@@ -39,13 +41,17 @@ const Profile = () => {
         }
       } catch (error) {
         console.log(error);
+        // Check if response status is 500
+        if (error.response && error.response.status === 500) {
+          navigate("/error");
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchProfileData();
-  }, [username, homeData]);
+  }, [username, homeData, navigate]);
 
   const data = profileData || homeData;
 
@@ -73,12 +79,6 @@ const Profile = () => {
               <h2 className="text-2xl font-semibold capitalize">
                 {data.username}
               </h2>
-              {/* <p className="text-gray-300">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil
-                possimus et molestiae aperiam magnam itaque eligendi odit, vel
-                reprehenderit error.
-              </p>
-              <span className="text-sm">Joined March 2024</span> */}
             </>
             <>
               <ul className="flex gap-8 text-2xl">
