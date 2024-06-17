@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
-  const [disabled, setDisabled] = useState(false);
+  const [isDiabled, setIsDisabled] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -34,13 +34,11 @@ const EditProfile = () => {
     linkedinLink: linkedinLink || "",
     githubLink: githubLink || "",
     personalWebsite: personalWebsite || "",
-    image: image || "",
+    image: "",
   });
 
   const [initialValues] = useState({ ...formValues });
-  const [imagePreview, setImagePreview] = useState(
-    image === "image" ? "" : image
-  );
+  const [imagePreview, setImagePreview] = useState(image || "");
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -64,7 +62,6 @@ const EditProfile = () => {
       [name]: value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (JSON.stringify(formValues) === JSON.stringify(initialValues)) {
@@ -74,12 +71,20 @@ const EditProfile = () => {
 
     const formData = new FormData();
     for (const key in formValues) {
-      formData.append(key, formValues[key]);
+      if (key === "image" && !formValues[key]) {
+        continue;
+      }
+      if (formValues[key] instanceof File) {
+        const blob = new Blob([formValues[key]], { type: "image/jpeg" });
+        formData.append(key, blob, "image.jpg");
+      } else {
+        formData.append(key, formValues[key]);
+      }
     }
 
     const accessToken = localStorage.getItem("accessToken");
     try {
-      setDisabled(true);
+      setIsDisabled(true);
       await customFetch.put("profile/update", formData, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
@@ -90,9 +95,8 @@ const EditProfile = () => {
         error.response ? error.response.data.toString() : error.message
       );
       console.log(error);
-    } finally {
-      setDisabled(false);
     }
+    setIsDisabled(flase);
   };
 
   return (
@@ -196,7 +200,7 @@ const EditProfile = () => {
             </div>
           </div>
           <div className="w-[50%] mx-auto">
-            <SubmitBtn text={"Save Changes"} isDisabled={disabled} />
+            <SubmitBtn text={"Save Changes"} isDisabled={isDiabled} />
           </div>
         </div>
       </form>
