@@ -553,7 +553,7 @@ jobs:
               echo '#!/bin/bash
 
               # Perform the curl command to check website availability
-              curl --output /dev/null --silent --head --fail http://hm-1337.eastus.cloudapp.azure.com/ > /dev/null
+              curl --output /dev/null --silent --head --fail http://hm-1337.italynorth.cloudapp.azure.com/ > /dev/null
 
               # Capture the exit status of the curl command
               status=$?
