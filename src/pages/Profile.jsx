@@ -8,6 +8,7 @@ import ProfileComp from "@/components/ProfileComp";
 import { useHomeContext } from "@/pages/Home";
 import customFetch from "../../utils/CustomFetsh";
 import LoadingItem from "@/components/LoadingItem";
+import Error_500 from "./Error/500";
 
 const Profile = () => {
   const [activeItem, setActiveItem] = useState("profile");
@@ -15,6 +16,7 @@ const Profile = () => {
   const { data: homeData } = useHomeContext();
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const handleItemClick = (item) => {
@@ -40,10 +42,8 @@ const Profile = () => {
           setProfileData(homeData);
         }
       } catch (error) {
-        console.log(error);
-        // Check if response status is 500
         if (error.response && error.response.status === 500) {
-          navigate("/error");
+          setError(true);
         }
       } finally {
         setLoading(false);
@@ -55,7 +55,9 @@ const Profile = () => {
 
   const data = profileData || homeData;
 
-  console.log(data);
+  if (error) {
+    return <Error_500 />;
+  }
 
   return (
     <div className="text-white w-[80%] m-auto my-10 min-h-[75vh]">

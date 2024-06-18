@@ -336,7 +336,11 @@ const CreateMazeContent = () => {
       className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md flex flex-col`}
     >
       <div className="flex items-center justify-between">
-        <span>{section.title}</span>
+        <span title={section.title}>
+          {section.title.length > 25
+            ? section.title.slice(0, 25).concat("...")
+            : section.title}
+        </span>
         <div className="flex gap-2">
           <button
             onClick={() => handleEditSection(index)}
@@ -361,7 +365,7 @@ const CreateMazeContent = () => {
               className="ml-2 flex justify-between items-center"
               key={questionIndex}
             >
-              <span className="flex items-center">
+              <span className="flex items-center" title={question.content}>
                 <FaRegQuestionCircle className="mr-2" />
                 {question.content.length > 20
                   ? question.content.slice(0, 19).concat("...")

@@ -47,7 +47,7 @@
   padding: 0;
   overflow-x: auto;
   word-wrap: break-word;
-  max-width: 80%;
+  width: 100%;
   margin-bottom: 1rem;
 }
 
@@ -85,4 +85,10 @@
 
 .custom-html-content ol {
   list-style: decimal;
+}
+
+.shadow-text {
+  text-shadow: 1px 1px 1px #00593e, 2px 2px 1px #00593e, 3px 3px 1px #00593e,
+    4px 4px 1px #00593e, 5px 5px 1px #00593e, 6px 6px 1px #00593e,
+    7px 7px 1px #00593e, 8px 8px 1px #00593e, 25px 25px 8px rgba(0, 0, 0, 0.2);
 }

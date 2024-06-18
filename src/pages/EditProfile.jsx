@@ -39,6 +39,7 @@ const EditProfile = () => {
 
   const [initialValues] = useState({ ...formValues });
   const [imagePreview, setImagePreview] = useState(image || "");
+  console.log(imagePreview);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -90,13 +91,14 @@ const EditProfile = () => {
       });
       toast.success("Profile updated.");
       navigate("/dashboard");
+      console.log(formData.get("image"));
     } catch (error) {
       toast.error(
         error.response ? error.response.data.toString() : error.message
       );
       console.log(error);
     }
-    setIsDisabled(flase);
+    setIsDisabled(false);
   };
 
   return (

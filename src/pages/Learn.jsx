@@ -136,21 +136,31 @@ const Learn = () => {
                   to={`/learn/${room.id}/${room.title
                     .toLowerCase()
                     .replace(/\s/g, "-")}`}
-                  className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-8 items-center rounded-md max-w-md shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
+                  className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-4 items-center rounded-md max-w-md shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
                 >
                   <img
                     src={room.image}
                     alt="image"
-                    className="h-40 w-64"
+                    className="h-40 w-72"
                     loading="lazy"
                   />
 
-                  <h2 className="text-xl my-3 text-white font-semibold">
-                    {room.title}
+                  <h2
+                    className="text-xl my-5 w-52 h-16 text-start text-white font-semibold"
+                    title={room.title}
+                    style={{ whiteSpace: "normal", overflowWrap: "break-word" }}
+                  >
+                    {room.title.length > 30
+                      ? room.title.slice(0, 25).concat("...")
+                      : room.title}
                   </h2>
-                  <p className="text-gray-400 px-3 text-sm leading-7">
-                    {room.description.length > 130
-                      ? `${room.description.substring(0, 100)}...`
+
+                  <p
+                    className="text-gray-400 px-3 w-72 h-16 text-sm"
+                    style={{ whiteSpace: "normal", overflowWrap: "break-word" }}
+                  >
+                    {room.description.length > 70
+                      ? `${room.description.substring(0, 68)}...`
                       : room.description}
                   </p>
                   <p

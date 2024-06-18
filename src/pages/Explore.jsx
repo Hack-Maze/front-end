@@ -133,7 +133,10 @@ const Explore = () => {
               className="h-32 w-64"
               loading="lazy"
             />
-            <div className="w-[50%]">
+            <div
+              className="w-[70%]"
+              style={{ whiteSpace: "normal", overflowWrap: "break-word" }}
+            >
               <h1 className="text-2xl font-semibold mb-2 capitalize">
                 {mazeData.title}
               </h1>
@@ -168,9 +171,9 @@ const Explore = () => {
             )}
           </div>
         </div>
-        <div className="flex justify-between my-10 h-[50vh]">
+        <div className="flex justify-between my-10 min-h-[50vh]">
           <div className="w-[70%]">
-            <h2 className="text-3xl font-semibold mb-2">Maze Summary</h2>
+            <h2 className="text-3xl font-semibold mb-4">Maze Summary</h2>
             <div
               className="custom-html-content"
               dangerouslySetInnerHTML={{ __html: mazeData.summary }}
@@ -184,7 +187,12 @@ const Explore = () => {
                 maze sections
               </h2>
             </div>
-            <ul className="ml-8 text-gray-200">{sectionsList}</ul>
+            <ul
+              className="ml-8 text-gray-200"
+              style={{ whiteSpace: "normal", overflowWrap: "break-word" }}
+            >
+              {sectionsList}
+            </ul>
           </div>
         </div>
         {recommendedMazes.length > 0 && (
