@@ -1,28 +1,59 @@
 import React, { useEffect } from "react";
-import { Paths, RecPaths } from "../static/data";
 import { Link } from "react-router-dom";
 import Layout_1 from "../components/Layout_1/Layout_1";
 import { GiMaze } from "react-icons/gi";
 import { PiCoffeeLight } from "react-icons/pi";
 import { GiLaurelCrown } from "react-icons/gi";
 import { CgProfile } from "react-icons/cg";
+import customFetch from "../../utils/CustomFetsh";
 
 const Dashboard = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    const fetchDashData = async () => {
+      try {
+        const currentDate = new Date();
+        const endDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
+          .toISOString()
+          .split("T")[0];
+        const startDate = new Date(
+          currentDate.setDate(currentDate.getDate() - 6)
+        )
+          .toISOString()
+          .split("T")[0];
+
+        const response = await customFetch.get(
+          `leadership?start=${startDate}&end=${endDate}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchDashData();
+  }, []);
+
   const topThreeHackers = [
-    {
-      img: <CgProfile size={50} />,
-      name: "Hacker 1",
-      rank: "Rank 1",
-      score: 100,
-    },
     {
       img: <CgProfile size={50} />,
       name: "Hacker 2",
       rank: "Rank 2",
       score: 90,
+    },
+    {
+      img: <CgProfile size={50} />,
+      name: "Hacker 1",
+      rank: "Rank 1",
+      score: 100,
     },
     {
       img: <CgProfile size={50} />,
@@ -33,8 +64,8 @@ const Dashboard = () => {
   ];
 
   const ranks = [
-    { rank: "#1", color: "#FFD700" },
     { rank: "#2", color: "#C0C0C0" },
+    { rank: "#1", color: "#FFD700" },
     { rank: "#3", color: "#CD7F32" },
   ];
 
@@ -79,7 +110,11 @@ const Dashboard = () => {
           {topThreeHackers.map((hacker, index) => (
             <div
               key={index}
-              className="h-[30vh] bg-[#5de8480e] border border-[#5de84888] rounded-md shadow-md text-white flex flex-col w-[25%] m-auto mb-5"
+              className={`h-[30vh] bg-[#5de8480e] border border-[#5de84888] rounded-md shadow-md text-white flex flex-col w-[25%] mb-5
+              ${index === 0 ? "mt-[10px]" : ""} 
+              ${index === 1 ? "mt-[-20px]" : ""}
+              ${index === 2 ? "mt-[30px]" : ""}
+                `}
             >
               <span
                 className="text-3xl font-bold ml-3 mt-3"
@@ -89,7 +124,6 @@ const Dashboard = () => {
               </span>
               <div className="text-center pt-5 flex flex-col items-center gap-5">
                 {hacker.img}
-
                 <h3 className="text-xl font-bold">{hacker.name}</h3>
                 <p className="flex flex-col gap-2">
                   Solved mazes:

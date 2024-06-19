@@ -36,6 +36,10 @@ const Maze = () => {
       );
       if (response.status === 200) {
         setProgressData(response.data);
+
+        if (response.data.isCompleted && !completedSections.includes(pageId)) {
+          setCompletedSections((prev) => [...prev, pageId]);
+        }
       } else {
         toast.error("Error fetching progress data");
       }
@@ -182,7 +186,12 @@ const Maze = () => {
 
   const sectionsList = mazeData.map((page, index) => {
     const isCompleted =
-      progressData?.isCompleted || completedSections.includes(index);
+      completedSections.includes(page.id) ||
+      page.questions.every((question) =>
+        progressData?.solvedQuestions?.find(
+          (q) => q.id === question.id && q.solvedAt
+        )
+      );
 
     return (
       <li
@@ -192,11 +201,11 @@ const Maze = () => {
         }`}
         onClick={() => handleSectionClick(index)}
       >
-        {page.title}
-        {isCompleted ? (
+        {page.title.length > 25
+          ? page.title.slice(0, 23).concat("...")
+          : page.title}
+        {isCompleted && (
           <IoCheckmarkCircleOutline className="text-[#5EE848] ml-2" size={20} />
-        ) : (
-          ""
         )}
       </li>
     );
@@ -207,10 +216,19 @@ const Maze = () => {
   };
 
   const handleComplete = () => {
-    setCompletedSections((prevCompletedSections) => [
-      ...prevCompletedSections,
-      selectedSectionIndex,
-    ]);
+    const section = mazeData[selectedSectionIndex];
+    const allQuestionsSolved = section.questions.every((question) =>
+      progressData?.solvedQuestions?.find(
+        (q) => q.id === question.id && q.solvedAt
+      )
+    );
+
+    if (allQuestionsSolved) {
+      setCompletedSections((prevCompletedSections) => [
+        ...prevCompletedSections,
+        section.id,
+      ]);
+    }
 
     if (selectedSectionIndex < mazeData.length - 1) {
       const nextIndex = selectedSectionIndex + 1;
@@ -253,7 +271,7 @@ const Maze = () => {
   return (
     <div className="w-[75vw] min-h-[85vh] m-auto my-10 text-white">
       <div className="flex justify-between my-10 gap-10">
-        <div className="w-[80%] flex flex-col justify-between">
+        <div className="w-[75%] flex flex-col justify-between">
           <div className="w-full leading-9 min-h-[70vh]">
             <h1 className="text-3xl font-semibold mb-4 capitalize">
               {section.title}
@@ -262,25 +280,33 @@ const Maze = () => {
               className="custom-html-content"
               dangerouslySetInnerHTML={{ __html: section.content }}
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col w-[80%]">
               {section.questions.map((question, index) => (
                 <div
                   key={index}
-                  className="border border-[#81a77c94] px-4 py-3 my-9 rounded-md shadow-box bg-[#0f20183f] w-[80%]"
+                  className="border border-[#81a77c94] px-4 py-3 my-9 rounded-md shadow-box bg-[#0f20183f] w-full"
                 >
                   <h2
-                    className="text-xl font-semibold flex items-center justify-between cursor-pointer"
+                    className="text-xl font-semibold flex items-center cursor-pointer"
                     onClick={() => toggleQuestion(question.id)}
                   >
-                    <span className="flex items-center capitalize mr-5">
+                    <span className="flex items-center capitalize">
                       <FaRegQuestionCircle className="mr-3" size={25} />
-                      {question.content}
+                      <span
+                        className="w-[60%] mr-5"
+                        style={{
+                          whiteSpace: "normal",
+                          overflowWrap: "break-word",
+                        }}
+                      >
+                        {question.content}
+                      </span>
+                      {expandedQuestions[question.id] ? (
+                        <FaAngleUp size={20} />
+                      ) : (
+                        <FaAngleDown size={20} />
+                      )}
                     </span>
-                    {expandedQuestions[question.id] ? (
-                      <FaAngleUp size={20} />
-                    ) : (
-                      <FaAngleDown size={20} />
-                    )}
                   </h2>
                   {expandedQuestions[question.id] && (
                     <div>
@@ -370,6 +396,7 @@ const Maze = () => {
               )}
             </div>
             {!completedSections.includes(selectedSectionIndex) &&
+              section.questions.length === 0 &&
               !progressData?.isCompleted && (
                 <button
                   className="capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"

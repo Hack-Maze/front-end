@@ -10,10 +10,12 @@ const Learn = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [displayedRooms, setDisplayedRooms] = useState(6);
   const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     const fetchRooms = async () => {
+      setLoading(true);
       try {
         const response = await customFetch.get(`maze`, {
           headers: {
@@ -22,6 +24,7 @@ const Learn = () => {
           },
         });
         setRooms(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching rooms:", error);
       }
@@ -69,6 +72,10 @@ const Learn = () => {
   //     console.log("Error deleting maze:", error);
   //   }
   // };
+
+  if (loading) {
+    return <LoadingItem />;
+  }
 
   return (
     <div className="w-[80%] m-auto my-10 min-h-[75vh]">
@@ -146,7 +153,7 @@ const Learn = () => {
                   />
 
                   <h2
-                    className="text-xl my-5 w-52 h-16 text-start text-white font-semibold"
+                    className="text-xl my-5 w-52 h-16 text-white font-semibold"
                     title={room.title}
                     style={{ whiteSpace: "normal", overflowWrap: "break-word" }}
                   >
