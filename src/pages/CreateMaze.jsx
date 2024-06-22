@@ -97,7 +97,7 @@ const CreateMaze = () => {
     formData.append("summary", summary);
     formData.append("difficulty", selectedLevel.toUpperCase());
     formData.append("image", uploadImage);
-    formData.append("file", uploadFile);
+    // formData.append("file", uploadFile);
     try {
       const response = await customFetch.post("maze", formData, {
         headers: {

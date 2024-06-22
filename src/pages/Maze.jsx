@@ -290,22 +290,26 @@ const Maze = () => {
                     className="text-xl font-semibold flex items-center cursor-pointer"
                     onClick={() => toggleQuestion(question.id)}
                   >
-                    <span className="flex items-center capitalize">
-                      <FaRegQuestionCircle className="mr-3" size={25} />
-                      <span
-                        className="w-[60%] mr-5"
-                        style={{
-                          whiteSpace: "normal",
-                          overflowWrap: "break-word",
-                        }}
-                      >
-                        {question.content}
+                    <span className="flex items-center justify-between w-full capitalize">
+                      <div className="flex">
+                        <FaRegQuestionCircle className="mr-3" size={30} />
+                        <span
+                          className="w-[60%] mr-5"
+                          style={{
+                            whiteSpace: "normal",
+                            overflowWrap: "break-word",
+                          }}
+                        >
+                          {question.content}
+                        </span>
+                      </div>
+                      <span>
+                        {expandedQuestions[question.id] ? (
+                          <FaAngleUp size={20} />
+                        ) : (
+                          <FaAngleDown size={20} />
+                        )}
                       </span>
-                      {expandedQuestions[question.id] ? (
-                        <FaAngleUp size={20} />
-                      ) : (
-                        <FaAngleDown size={20} />
-                      )}
                     </span>
                   </h2>
                   {expandedQuestions[question.id] && (

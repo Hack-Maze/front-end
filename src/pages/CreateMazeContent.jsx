@@ -15,6 +15,7 @@ const CreateMazeContent = () => {
   const [sectionContent, setSectionContent] = useState("");
   const [sectionAnswer, setSectionAnswer] = useState("");
   const [sectionHint, setSectionHint] = useState("");
+  const [sectionPoints, setSectionPoints] = useState(0);
   const [sections, setSections] = useState([]);
   const [isEditingContent, setIsEditingContent] = useState(false);
   const [isEditingQuestion, setIsEditingQuestion] = useState(false);
@@ -124,6 +125,7 @@ const CreateMazeContent = () => {
         answer: sectionAnswer,
         hint: sectionHint,
         type: "type",
+        points: sectionPoints,
       };
       let response;
       if (isEditingQuestion) {
@@ -164,6 +166,7 @@ const CreateMazeContent = () => {
         setSectionQuestion("");
         setSectionAnswer("");
         setSectionHint("");
+        setSectionPoints(0);
         response = await customFetch.post(
           `question/${sectionId}`,
           newQuestion,
@@ -198,13 +201,14 @@ const CreateMazeContent = () => {
         );
       }
     } catch (error) {
-      toast.error(`Error: ${error.message}`);
+      toast.error(`Error: ${error.response.data}`);
       console.log(error);
       setIsEditingQuestion(false);
     }
     setSectionQuestion("");
     setSectionAnswer("");
     setSectionHint("");
+    setSectionPoints(0);
     setCreateQuestion(false);
   };
 
@@ -253,12 +257,13 @@ const CreateMazeContent = () => {
         toast.error("Failed to delete question");
       }
     } catch (error) {
-      toast.error(`Error: ${error.message}`);
+      toast.error(`Error: ${error.response.data}`);
       console.log(error);
     }
     setSectionQuestion("");
     setSectionAnswer("");
     setSectionHint("");
+    setSectionPoints(0);
     setCreateQuestion(false);
   };
 
@@ -294,11 +299,12 @@ const CreateMazeContent = () => {
         setSectionQuestion(questionData.content);
         setSectionAnswer(questionData.answer);
         setSectionHint(questionData.hint);
+        setSectionPoints(questionData.points);
       } else {
         toast.error("Failed to fetch question data for editing");
       }
     } catch (error) {
-      toast.error(`Error: ${error.message}`);
+      toast.error(`Error: ${error.response.data}`);
       console.log(error);
     }
   };
@@ -472,6 +478,22 @@ const CreateMazeContent = () => {
                     setSectionHint(e.target.value);
                   }}
                 />
+                <div className="flex">
+                  <label className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize mr-4 text-gray-400">
+                    Points:
+                  </label>
+                  <input
+                    type="number"
+                    name="points"
+                    className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize"
+                    value={sectionPoints}
+                    defaultValue={0}
+                    max={400}
+                    onChange={(e) => {
+                      setSectionPoints(e.target.value);
+                    }}
+                  />
+                </div>
 
                 <button
                   onClick={handleAddOrUpdateQuestion}
@@ -480,6 +502,19 @@ const CreateMazeContent = () => {
                   {isEditingQuestion ? "Update question" : "Add question"}
                   <GoPlus size={25} />
                 </button>
+                <div className="my-4">
+                  <h3 className="text-xl mb-4">Important Note</h3>
+                  <p className="text-gray-400 mb-2">
+                    The maze has maximum number of points according to the level
+                    of the maze:
+                  </p>
+                  <ul className="text-gray-400 list-disc ml-7">
+                    <li>Fundamental: 100 points</li>
+                    <li>Easy: 200 points</li>
+                    <li>Medium: 300 points</li>
+                    <li>Hard: 400 points</li>
+                  </ul>
+                </div>
               </div>
             )}
           </div>

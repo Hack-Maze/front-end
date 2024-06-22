@@ -15,6 +15,7 @@ const Navbar = () => {
   const { data } = useHomeContext();
   const username = data.username;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isRoadmaps, setIsRoadmaps] = useState(false);
   const location = useLocation();
   const dropdownRef = useRef(null);
 
@@ -26,8 +27,8 @@ const Navbar = () => {
       case location.pathname.startsWith("/learn"):
         setActiveItem("learn");
         break;
-      case location.pathname.startsWith("/compete"):
-        setActiveItem("compete");
+      case location.pathname.startsWith("/roadmap"):
+        setActiveItem("roadmaps");
         break;
       default:
         setActiveItem("");
@@ -51,6 +52,11 @@ const Navbar = () => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleRoadmapsClick = () => {
+    setIsRoadmaps(!isRoadmaps);
+    setActiveItem("roadmaps");
   };
 
   const handleItemClick = (item) => {
@@ -92,19 +98,34 @@ const Navbar = () => {
               Learn
             </li>
           </Link>
-          <Link to={"/compete"}>
-            <li
-              className={`flex items-center cursor-pointer ${
-                activeItem === "compete"
-                  ? "text-[#5EE848]"
-                  : "hover:text-[#5de84881]"
-              }`}
-              onClick={() => handleItemClick("compete")}
-            >
-              <LuSwords className="mr-1" size={25} />
-              Compete
-            </li>
-          </Link>
+          <li
+            className={`flex items-center cursor-pointer relative ${
+              activeItem === "roadmaps"
+                ? "text-[#5EE848]"
+                : "hover:text-[#5de84881]"
+            }`}
+            onClick={handleRoadmapsClick}
+          >
+            <LuSwords className="mr-1" size={25} />
+            Roadmaps
+            {isRoadmaps && (
+              <div className="absolute top-full left-0 mt-3 bg-white shadow-md rounded-md text-gray-600">
+                <ul>
+                  <Link to={`/roadmap/offensive`} rel="noopener noreferrer">
+                    <li className="py-2 px-4 hover:bg-slate-200 rounded-md">
+                      Offensive
+                    </li>
+                  </Link>
+
+                  <Link to={`/roadmap/defensive`} rel="noopener noreferrer">
+                    <li className="py-2 px-4 hover:bg-slate-200 rounded-md">
+                      Defensive
+                    </li>
+                  </Link>
+                </ul>
+              </div>
+            )}
+          </li>
         </ul>
       </div>
       <div className="flex items-center">

@@ -5,6 +5,7 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import ErrorPage from "./pages/Error/404";
 import Layout from "./pages/Layout";
+import Roadmap from "./pages/Roadmap";
 import SharedAuth from "./pages/SharedAuth";
 import CaptchaPage from "./pages/CapthchaPage";
 import VerificationMiddleware from "./components/Verification/VerificationMiddleware";
@@ -102,7 +103,7 @@ const router = createBrowserRouter([
             path: "/editProfile",
             element: <EditProfile />,
           },
-          ,
+          { path: "/roadmap/:type", element: <Roadmap /> },
         ],
       },
     ],
