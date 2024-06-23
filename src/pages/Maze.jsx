@@ -280,7 +280,7 @@ const Maze = () => {
               className="custom-html-content"
               dangerouslySetInnerHTML={{ __html: section.content }}
             />
-            <div className="flex flex-col w-[80%]">
+            <div className="flex flex-col w-[70%]">
               {section.questions.map((question, index) => (
                 <div
                   key={index}
@@ -290,11 +290,11 @@ const Maze = () => {
                     className="text-xl font-semibold flex items-center cursor-pointer"
                     onClick={() => toggleQuestion(question.id)}
                   >
-                    <span className="flex items-center justify-between w-full capitalize">
-                      <div className="flex">
-                        <FaRegQuestionCircle className="mr-3" size={30} />
+                    <span className="flex items-center w-full capitalize">
+                      <div className="flex w-[97%] items-center">
+                        <FaRegQuestionCircle className="mr-3" size={25} />
                         <span
-                          className="w-[60%] mr-5"
+                          className="w-[90%]"
                           style={{
                             whiteSpace: "normal",
                             overflowWrap: "break-word",

@@ -17,14 +17,12 @@ const Dashboard = () => {
     const fetchDashData = async () => {
       try {
         const currentDate = new Date();
-        const endDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
-          .toISOString()
-          .split("T")[0];
-        const startDate = new Date(
-          currentDate.setDate(currentDate.getDate() - 6)
-        )
-          .toISOString()
-          .split("T")[0];
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1;
+        const formattedMonth =
+          currentMonth < 10 ? `0${currentMonth}` : currentMonth;
+        const startDate = `${currentYear}-${formattedMonth}-01`;
+        const endDate = `${currentYear}-${formattedMonth}-29`;
 
         const response = await customFetch.get(
           `leadership?start=${startDate}&end=${endDate}`,

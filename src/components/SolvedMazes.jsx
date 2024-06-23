@@ -1,7 +1,7 @@
 import React from "react";
 import empty from "/empty.svg";
 
-const SolvedChallenges = () => {
+const SolvedMazes = () => {
   return (
     <div className="text-white flex flex-col justify-center">
       <img src={empty} alt="empty" className="h-80" />
@@ -12,4 +12,4 @@ const SolvedChallenges = () => {
   );
 };
 
-export default SolvedChallenges;
+export default SolvedMazes;

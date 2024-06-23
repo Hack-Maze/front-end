@@ -172,10 +172,10 @@ const Explore = () => {
           </div>
         </div>
         <div className="flex justify-between my-10 min-h-[50vh]">
-          <div className="w-[70%]">
+          <div className="w-[70%] ">
             <h2 className="text-3xl font-semibold mb-4">Maze Summary</h2>
             <div
-              className="custom-html-content"
+              className="custom-html-content h-[80vh] overflow-y-scroll overflow-x-hidden pr-2"
               dangerouslySetInnerHTML={{ __html: mazeData.summary }}
             />
           </div>

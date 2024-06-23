@@ -108,7 +108,7 @@ const CreateMaze = () => {
       toast.success("Maze preview created");
       navigate("/learn/createMaze/content");
     } catch (error) {
-      toast.error(error.response.data.toString());
+      toast.error(error.response.data);
     } finally {
       setLoading(false);
     }

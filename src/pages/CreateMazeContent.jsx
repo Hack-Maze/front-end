@@ -125,7 +125,7 @@ const CreateMazeContent = () => {
         answer: sectionAnswer,
         hint: sectionHint,
         type: "type",
-        points: sectionPoints,
+        points: parseInt(sectionPoints, 10),
       };
       let response;
       if (isEditingQuestion) {
@@ -452,7 +452,7 @@ const CreateMazeContent = () => {
                   type="text"
                   name="question"
                   placeholder="Add question"
-                  className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize"
+                  className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize border border-[#58745975] p-3 rounded-md"
                   value={sectionQuestion}
                   onChange={(e) => {
                     setSectionQuestion(e.target.value);
@@ -462,7 +462,7 @@ const CreateMazeContent = () => {
                   type="text"
                   name="answer"
                   placeholder="Add answer"
-                  className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize"
+                  className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize border border-[#58745975] p-3 rounded-md"
                   value={sectionAnswer}
                   onChange={(e) => {
                     setSectionAnswer(e.target.value);
@@ -472,20 +472,20 @@ const CreateMazeContent = () => {
                   type="text"
                   name="hint"
                   placeholder="Add hint"
-                  className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize"
+                  className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize border border-[#58745975] p-3 rounded-md"
                   value={sectionHint}
                   onChange={(e) => {
                     setSectionHint(e.target.value);
                   }}
                 />
-                <div className="flex">
-                  <label className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize mr-4 text-gray-400">
+                <div className="flex mb-5 items-center">
+                  <label className="text-xl font-semibold bg-transparent outline-none capitalize mr-4 text-gray-400">
                     Points:
                   </label>
                   <input
                     type="number"
                     name="points"
-                    className="text-xl font-semibold mb-10 bg-transparent outline-none capitalize"
+                    className="text-xl font-semibold bg-transparent outline-none capitalize border border-[#58745975] p-3 rounded-md"
                     value={sectionPoints}
                     defaultValue={0}
                     max={400}

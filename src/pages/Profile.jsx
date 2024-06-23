@@ -1,14 +1,13 @@
 // Profile.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import SolvedChallenges from "@/components/SolvedChallenges";
-import CreatedChallenges from "@/components/CreatedChallenges";
-import Activity from "@/components/Activity";
 import ProfileComp from "@/components/ProfileComp";
 import { useHomeContext } from "@/pages/Home";
 import customFetch from "../../utils/CustomFetsh";
 import LoadingItem from "@/components/LoadingItem";
 import Error_500 from "./Error/500";
+import CreatedMazes from "@/components/CreatedMazes";
+import SolvedMazes from "@/components/SolvedMazes";
 
 const Profile = () => {
   const [activeItem, setActiveItem] = useState("profile");
@@ -102,7 +101,7 @@ const Profile = () => {
                   }`}
                   onClick={() => handleItemClick("solved")}
                 >
-                  Solved Challenges
+                  Solved Mazes
                 </li>
                 <li
                   className={`flex items-center cursor-pointer ${
@@ -112,9 +111,9 @@ const Profile = () => {
                   }`}
                   onClick={() => handleItemClick("created")}
                 >
-                  Created Challenges
+                  Created Mazes
                 </li>
-                <li
+                {/* <li
                   className={`flex items-center cursor-pointer ${
                     activeItem === "activity"
                       ? "text-[#5EE848] border-b-2 border-[#5EE848]"
@@ -123,18 +122,21 @@ const Profile = () => {
                   onClick={() => handleItemClick("activity")}
                 >
                   Activity
-                </li>
+                </li> */}
               </ul>
             </>
-            {activeItem === "profile" ? (
-              <ProfileComp data={data} />
-            ) : activeItem === "solved" ? (
-              <SolvedChallenges />
-            ) : activeItem === "created" ? (
-              <CreatedChallenges />
-            ) : (
-              <Activity />
-            )}
+            {
+              activeItem === "profile" ? (
+                <ProfileComp data={data} />
+              ) : activeItem === "solved" ? (
+                <SolvedMazes />
+              ) : (
+                <CreatedMazes />
+              )
+              //       : (
+              // <Activity />
+              //   )
+            }
           </div>
         )}
       </div>

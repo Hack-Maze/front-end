@@ -1,23 +1,15 @@
 import React, { useRef, useEffect } from "react";
 import Chart from "chart.js/auto";
 
-const LinearChart = () => {
+const LinearChart = ({ data, days }) => {
   const chartRef = useRef(null);
 
-  const data = {
-    labels: [
-      "Saturday",
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-    ],
+  const chartData = {
+    labels: days,
     datasets: [
       {
-        label: "solved",
-        data: Array.from({ length: 7 }, () => Math.floor(Math.random() * 100)),
+        label: "Solved mazes this week",
+        data: data,
         borderColor: "#5de848",
         backgroundColor: "transparent",
         pointStyle: false,
@@ -27,6 +19,7 @@ const LinearChart = () => {
     ],
   };
 
+  console.log(chartData);
   useEffect(() => {
     let chartInstance = null;
 
@@ -39,7 +32,7 @@ const LinearChart = () => {
 
       chartInstance = new Chart(ctx, {
         type: "line",
-        data: data,
+        data: chartData,
         options: {
           maintainAspectRatio: false,
           plugins: {
@@ -60,7 +53,7 @@ const LinearChart = () => {
                 color: "white",
               },
               ticks: {
-                color: "transparent",
+                color: "white",
               },
             },
             y: {
@@ -74,8 +67,8 @@ const LinearChart = () => {
                   size: 13,
                 },
                 min: 0,
-                max: 100,
-                stepSize: 20,
+                max: 50,
+                stepSize: 10,
               },
             },
           },
@@ -88,7 +81,7 @@ const LinearChart = () => {
         chartInstance.destroy();
       }
     };
-  }, [data]);
+  }, [chartData]);
 
   return <canvas ref={chartRef} />;
 };
