@@ -4,7 +4,7 @@ const Dropdown = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
+    localStorage.clear();
     navigate("/");
   };
 

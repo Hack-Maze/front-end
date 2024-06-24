@@ -13,7 +13,8 @@ const Layout_1 = ({ box_1_title, box_2_title }) => {
   });
 
   const [chartData, setChartData] = useState([]);
-  const [chartDays, setChartDays] = useState([]);
+  const [circcleProgress, setCirccleProgress] = useState();
+  const [days, setDays] = useState([]);
 
   useEffect(() => {
     let timer1, timer2;
@@ -41,42 +42,39 @@ const Layout_1 = ({ box_1_title, box_2_title }) => {
   }, [isCard1Open, isCard2Open]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const getCurrentWeekDates = () => {
-        const current = new Date();
-        const firstDay = current.getDate() - current.getDay();
-        const dates = Array.from({ length: 7 }, (_, i) => {
-          const date = new Date(current.setDate(firstDay + i));
-          return {
-            date: date.toISOString().split("T")[0],
-            label: date.toLocaleDateString("en-US", { weekday: "short" }),
-          };
-        });
-        return dates;
-      };
-
-      const dates = getCurrentWeekDates();
-      const accessToken = localStorage.getItem("accessToken");
-
-      const requests = dates.map((date) =>
-        customFetch.get(`leadership?start=${date.date}&end=${date.date}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-      );
-
+    const fetchLineChartData = async () => {
       try {
-        const responses = await Promise.all(requests);
-        const data = responses.map((response) => response.data.length);
-        setChartData(data);
-        setChartDays(dates.map((date) => date.label));
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await customFetch.get(`progress/week-progress`, {
+          headers: { Authorization: "Bearer " + accessToken },
+        });
+
+        const data = response?.data;
+        const days = Object.keys(data);
+        const values = Object.values(data);
+
+        setDays(days);
+        setChartData(values.map((value) => ({ data: value })));
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
-
-    fetchData();
+    const fetchCircleChartData = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await customFetch.get(
+          `progress/current-level-progress`,
+          {
+            headers: { Authorization: "Bearer " + accessToken },
+          }
+        );
+        setCirccleProgress(response?.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+    fetchCircleChartData();
+    fetchLineChartData();
   }, []);
 
   const handleChallengesToggle = () => {
@@ -102,10 +100,12 @@ const Layout_1 = ({ box_1_title, box_2_title }) => {
             </h2>
           </div>
 
-          {isCard2Open && shouldRenderCards.card2 && <ProgressChart />}
+          {isCard2Open && shouldRenderCards.card2 && (
+            <ProgressChart data={circcleProgress} />
+          )}
         </div>
         <div
-          className={`border bg-[#0f20183f] px-5 pt-4 pb-10 my-6 shadow-box w-[350px] border-[#5874593a] rounded-md transition-height duration-300 ${
+          className={`border bg-[#0f20183f] px-5 pt-4 pb-12 my-6 shadow-box w-[350px] border-[#5874593a] rounded-md transition-height duration-300 ${
             isCard1Open ? "h-[400px]" : "overflow-hidden h-0 pb-10"
           }`}
         >
@@ -116,7 +116,7 @@ const Layout_1 = ({ box_1_title, box_2_title }) => {
             </h2>
           </div>
           {isCard1Open && shouldRenderCards.card1 && (
-            <LinearChart data={chartData} days={chartDays} />
+            <LinearChart data={chartData} days={days} />
           )}
         </div>
       </div>

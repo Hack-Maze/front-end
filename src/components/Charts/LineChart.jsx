@@ -8,8 +8,8 @@ const LinearChart = ({ data, days }) => {
     labels: days,
     datasets: [
       {
-        label: "Solved mazes this week",
-        data: data,
+        label: "Solved mazes per day",
+        data: data.map((item) => item.data),
         borderColor: "#5de848",
         backgroundColor: "transparent",
         pointStyle: false,
@@ -19,7 +19,6 @@ const LinearChart = ({ data, days }) => {
     ],
   };
 
-  console.log(chartData);
   useEffect(() => {
     let chartInstance = null;
 
@@ -54,12 +53,15 @@ const LinearChart = ({ data, days }) => {
               },
               ticks: {
                 color: "white",
+                font: {
+                  size: 10,
+                },
               },
             },
             y: {
+              beginAtZero: true,
               grid: {
                 display: false,
-                beginAtZero: true,
               },
               ticks: {
                 color: "white",

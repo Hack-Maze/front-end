@@ -55,6 +55,10 @@ const CreateMazeContent = () => {
       toast.error("Section title and content cannot be empty");
       return;
     }
+    if (sectionTitle.trim().length > 255) {
+      toast.error("Title cannot exceed 255 characters.");
+      return;
+    }
     try {
       const newSection = {
         title: sectionTitle,
@@ -117,6 +121,10 @@ const CreateMazeContent = () => {
     const accessToken = localStorage.getItem("accessToken");
     if (sectionQuestion.trim() === "" || sectionAnswer.trim() === "") {
       toast.error("Question and answer cannot be empty");
+      return;
+    }
+    if (sectionQuestion.trim().length > 255) {
+      toast.error("Question cannot exceed 255 characters.");
       return;
     }
     try {
@@ -414,7 +422,7 @@ const CreateMazeContent = () => {
         {!createQuestion ? "Create Page" : "Create Question"}{" "}
       </h1>
       <div className="flex justify-between my-10 ">
-        <div className="w-[80%] flex flex-col justify-between">
+        <div className="w-[75%] flex flex-col justify-between">
           <div className="w-[80%] flex flex-col h-[63vh]">
             {!createQuestion ? (
               <>

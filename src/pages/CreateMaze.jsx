@@ -108,7 +108,7 @@ const CreateMaze = () => {
       toast.success("Maze preview created");
       navigate("/learn/createMaze/content");
     } catch (error) {
-      toast.error(error.response.data);
+      console.log(error.response.data);
     } finally {
       setLoading(false);
     }
@@ -160,6 +160,10 @@ const CreateMaze = () => {
             <input
               {...register("title", {
                 required: "Please enter a title for the maze.",
+                maxLength: {
+                  value: 255,
+                  message: "Title cannot exceed 255 characters.",
+                },
               })}
               type="text"
               placeholder="#CrowCTF23"

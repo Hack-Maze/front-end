@@ -206,7 +206,7 @@ const Explore = () => {
                 <span className="text-[#5EE848]">Mazes</span>
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center justify-center w-[80%] ml-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center justify-center w-[80%] mx-auto">
               {recommendedMazes.map((maze, index) => (
                 <Link
                   key={index}

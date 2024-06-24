@@ -59,20 +59,6 @@ const Learn = () => {
     setDisplayedRooms((prev) => prev + 6);
   };
 
-  // const handleDeleteMaze = async (mazeId) => {
-  //   try {
-  //     const accessToken = localStorage.getItem("accessToken");
-  //     await customFetch.delete(`maze/${mazeId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     });
-  //     setRooms((prevRooms) => prevRooms.filter((room) => room.id !== mazeId));
-  //   } catch (error) {
-  //     console.log("Error deleting maze:", error);
-  //   }
-  // };
-
   if (loading) {
     return <LoadingItem />;
   }

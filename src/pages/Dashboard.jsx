@@ -1,20 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout_1 from "../components/Layout_1/Layout_1";
-import { GiMaze } from "react-icons/gi";
+import { GiMaze, GiLaurelCrown } from "react-icons/gi";
 import { PiCoffeeLight } from "react-icons/pi";
-import { GiLaurelCrown } from "react-icons/gi";
 import { CgProfile } from "react-icons/cg";
 import customFetch from "../../utils/CustomFetsh";
+import LoadingItem from "@/components/LoadingItem";
 
 const Dashboard = () => {
+  const [usersRank, setUsersRank] = useState([]);
+  const [topThreeHackers, setTopThreeHackers] = useState([]);
+  const [notCompletedMazes, setNotCompletedMazes] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    const fetchDashData = async () => {
+    const fetchRanksData = async () => {
       try {
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear();
@@ -32,45 +37,70 @@ const Dashboard = () => {
             },
           }
         );
-        console.log(response.data);
+        setUsersRank(response.data);
+
+        const topThree = response.data.slice(0, 3).map((user, index) => ({
+          img: user.image ? (
+            <img
+              src={user.image}
+              alt={user.username}
+              className="w-20 h-20 rounded-full"
+            />
+          ) : (
+            <CgProfile size={80} />
+          ),
+          name: user.username,
+          rank: `Rank ${index + 1}`,
+          score: user.score,
+        }));
+        setTopThreeHackers(topThree);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchDashData();
-  }, []);
 
-  const topThreeHackers = [
-    {
-      img: <CgProfile size={50} />,
-      name: "Hacker 2",
-      rank: "Rank 2",
-      score: 90,
-    },
-    {
-      img: <CgProfile size={50} />,
-      name: "Hacker 1",
-      rank: "Rank 1",
-      score: 100,
-    },
-    {
-      img: <CgProfile size={50} />,
-      name: "Hacker 3",
-      rank: "Rank 3",
-      score: 80,
-    },
-  ];
+    const fetchMazes = async () => {
+      try {
+        const response = await customFetch.get(`progress/not-completed-mazes`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setNotCompletedMazes(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const fetchData = async () => {
+      setLoading(true); // Set loading to true before fetching data
+      await Promise.all([fetchRanksData(), fetchMazes()]);
+      setLoading(false); // Set loading to false after data is fetched
+    };
+
+    fetchData();
+  }, []);
 
   const ranks = [
     { rank: "#2", color: "#C0C0C0" },
     { rank: "#1", color: "#FFD700" },
     { rank: "#3", color: "#CD7F32" },
   ];
+  const difficultyColors = {
+    fundamental: { color: "text-green-600", bgColor: "bg-[#336c4794]" },
+    easy: { color: "text-blue-600", bgColor: "bg-[#2e4868a1]" },
+    medium: { color: "text-yellow-600", bgColor: "bg-[#6c652c8c]" },
+    hard: { color: "text-red-700", bgColor: "bg-[#62282875]" },
+  };
+
+  if (loading) {
+    return <LoadingItem />;
+  }
 
   return (
     <div className="w-[80%] flex flex-col px-8 py-7 mx-auto text-white">
       <div className="flex flex-row justify-between my-5">
-        <div className="w-[65%] ">
+        <div className="w-[65%]">
           <div className="border border-[#5874593a] bg-[#0f20183f] rounded-md p-5 mb-10 h-[60vh]">
             <div>
               <h2 className="text-3xl flex gap-2 items-center font-semibold p-3">
@@ -78,18 +108,68 @@ const Dashboard = () => {
                 Mazes List
               </h2>
             </div>
-            <div className="flex flex-col gap-5 items-center justify-center h-[50vh]">
-              <PiCoffeeLight size={120} color="#928e8eb2" />
-              <h3 className="text-xl text-gray-200">
-                It's time to kickstart your journey.
-              </h3>
-              <Link
-                to="/learn"
-                className="py-2 px-5 border border-[#5EE848] rounded-md mt-5 text-lg text-[#5EE848] hover:bg-[#5de8481c]"
-              >
-                Explore Mazes
-              </Link>
-            </div>
+            {notCompletedMazes.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                {notCompletedMazes.map((maze) => (
+                  <Link
+                    key={maze.mazeId}
+                    to={`/learn/${maze.mazeId}/${maze.title
+                      .toLowerCase()
+                      .replace(/\s/g, "-")}`}
+                    className="flex flex-col text-center justify-evenly border border-[#5874593a] bg-[#0f20183f] p-4 items-center rounded-md max-w-md shadow-box hover:border-[#5de84844] transition duration-300 ease-in-out"
+                  >
+                    <img
+                      src={maze.image}
+                      alt="image"
+                      className="h-40 w-72"
+                      loading="lazy"
+                    />
+
+                    <h2
+                      className="text-xl my-5 w-52 h-16 text-white font-semibold"
+                      title={maze.title}
+                      style={{
+                        whiteSpace: "normal",
+                        overflowWrap: "break-word",
+                      }}
+                    >
+                      {maze.title.length > 30
+                        ? maze.title.slice(0, 25).concat("...")
+                        : maze.title}
+                    </h2>
+                    <p
+                      className={`p-2 font-bold capitalize my-4 rounded-md tracking-wider ${
+                        maze.difficulty &&
+                        difficultyColors[maze.difficulty.toLowerCase()]
+                          ? `${
+                              difficultyColors[maze.difficulty.toLowerCase()]
+                                .color
+                            } ${
+                              difficultyColors[maze.difficulty.toLowerCase()]
+                                .bgColor
+                            }`
+                          : ""
+                      }`}
+                    >
+                      {maze.difficulty}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-5 items-center justify-center h-[50vh]">
+                <PiCoffeeLight size={120} color="#928e8eb2" />
+                <h3 className="text-xl text-gray-200">
+                  It's time to kickstart your journey.
+                </h3>
+                <Link
+                  to="/learn"
+                  className="py-2 px-5 border border-[#5EE848] rounded-md mt-5 text-lg text-[#5EE848] hover:bg-[#5de8481c]"
+                >
+                  Explore Mazes
+                </Link>
+              </div>
+            )}
           </div>
         </div>
         <Layout_1 box_1_title={"level"} box_2_title={"challenges"} />
@@ -109,7 +189,7 @@ const Dashboard = () => {
             <div
               key={index}
               className={`h-[30vh] bg-[#5de8480e] border border-[#5de84888] rounded-md shadow-md text-white flex flex-col w-[25%] mb-5
-              ${index === 0 ? "mt-[10px]" : ""} 
+              ${index === 0 ? "mt-[10px]" : ""}
               ${index === 1 ? "mt-[-20px]" : ""}
               ${index === 2 ? "mt-[30px]" : ""}
                 `}
@@ -120,12 +200,14 @@ const Dashboard = () => {
               >
                 {ranks[index].rank}
               </span>
-              <div className="text-center pt-5 flex flex-col items-center gap-5">
+              <div className="text-center pt-1 flex flex-col items-center gap-5">
                 {hacker.img}
-                <h3 className="text-xl font-bold">{hacker.name}</h3>
+                <h3 className="text-xl font-bold capitalize">{hacker.name}</h3>
                 <p className="flex flex-col gap-2">
-                  Solved mazes:
-                  <span className="font-semibold">{hacker.score}</span>
+                  Total points:
+                  <span className="font-bold text-[#5de848d3]">
+                    {hacker.score}
+                  </span>
                 </p>
               </div>
             </div>

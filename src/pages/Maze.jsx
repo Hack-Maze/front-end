@@ -187,11 +187,12 @@ const Maze = () => {
   const sectionsList = mazeData.map((page, index) => {
     const isCompleted =
       completedSections.includes(page.id) ||
-      page.questions.every((question) =>
-        progressData?.solvedQuestions?.find(
-          (q) => q.id === question.id && q.solvedAt
-        )
-      );
+      (page.questions.length > 0 &&
+        page.questions.every((question) =>
+          progressData?.solvedQuestions?.find(
+            (q) => q.id === question.id && q.solvedAt
+          )
+        ));
 
     return (
       <li
@@ -273,11 +274,14 @@ const Maze = () => {
       <div className="flex justify-between my-10 gap-10">
         <div className="w-[75%] flex flex-col justify-between">
           <div className="w-full leading-9 min-h-[70vh]">
-            <h1 className="text-3xl font-semibold mb-4 capitalize">
+            <h1
+              className="text-3xl font-semibold mb-4 capitalize w-[90%]"
+              style={{ whiteSpace: "normal", overflowWrap: "break-word" }}
+            >
               {section.title}
             </h1>
             <div
-              className="custom-html-content"
+              className="custom-html-content w-[85%]"
               dangerouslySetInnerHTML={{ __html: section.content }}
             />
             <div className="flex flex-col w-[70%]">
@@ -399,7 +403,7 @@ const Maze = () => {
                 </button>
               )}
             </div>
-            {!completedSections.includes(selectedSectionIndex) &&
+            {!completedSections.includes(section.id) &&
               section.questions.length === 0 &&
               !progressData?.isCompleted && (
                 <button

@@ -18,6 +18,10 @@ const Profile = () => {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [homeData]);
+
   const handleItemClick = (item) => {
     setActiveItem(item);
   };
@@ -46,6 +50,7 @@ const Profile = () => {
         }
       } finally {
         setLoading(false);
+        setActiveItem("profile");
       }
     };
 
@@ -129,9 +134,9 @@ const Profile = () => {
               activeItem === "profile" ? (
                 <ProfileComp data={data} />
               ) : activeItem === "solved" ? (
-                <SolvedMazes />
+                <SolvedMazes username={data.username} />
               ) : (
-                <CreatedMazes />
+                <CreatedMazes username={data.username} />
               )
               //       : (
               // <Activity />

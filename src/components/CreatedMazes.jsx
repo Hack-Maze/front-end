@@ -3,40 +3,93 @@ import empty from "/empty2.svg";
 import customFetch from "../../utils/CustomFetsh";
 import { Link } from "react-router-dom";
 import LoadingItem from "./LoadingItem";
+import { FaTrash } from "react-icons/fa6";
+import { useHomeContext } from "@/pages/Home";
 
-const CreatedMazes = () => {
+const CreatedMazes = ({ username }) => {
   const [createdMazes, setCreatedMazes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { data } = useHomeContext();
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [mazeToDelete, setMazeToDelete] = useState(null);
+
   useEffect(() => {
     const fetchCreatedMazes = async () => {
       try {
         const accessToken = localStorage.getItem("accessToken");
-        const response = await customFetch.get("profile/created-mazes", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        const response = await customFetch.get(
+          `maze/created-mazes/${username}`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
         setCreatedMazes(response.data);
       } catch (error) {
-        console.log(error);
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCreatedMazes();
-  }, []);
+  }, [username]);
 
-  const difficultyColors = {
-    fundamental: { color: "text-green-600", bgColor: "bg-[#336c4794]" },
-    easy: { color: "text-blue-600", bgColor: "bg-[#2e4868a1]" },
-    medium: { color: "text-yellow-600", bgColor: "bg-[#6c652c8c]" },
-    hard: { color: "text-red-700", bgColor: "bg-[#62282875]" },
+  const handleDeleteMaze = async (mazeId) => {
+    setShowDeleteConfirmation(true);
+    setMazeToDelete(mazeId);
   };
 
-  if (!createdMazes) {
+  const confirmDeleteMaze = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      await customFetch.delete(`maze/${mazeToDelete}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setCreatedMazes((prevMazes) =>
+        prevMazes.filter((maze) => maze.id !== mazeToDelete)
+      );
+      setShowDeleteConfirmation(false);
+    } catch (error) {
+      console.log("Error deleting maze:", error);
+    }
+  };
+
+  const cancelDeleteMaze = () => {
+    setShowDeleteConfirmation(false);
+    setMazeToDelete(null);
+  };
+
+  if (loading) {
     return <LoadingItem />;
+  }
+
+  if (error || createdMazes.length === 0) {
+    return (
+      <div className="text-white flex flex-col justify-center items-center">
+        <img src={empty} alt="empty" className="h-80" />
+        <h2 className="font-semibold">
+          Failed to fetch created mazes. Please try again later.
+        </h2>
+      </div>
+    );
   }
 
   return (
     <>
-      {createdMazes ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {createdMazes.map((maze) => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {createdMazes.map((maze) => (
+          <div className="relative" key={maze.id}>
+            {username === data.username && (
+              <div
+                className="absolute right-4 top-5 cursor-pointer"
+                onClick={() => handleDeleteMaze(maze.id)}
+                title="delete maze"
+              >
+                <FaTrash size={25} color="red" />
+              </div>
+            )}
             <Link
               to={`/learn/${maze.id}/${maze.title
                 .toLowerCase()
@@ -51,7 +104,7 @@ const CreatedMazes = () => {
               />
 
               <h2
-                className="text-xl my-5 w-52 h-16 text-white font-semibold"
+                className="text-xl mt-5 w-52 h-16 text-white font-semibold"
                 title={maze.title}
                 style={{ whiteSpace: "normal", overflowWrap: "break-word" }}
               >
@@ -59,40 +112,33 @@ const CreatedMazes = () => {
                   ? maze.title.slice(0, 25).concat("...")
                   : maze.title}
               </h2>
-
-              <p
-                className="text-gray-400 px-3 w-72 h-16 text-sm"
-                style={{ whiteSpace: "normal", overflowWrap: "break-word" }}
-              >
-                {maze.description.length > 70
-                  ? `${maze.description.substring(0, 68)}...`
-                  : maze.description}
-              </p>
-              <p
-                className={`p-2 font-bold capitalize my-4 rounded-md tracking-wider ${
-                  maze.difficulty &&
-                  difficultyColors[maze.difficulty.toLowerCase()]
-                    ? `${
-                        difficultyColors[maze.difficulty.toLowerCase()].color
-                      } ${
-                        difficultyColors[maze.difficulty.toLowerCase()].bgColor
-                      }`
-                    : ""
-                }`}
-              >
-                {maze.difficulty}
-              </p>
             </Link>
-          ))}
-        </div>
-      ) : (
-        <div className="text-white flex flex-col justify-center">
-          <img src={empty} alt="empty" className="h-80" />
-          <h2 className="font-semibold">
-            Haven't created any challenges yet? Start crafting your own maze!
-          </h2>
-        </div>
-      )}
+            {showDeleteConfirmation && maze.id === mazeToDelete && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-5 rounded-md shadow-md">
+                  <p className="text-lg text-gray-800 mb-3">
+                    Are you sure you want to delete this maze?
+                  </p>
+                  <div className="flex justify-center gap-5">
+                    <button
+                      className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                      onClick={confirmDeleteMaze}
+                    >
+                      Yes, Delete
+                    </button>
+                    <button
+                      className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500"
+                      onClick={cancelDeleteMaze}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </>
   );
 };
