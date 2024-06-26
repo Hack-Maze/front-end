@@ -1,12 +1,12 @@
-// import { FaFireAlt } from "react-icons/fa";
-// import { CiTrophy } from "react-icons/ci";
+// Navbar.jsx
+
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { MdOutlineDashboard } from "react-icons/md";
 import { LuSwords } from "react-icons/lu";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { LuGraduationCap } from "react-icons/lu";
 import { FaAngleDown } from "react-icons/fa6";
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { useHomeContext } from "@/pages/Home";
 
@@ -15,9 +15,10 @@ const Navbar = () => {
   const { data } = useHomeContext();
   const username = data.username;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isRoadmaps, setIsRoadmaps] = useState(false);
+  const [isRoadmapsOpen, setIsRoadmapsOpen] = useState(false);
   const location = useLocation();
   const dropdownRef = useRef(null);
+  const roadmapsDropdownRef = useRef(null);
 
   useEffect(() => {
     switch (true) {
@@ -38,6 +39,12 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
+      if (
+        roadmapsDropdownRef.current &&
+        !roadmapsDropdownRef.current.contains(event.target)
+      ) {
+        setIsRoadmapsOpen(false);
+      }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
@@ -54,8 +61,8 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleRoadmapsClick = () => {
-    setIsRoadmaps(!isRoadmaps);
+  const toggleRoadmapsDropdown = () => {
+    setIsRoadmapsOpen(!isRoadmapsOpen);
     setActiveItem("roadmaps");
   };
 
@@ -67,7 +74,6 @@ const Navbar = () => {
     <header className="flex p-7 justify-between items-center text-white border-b border-gray-500">
       <Link to={"/dashboard"} className="flex">
         <img src="/Logo2.png" alt="logo" className="w-10 mr-4" />
-
         <h2 className="sm:text-2xl lg:text-3xl text-white">HackMaze</h2>
       </Link>
       <div>
@@ -104,11 +110,12 @@ const Navbar = () => {
                 ? "text-[#5EE848]"
                 : "hover:text-[#5de84881]"
             }`}
-            onClick={handleRoadmapsClick}
+            onClick={toggleRoadmapsDropdown}
+            ref={roadmapsDropdownRef}
           >
             <LuSwords className="mr-1" size={25} />
             Roadmaps
-            {isRoadmaps && (
+            {isRoadmapsOpen && (
               <div className="absolute top-full left-0 mt-3 bg-white shadow-md rounded-md text-gray-600">
                 <ul>
                   <Link to={`/roadmap/offensive`} rel="noopener noreferrer">
@@ -116,7 +123,6 @@ const Navbar = () => {
                       Offensive
                     </li>
                   </Link>
-
                   <Link to={`/roadmap/defensive`} rel="noopener noreferrer">
                     <li className="py-2 px-4 hover:bg-slate-200 rounded-md">
                       Defensive
@@ -140,10 +146,7 @@ const Navbar = () => {
           <div className="border border-[#5de848] rounded-full">
             <img
               className="p-1 w-12 h-12 rounded-full"
-              src={
-                data.image ||
-                `https://api.dicebear.com/7.x/initials/svg?size=25&seed=${username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100`
-              }
+              src={`https://api.dicebear.com/7.x/initials/svg?size=25&seed=${username}&backgroundColor=11221a&textColor=ffffff&radius=50&fontSize=60&fontWeight=100`}
               alt="profile"
               loading="lazy"
             />
@@ -155,4 +158,5 @@ const Navbar = () => {
     </header>
   );
 };
+
 export default Navbar;

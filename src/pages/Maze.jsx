@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { RxTrackNext } from "react-icons/rx";
@@ -55,7 +55,13 @@ const Maze = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         if (response.status === 200) {
-          setMazeData(response.data);
+          const data = response.data;
+          setMazeData(data);
+
+          const completedPages = data
+            .filter((page) => page.isCompleted)
+            .map((page) => page.id);
+          setCompletedSections(completedPages);
         } else {
           toast.error("Error fetching maze data");
         }
@@ -216,6 +222,32 @@ const Maze = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const handleMarkAsComplete = async (pageId) => {
+    try {
+      const response = await customFetch.post(
+        `progress/mark-page-as-complete/${pageId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setCompletedSections((prevCompletedSections) => [
+          ...prevCompletedSections,
+          pageId,
+        ]);
+        toast.success("Page marked as complete");
+      } else {
+        toast.error("Error marking page as complete");
+      }
+    } catch (error) {
+      console.error("Error marking page as complete:", error);
+      toast.error("Error marking page as complete");
+    }
+  };
+
   const handleComplete = () => {
     const section = mazeData[selectedSectionIndex];
     const allQuestionsSolved = section.questions.every((question) =>
@@ -225,10 +257,7 @@ const Maze = () => {
     );
 
     if (allQuestionsSolved) {
-      setCompletedSections((prevCompletedSections) => [
-        ...prevCompletedSections,
-        section.id,
-      ]);
+      handleMarkAsComplete(section.id);
     }
 
     if (selectedSectionIndex < mazeData.length - 1) {
@@ -331,12 +360,12 @@ const Maze = () => {
                           handleAnswerChange(question.id, e.target.value)
                         }
                         className={`mt-4 border border-[#58745975] bg-[#081b1b] w-full rounded-md h-10 p-4 placeholder:text-gray-600 outline-none 
-                        ${
-                          isQuestionSolved(question.id)
-                            ? "cursor-not-allowed text-gray-500"
-                            : ""
-                        }
-                        `}
+                          ${
+                            isQuestionSolved(question.id)
+                              ? "cursor-not-allowed text-gray-500"
+                              : ""
+                          }
+                          `}
                         disabled={isQuestionSolved(question.id)}
                       />
                       <div className="flex gap-7 items-center mt-4">
@@ -415,6 +444,15 @@ const Maze = () => {
                     <IoCheckmarkCircleOutline size={25} className="ml-3" />
                   </span>
                 </button>
+              )}
+            {completedSections.includes(section.id) &&
+              selectedSectionIndex === mazeData.length - 1 && (
+                <Link
+                  className="capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
+                  to="/learn"
+                >
+                  Explore more mazes
+                </Link>
               )}
           </div>
         </div>

@@ -39,7 +39,7 @@ const CreateMaze = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  // const [check, setChecked] = useState(0);
+  const [check, setChecked] = useState(2);
   const navigate = useNavigate();
   const [selectedLevel, setSelectedLevel] = useState("");
   const [uploadImage, setUploadImage] = useState("");
@@ -49,9 +49,9 @@ const CreateMaze = () => {
   const [summaryError, setSummaryError] = useState(false);
   const [summary, setSummary] = useState("");
 
-  // const handleCheck = (value) => {
-  //   setChecked(value);
-  // };
+  const handleCheck = (value) => {
+    setChecked(value);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -97,7 +97,9 @@ const CreateMaze = () => {
     formData.append("summary", summary);
     formData.append("difficulty", selectedLevel.toUpperCase());
     formData.append("image", uploadImage);
-    // formData.append("file", uploadFile);
+    if (check !== 2) {
+      formData.append("file", uploadFile);
+    }
     try {
       const response = await customFetch.post("maze", formData, {
         headers: {
@@ -113,6 +115,12 @@ const CreateMaze = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (check === 2) {
+      setUploadFile("");
+    }
+  }, [check]);
 
   return (
     <div className="w-[70%] m-auto my-10 min-h-[75vh] text-white relative">
@@ -178,6 +186,10 @@ const CreateMaze = () => {
             <input
               {...register("description", {
                 required: "Please enter a subtitle for the maze.",
+                maxLength: {
+                  value: 255,
+                  message: "Subtitle cannot exceed 255 characters.",
+                },
               })}
               type="text"
               placeholder="#Short description"
@@ -246,70 +258,93 @@ const CreateMaze = () => {
             </div>
           </div>
           <div className="flex flex-col items-start">
-            {/* <label className="text-lg mb-2 mt-2">Type</label>
+            <label className="text-lg mb-2 mt-2">Type</label>
             <div className="flex">
               <input
                 type="radio"
                 name="type"
-                id="vm"
-                className="mr-1"
+                id="docker"
+                className="mr-1 cursor-pointer"
                 onClick={() => handleCheck(0)}
                 checked={check === 0}
               />
               <label
-                htmlFor="vm"
+                htmlFor="docker"
                 className={`text-lg mr-5 ${
                   check === 0 ? "text-white" : "text-gray-400"
                 }`}
               >
-                VM.
+                Docker File
               </label>
               <input
                 type="radio"
                 name="type"
-                id="file"
-                className="mr-1"
+                id="d_file"
+                className="mr-1 cursor-pointer"
                 onClick={() => handleCheck(1)}
                 checked={check === 1}
               />
               <label
-                htmlFor="file"
-                className={`text-lg ${
+                htmlFor="d_file"
+                className={`text-lg mr-5 ${
                   check === 1 ? "text-white" : "text-gray-400"
                 }`}
               >
                 Downloadable File.
               </label>
-            </div> */}
-            <div className="flex flex-col w-full">
-              {/* <label htmlFor="upload" className="text-lg mt-4 mb-2">
-                Uplaod{" "}
-                <span className="text-gray-400 text-sm">
-                  (Accepted file types: .ova)
-                </span>
+              <input
+                type="radio"
+                name="type"
+                className="m-1 cursor-pointer"
+                onClick={() => handleCheck(2)}
+                checked={check === 2}
+              />
+              <label
+                className={`text-lg ${
+                  check === 2 ? "text-white" : "text-gray-400"
+                }`}
+              >
+                No File.
               </label>
-              <div className="w-full">
-                <span
-                  className="border border-[#58745975] bg-[#081b1b] w-full rounded-md pl-2 flex justify-between items-center text-gray-500"
-                  style={{ overflow: "hidden" }}
-                >
-                  {uploadFile.name || "Choose file"}
-                  <label
-                    htmlFor="file"
-                    className="cursor-pointer border-l border-[#58745975] bg-[#13321b] p-2 text-gray-400 hover:bg-[#13321b7a] hover:text-gray-300"
-                  >
-                    Browse
-                    <input
-                      {...register("file")}
-                      type="file"
-                      id="file"
-                      className="hidden"
-                      onChange={(e) => handleFileChange(e, "file")}
-                      accept=".ova"
-                    />
+            </div>
+            <div className="flex flex-col w-full">
+              {check !== 2 && (
+                <div>
+                  <label htmlFor="upload" className="text-lg mt-4 mb-2">
+                    Uplaod{" "}
+                    <span className="text-gray-400 text-sm">
+                      (Accepted file types: .ova)
+                    </span>
                   </label>
-                </span>
-              </div> */}
+                  <div className="w-full">
+                    <span
+                      className="border border-[#58745975] bg-[#081b1b] w-full rounded-md pl-2 flex justify-between items-center text-gray-500"
+                      style={{ overflow: "hidden" }}
+                    >
+                      {uploadFile.name || "Choose file"}
+                      <label
+                        htmlFor="file"
+                        className="cursor-pointer border-l border-[#58745975] bg-[#13321b] p-2 text-gray-400 hover:bg-[#13321b7a] hover:text-gray-300"
+                      >
+                        Browse
+                        <input
+                          {...register("file", {
+                            required: "Please select file.",
+                          })}
+                          type="file"
+                          id="file"
+                          className="hidden"
+                          onChange={(e) => handleFileChange(e, "file")}
+                          accept=".ova"
+                        />
+                      </label>
+                    </span>
+                  </div>
+                  {errors.file && (
+                    <p className="text-red-500 mt-2">{errors.file.message}</p>
+                  )}
+                </div>
+              )}
               <div className="flex flex-col w-full">
                 <div className="flex flex-col">
                   <h2 className="text-lg my-4">Maze Level</h2>

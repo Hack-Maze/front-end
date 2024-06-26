@@ -8,10 +8,9 @@ import customFetch from "../../utils/CustomFetsh";
 import LoadingItem from "@/components/LoadingItem";
 
 const Dashboard = () => {
-  const [usersRank, setUsersRank] = useState([]);
   const [topThreeHackers, setTopThreeHackers] = useState([]);
   const [notCompletedMazes, setNotCompletedMazes] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,23 +36,27 @@ const Dashboard = () => {
             },
           }
         );
-        setUsersRank(response.data);
-
-        const topThree = response.data.slice(0, 3).map((user, index) => ({
-          img: user.image ? (
-            <img
-              src={user.image}
-              alt={user.username}
-              className="w-20 h-20 rounded-full"
-            />
-          ) : (
-            <CgProfile size={80} />
-          ),
-          name: user.username,
-          rank: `Rank ${index + 1}`,
-          score: user.score,
-        }));
-        setTopThreeHackers(topThree);
+        let topThree = response.data;
+        if (topThree.length >= 3) {
+          [topThree[0], topThree[1]] = [topThree[1], topThree[0]];
+        }
+        const topThreeFormatted = response.data
+          .slice(0, 3)
+          .map((user, index) => ({
+            img: user.image ? (
+              <img
+                src={user.image}
+                alt={user.username}
+                className="w-20 h-20 rounded-full"
+              />
+            ) : (
+              <CgProfile size={80} />
+            ),
+            name: user.username,
+            rank: `Rank ${index + 1}`,
+            score: user.score,
+          }));
+        setTopThreeHackers(topThreeFormatted);
       } catch (error) {
         console.log(error);
       }
@@ -73,9 +76,9 @@ const Dashboard = () => {
     };
 
     const fetchData = async () => {
-      setLoading(true); // Set loading to true before fetching data
+      setLoading(true);
       await Promise.all([fetchRanksData(), fetchMazes()]);
-      setLoading(false); // Set loading to false after data is fetched
+      setLoading(false);
     };
 
     fetchData();
@@ -101,7 +104,7 @@ const Dashboard = () => {
     <div className="w-[80%] flex flex-col px-8 py-7 mx-auto text-white">
       <div className="flex flex-row justify-between my-5">
         <div className="w-[65%]">
-          <div className="border border-[#5874593a] bg-[#0f20183f] rounded-md p-5 mb-10 h-[60vh]">
+          <div className="border border-[#5874593a] bg-[#0f20183f] rounded-md p-5 mb-10 min-h-[60vh] max-h-[90vh] overflow-y-scroll">
             <div>
               <h2 className="text-3xl flex gap-2 items-center font-semibold p-3">
                 <GiMaze />
@@ -172,7 +175,7 @@ const Dashboard = () => {
             )}
           </div>
         </div>
-        <Layout_1 box_1_title={"level"} box_2_title={"challenges"} />
+        <Layout_1 box_1_title={"level"} box_2_title={"week progress"} />
       </div>
       <div className="border border-[#5874593a] bg-[#0f20183f] rounded-md p-5 mb-10">
         <div className="mb-5 flex justify-between items-center">
@@ -186,7 +189,8 @@ const Dashboard = () => {
         </div>
         <div className="flex justify-between w-[80%] m-auto">
           {topThreeHackers.map((hacker, index) => (
-            <div
+            <Link
+              to={`/profile/${hacker.username}`}
               key={index}
               className={`h-[30vh] bg-[#5de8480e] border border-[#5de84888] rounded-md shadow-md text-white flex flex-col w-[25%] mb-5
               ${index === 0 ? "mt-[10px]" : ""}
@@ -210,7 +214,7 @@ const Dashboard = () => {
                   </span>
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

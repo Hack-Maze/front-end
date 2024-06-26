@@ -10,12 +10,11 @@ const Learn = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [displayedRooms, setDisplayedRooms] = useState(6);
   const [rooms, setRooms] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     const fetchRooms = async () => {
-      setLoading(true);
       try {
         const response = await customFetch.get(`maze`, {
           headers: {
@@ -24,9 +23,10 @@ const Learn = () => {
           },
         });
         setRooms(response.data);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching rooms:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -119,12 +119,6 @@ const Learn = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {filteredRooms.slice(0, displayedRooms).map((room) => (
               <div className="relative" key={room.id}>
-                {/* <div
-                  className="absolute right-4 top-4 cursor-pointer"
-                  onClick={() => handleDeleteMaze(room.id)}
-                >
-                  <FaTrash size={20} color="red" />
-                </div> */}
                 <Link
                   to={`/learn/${room.id}/${room.title
                     .toLowerCase()

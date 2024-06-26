@@ -291,22 +291,36 @@ const CreateMazeContent = () => {
   };
 
   const handleEditQuestion = async (index, questionIndex) => {
-    const mazeId = localStorage.getItem("mazeId");
+    const questionId = sections[index].questions[questionIndex].id;
+    const accessToken = localStorage.getItem("accessToken");
     try {
-      const questionResponse = await customFetch.get(`page/maze/${mazeId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      if (questionResponse.status === 200) {
+      const hintResponse = await customFetch.get(
+        `question/hint/${questionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const answerResponse = await customFetch.get(
+        `question/answer/${questionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (hintResponse.status === 200 && answerResponse.status === 200) {
         const questionData = sections[index].questions[questionIndex];
         handleQuestionClick(questionIndex);
         setSelectedSectionIndex(index);
         setIsEditingQuestion(true);
         setCreateQuestion(true);
         setSectionQuestion(questionData.content);
-        setSectionAnswer(questionData.answer);
-        setSectionHint(questionData.hint);
+        setSectionAnswer(answerResponse.data);
+        setSectionHint(hintResponse.data);
         setSectionPoints(questionData.points);
       } else {
         toast.error("Failed to fetch question data for editing");
@@ -344,14 +358,14 @@ const CreateMazeContent = () => {
     "image",
   ];
 
-  const sectionsList = sections.map((section, index) => (
+  const sectionsList = (sections || []).map((section, index) => (
     <li
       key={index}
       className={`leading-7 p-2 bg-[#d9d9d917] mb-3 rounded-md flex flex-col`}
     >
       <div className="flex items-center justify-between">
         <span title={section.title}>
-          {section.title.length > 25
+          {section.title && section.title.length > 25
             ? section.title.slice(0, 25).concat("...")
             : section.title}
         </span>
@@ -373,36 +387,35 @@ const CreateMazeContent = () => {
         </div>
       </div>
       <div className="mt-2">
-        {section.questions &&
-          section.questions.map((question, questionIndex) => (
-            <div
-              className="ml-2 flex justify-between items-center"
-              key={questionIndex}
-            >
-              <span className="flex items-center" title={question.content}>
-                <FaRegQuestionCircle className="mr-2" />
-                {question.content.length > 20
-                  ? question.content.slice(0, 19).concat("...")
-                  : question.content}
-              </span>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleEditQuestion(index, questionIndex)}
-                  className="text-gray-400 cursor-pointer"
-                  title="Edit Question"
-                >
-                  <GoPencil />
-                </button>
-                <button
-                  onClick={() => handleDeleteQuestion(index, questionIndex)}
-                  className="text-red-400 cursor-pointer"
-                  title="Delete Question"
-                >
-                  <GoTrash />
-                </button>
-              </div>
+        {(section.questions || []).map((question, questionIndex) => (
+          <div
+            className="ml-2 flex justify-between items-center"
+            key={questionIndex}
+          >
+            <span className="flex items-center" title={question.content}>
+              <FaRegQuestionCircle className="mr-2" />
+              {question.content && question.content.length > 20
+                ? question.content.slice(0, 19).concat("...")
+                : question.content}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleEditQuestion(index, questionIndex)}
+                className="text-gray-400 cursor-pointer"
+                title="Edit Question"
+              >
+                <GoPencil />
+              </button>
+              <button
+                onClick={() => handleDeleteQuestion(index, questionIndex)}
+                className="text-red-400 cursor-pointer"
+                title="Delete Question"
+              >
+                <GoTrash />
+              </button>
             </div>
-          ))}
+          </div>
+        ))}
         <button
           onClick={() => {
             setCreateQuestion(true), handleSectionClick(index);
@@ -567,13 +580,15 @@ const CreateMazeContent = () => {
               )}
             </ul>
           </div>
-          <Link
-            to="/learn/createMaze/success"
-            className="py-2 px-4 w-full border border-[#5EE848] rounded-md mt-10 text-lg text-[#5EE848] hover:bg-[#5de8481c] text-center"
-            onClick={() => localStorage.removeItem("mazeId")}
-          >
-            Save & Create
-          </Link>
+          {sections.length > 0 && (
+            <Link
+              to="/learn/createMaze/success"
+              className="py-2 px-4 w-full border border-[#5EE848] rounded-md mt-10 text-lg text-[#5EE848] hover:bg-[#5de8481c] text-center"
+              onClick={() => localStorage.removeItem("mazeId")}
+            >
+              Save & Create
+            </Link>
+          )}
         </div>
       </div>
     </div>

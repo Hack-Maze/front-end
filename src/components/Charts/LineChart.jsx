@@ -8,7 +8,7 @@ const LinearChart = ({ data, days }) => {
     labels: days,
     datasets: [
       {
-        label: "Solved mazes per day",
+        label: "Solved questions",
         data: data.map((item) => item.data),
         borderColor: "#5de848",
         backgroundColor: "transparent",
