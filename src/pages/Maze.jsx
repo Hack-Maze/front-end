@@ -224,6 +224,18 @@ const Maze = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const dockerLink = async () => {
+    try {
+      const response = await customFetch.post(`maze/run-container/${mazeId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      const { data } = response;
+      window.open(data, "_blank");
+    } catch (error) {
+      console.log("Error fetching docker link:", error.response.data);
+    }
+  };
+
   const handleMarkAsComplete = async (pageId) => {
     try {
       const response = await customFetch.post(
@@ -472,7 +484,7 @@ const Maze = () => {
           </div>
         </div>
         <div className="flex flex-col gap-5 w-[25%]">
-          {type === "DOWNLOADABLE_FILE" && (
+          {type === "DOWNLOADABLE_FILE" ? (
             <a
               href={file}
               download={file}
@@ -483,6 +495,16 @@ const Maze = () => {
                 <FaCloudDownloadAlt size={25} className="ml-3" />
               </span>
             </a>
+          ) : (
+            <button
+              className="w-fit capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
+              onClick={dockerLink}
+            >
+              Navigate maze
+              <span>
+                <FaCloudDownloadAlt size={25} className="ml-3" />
+              </span>
+            </button>
           )}
 
           <div
