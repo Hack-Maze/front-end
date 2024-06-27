@@ -222,7 +222,7 @@ const Maze = () => {
 
   const dockerLink = async () => {
     try {
-      setLoading(true);
+      toast.loading('Getting DNS Link...')
       const response = await customFetch.post(
         `maze/run-container/${mazeId}`,
         {},
@@ -232,11 +232,9 @@ const Maze = () => {
       );
       const data = response.data;
       window.open(data, "_blank");
+      toast.success('link:' + data);
     } catch (error) {
       console.log("Error fetching docker link:", error.response.data);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleMarkAsComplete = async (pageId) => {
