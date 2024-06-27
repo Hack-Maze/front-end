@@ -28,7 +28,6 @@ const CreateMazeContent = () => {
   const [usedEnvs, setUsedEnvs] = useState([]);
 
   const fileType = localStorage.getItem("fileType");
-  console.log(fileType);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -478,6 +477,8 @@ const CreateMazeContent = () => {
     </li>
   ));
 
+  console.log(selectedEnv);
+
   return (
     <div className="w-[80%] m-auto my-10 text-white">
       <h1 className="text-3xl font-semibold">
@@ -564,7 +565,7 @@ const CreateMazeContent = () => {
                     }}
                   />
                   {fileType === "DOCKER_FILE" && (
-                    <div className="flex">
+                    <div className="flex items-center">
                       <div className="ml-4 flex items-center">
                         <label className="text-xl font-semibold bg-transparent outline-none capitalize mr-4 text-gray-400">
                           Type:
@@ -589,7 +590,7 @@ const CreateMazeContent = () => {
                         </select>
                       </div>
                       {type === "DYNAMIC" && (
-                        <div className="ml-4 flex items-center mt-4">
+                        <div className="ml-4 flex items-center">
                           <label className="text-xl font-semibold bg-transparent outline-none capitalize mr-4 text-gray-400">
                             Env:
                           </label>
@@ -598,10 +599,29 @@ const CreateMazeContent = () => {
                             onChange={(e) => setSelectedEnv(e.target.value)}
                             className="text-xl font-semibold bg-transparent outline-none capitalize border border-[#58745975] p-3 rounded-md cursor-pointer"
                           >
+                            {selectedEnv && (
+                              <option key={selectedEnv} value={selectedEnv}>
+                                {selectedEnv}
+                              </option>
+                            )}
+                            <option
+                              value=""
+                              disabled
+                              className="bg-gray-800 text-white"
+                            >
+                              Choose an environment
+                            </option>
                             {envList
-                              .filter((env) => !usedEnvs.includes(env))
+                              .filter(
+                                (env) =>
+                                  env !== selectedEnv && !usedEnvs.includes(env)
+                              )
                               .map((env) => (
-                                <option key={env} value={env}>
+                                <option
+                                  key={env}
+                                  value={env}
+                                  className="bg-gray-800 text-white"
+                                >
                                   {env}
                                 </option>
                               ))}

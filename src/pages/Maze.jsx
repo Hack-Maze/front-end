@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
+import { IoIosNavigate } from "react-icons/io";
 import { RxTrackNext } from "react-icons/rx";
 import { RxTrackPrevious } from "react-icons/rx";
 import { FaRegQuestionCircle, FaCloudDownloadAlt } from "react-icons/fa";
@@ -17,7 +18,7 @@ const Maze = () => {
   const [selectedSectionIndex, setSelectedSectionIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(true);
   const [completedSections, setCompletedSections] = useState([]);
-  const [mazeData, setMazeData] = useState(null);
+  const [mazeData, setMazeData] = useState([]);
   const [answers, setAnswers] = useState({});
   const [hints, setHints] = useState({});
   const [loading, setLoading] = useState(true);
@@ -80,7 +81,7 @@ const Maze = () => {
 
   useEffect(() => {
     if (mazeData) {
-      fetchProgressData(mazeData[selectedSectionIndex].id);
+      fetchProgressData(mazeData[selectedSectionIndex]?.id);
     }
   }, [mazeData, selectedSectionIndex, accessToken]);
 
@@ -95,7 +96,7 @@ const Maze = () => {
     }
   }, [mazeData, mazePage]);
 
-  const section = mazeData[selectedSectionIndex];
+  const section = mazeData && mazeData[selectedSectionIndex];
 
   const handleSectionClick = (index) => {
     setSelectedSectionIndex(index);
@@ -514,7 +515,7 @@ const Maze = () => {
             >
               Navigate maze
               <span>
-                <FaCloudDownloadAlt size={25} className="ml-3" />
+                <IoIosNavigate size={25} className="ml-3" />
               </span>
             </button>
           ) : null}
