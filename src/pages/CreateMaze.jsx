@@ -48,9 +48,15 @@ const CreateMaze = () => {
   const [loading, setLoading] = useState(false);
   const [summaryError, setSummaryError] = useState(false);
   const [summary, setSummary] = useState("");
+  const [type, setType] = useState("");
 
-  const handleCheck = (value) => {
+  const handleCheck = (value, fileType) => {
     setChecked(value);
+    if (fileType) {
+      setType(fileType);
+    } else {
+      setType("");
+    }
   };
 
   useEffect(() => {
@@ -98,6 +104,7 @@ const CreateMaze = () => {
     formData.append("difficulty", selectedLevel.toUpperCase());
     formData.append("image", uploadImage);
     if (check !== 2) {
+      formData.append("type", type);
       formData.append("file", uploadFile);
     }
     try {
@@ -265,7 +272,7 @@ const CreateMaze = () => {
                 name="type"
                 id="docker"
                 className="mr-1 cursor-pointer"
-                onClick={() => handleCheck(0)}
+                onClick={() => handleCheck(0, "DOCKER_FILE")}
                 checked={check === 0}
               />
               <label
@@ -281,7 +288,7 @@ const CreateMaze = () => {
                 name="type"
                 id="d_file"
                 className="mr-1 cursor-pointer"
-                onClick={() => handleCheck(1)}
+                onClick={() => handleCheck(1, "DOWNLOADABLE_FILE")}
                 checked={check === 1}
               />
               <label
@@ -313,7 +320,9 @@ const CreateMaze = () => {
                   <label htmlFor="upload" className="text-lg mt-4 mb-2">
                     Uplaod{" "}
                     <span className="text-gray-400 text-sm">
-                      (Accepted file types: .ova)
+                      {check === 0
+                        ? "(Accepted file types: .zip)"
+                        : "(Accepted file types: all types)"}
                     </span>
                   </label>
                   <div className="w-full">
@@ -335,7 +344,7 @@ const CreateMaze = () => {
                           id="file"
                           className="hidden"
                           onChange={(e) => handleFileChange(e, "file")}
-                          accept=".ova"
+                          accept={check === 0 ? ".zip" : "*"}
                         />
                       </label>
                     </span>

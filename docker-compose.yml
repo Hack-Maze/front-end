@@ -1,4 +1,13 @@
 services:
+  container-management:
+    image: mostafaewida/hackmaze_container_management:latest
+    pull_policy: always
+    restart: always
+    ports:
+      - "8080:80"
+    env_file:
+      - .env
+
   backend:
     restart: always
     pull_policy: always
@@ -19,7 +28,7 @@ services:
       - ./src/assets/config.js:/usr/share/nginx/html/config.js
     depends_on:
       - backend
-      
+
   db:
     image: postgres:16
     pull_policy: always
@@ -29,7 +38,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: [ "CMD", "pg_isready" ]
+      test: ["CMD", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5

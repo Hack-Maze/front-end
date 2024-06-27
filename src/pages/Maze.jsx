@@ -4,7 +4,7 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { RxTrackNext } from "react-icons/rx";
 import { RxTrackPrevious } from "react-icons/rx";
-import { FaRegQuestionCircle } from "react-icons/fa";
+import { FaRegQuestionCircle, FaCloudDownloadAlt } from "react-icons/fa";
 import logo from "/logo.png";
 import customFetch from "../../utils/CustomFetsh";
 import { toast } from "sonner";
@@ -298,6 +298,19 @@ const Maze = () => {
     }
   };
 
+  const areAllPagesCompleted = () => {
+    return mazeData.every(
+      (page) =>
+        completedSections.includes(page.id) ||
+        (page.questions.length > 0 &&
+          page.questions.every((question) =>
+            progressData?.solvedQuestions?.find(
+              (q) => q.id === question.id && q.solvedAt
+            )
+          ))
+    );
+  };
+
   return (
     <div className="w-[75vw] min-h-[85vh] m-auto my-10 text-white">
       <div className="flex justify-between my-10 gap-10">
@@ -445,7 +458,7 @@ const Maze = () => {
                   </span>
                 </button>
               )}
-            {completedSections.includes(section.id) &&
+            {areAllPagesCompleted() &&
               selectedSectionIndex === mazeData.length - 1 && (
                 <Link
                   className="capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
@@ -456,25 +469,42 @@ const Maze = () => {
               )}
           </div>
         </div>
-        <div
-          className={`border-2 ${
-            isExpanded ? "h-fit" : "h-[7vh]"
-          } border-[#81a77c94] p-4 w-[30%] rounded-md shadow-box bg-[#0f20183f]`}
-        >
+        <div className="flex flex-col gap-5 w-[25%]">
+          {!section?.type === "DOWNLOADABLE_FILE" && (
+            <a
+              href={section.file}
+              download={section.file}
+              className="w-fit capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
+            >
+              download file
+              <span>
+                <FaCloudDownloadAlt size={25} className="ml-3" />
+              </span>
+            </a>
+          )}
+
           <div
-            className="flex justify-between items-center mb-3 cursor-pointer"
-            onClick={toggleTableOfContents}
+            className={`border-2 ${
+              isExpanded ? "h-fit" : "h-[7vh]"
+            } border-[#81a77c94] p-4 w-full rounded-md shadow-box bg-[#0f20183f]`}
           >
-            <h2 className="capitalize text-xl font-bold">Table of Contents</h2>
-            {isExpanded ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />}
+            <div
+              className="flex justify-between items-center mb-3 cursor-pointer"
+              onClick={toggleTableOfContents}
+            >
+              <h2 className="capitalize text-xl font-bold">
+                Table of Contents
+              </h2>
+              {isExpanded ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />}
+            </div>
+            <ul
+              className={`text-gray-200 h-fit overflow-scroll ${
+                isExpanded ? "block mt-5 pr-5" : "hidden"
+              }`}
+            >
+              {sectionsList}
+            </ul>
           </div>
-          <ul
-            className={`text-gray-200 h-fit overflow-scroll ${
-              isExpanded ? "block mt-5 pr-5" : "hidden"
-            }`}
-          >
-            {sectionsList}
-          </ul>
         </div>
       </div>
     </div>

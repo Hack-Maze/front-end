@@ -2,11 +2,19 @@ import GIF from "../assets/sign.gif";
 import { motion } from "framer-motion";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PasswordRecoveryPage from "./PassRecovery";
 import PasswordResetPage from "./PassReset";
+import { useEffect } from "react";
 
 const SharedAuth = ({ authType }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      navigate("/dashboard");
+    }
+  }, []);
   return (
     <div className="flex flex-col h-screen font-Grotesk overflow-hidden">
       <div
@@ -42,7 +50,7 @@ const SharedAuth = ({ authType }) => {
             <h1 className="sm:text-lg lg:text-2xl text-white">HackMaze</h1>
           </Link>
 
-          {authType === "login" && <LoginPage /> }
+          {authType === "login" && <LoginPage />}
           {authType === "register" && <RegisterPage />}
           {authType === "recover" && <PasswordRecoveryPage />}
           {authType === "reset" && <PasswordResetPage />}

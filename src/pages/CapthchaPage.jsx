@@ -1,7 +1,15 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Turnstile } from "@marsidev/react-turnstile";
+import { useNavigate } from "react-router-dom";
 
 const CaptchaPage = ({ handleVerificationResponse }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      navigate("/dashboard");
+    }
+  }, []);
   const turnstileRef = useRef(null);
 
   const handleVerification = async (token) => {
