@@ -25,6 +25,8 @@ const Maze = () => {
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
+  const file = localStorage.getItem("file");
+  const type = localStorage.getItem("type");
 
   const fetchProgressData = async (pageId) => {
     try {
@@ -470,10 +472,10 @@ const Maze = () => {
           </div>
         </div>
         <div className="flex flex-col gap-5 w-[25%]">
-          {!section?.type === "DOWNLOADABLE_FILE" && (
+          {type === "DOWNLOADABLE_FILE" && (
             <a
-              href={section.file}
-              download={section.file}
+              href={file}
+              download={file}
               className="w-fit capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
             >
               download file

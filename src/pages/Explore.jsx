@@ -12,6 +12,8 @@ const Explore = () => {
   const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
+  localStorage.setItem("file", mazeData?.file);
+  localStorage.setItem("type", mazeData?.type);
 
   useEffect(() => {
     window.scrollTo(0, 0);
