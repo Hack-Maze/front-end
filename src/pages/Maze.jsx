@@ -222,7 +222,7 @@ const Maze = () => {
 
   const dockerLink = async () => {
     try {
-      toast.loading('Getting DNS Link...')
+      toast.loading("Getting DNS Link...");
       const response = await customFetch.post(
         `maze/run-container/${mazeId}`,
         {},
@@ -231,10 +231,14 @@ const Maze = () => {
         }
       );
       const data = response.data;
+      toast.success(`Link: <a href="${data}" target="_blank">${data}</a>`);
       window.open(data, "_blank");
-      toast.success('link:' + data);
     } catch (error) {
-      console.log("Error fetching docker link:", error.response.data);
+      console.error("Error fetching docker link:", error);
+      if (error.response && error.response.data) {
+        console.error("Response data:", error.response.data);
+      }
+    }
   };
 
   const handleMarkAsComplete = async (pageId) => {
