@@ -273,7 +273,9 @@ const Maze = () => {
     if (allQuestionsSolved) {
       handleMarkAsComplete(section.id);
     }
-
+    if (selectedSectionIndex < mazeData.length - 1) {
+      window.scrollTo(0, 0);
+    }
     if (selectedSectionIndex < mazeData.length - 1) {
       const nextIndex = selectedSectionIndex + 1;
       setSelectedSectionIndex(nextIndex);
