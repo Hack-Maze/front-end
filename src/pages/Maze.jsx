@@ -226,9 +226,13 @@ const Maze = () => {
 
   const dockerLink = async () => {
     try {
-      const response = await customFetch.post(`maze/run-container/${mazeId}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const response = await customFetch.post(
+        `maze/run-container/${mazeId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
       const { data } = response;
       window.open(data, "_blank");
     } catch (error) {
