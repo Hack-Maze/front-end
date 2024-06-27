@@ -16,16 +16,25 @@ const CreateMazeContent = () => {
   const [sectionAnswer, setSectionAnswer] = useState("");
   const [sectionHint, setSectionHint] = useState("");
   const [sectionPoints, setSectionPoints] = useState(0);
+  const [type, setType] = useState("STATIC");
   const [sections, setSections] = useState([]);
   const [isEditingContent, setIsEditingContent] = useState(false);
   const [isEditingQuestion, setIsEditingQuestion] = useState(false);
   const [selectedSectionIndex, setSelectedSectionIndex] = useState(null);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
   const [createQuestion, setCreateQuestion] = useState(false);
+  const [envList, setEnvList] = useState(["flag", "test", "hi"]);
+  const [selectedEnv, setSelectEnv] = useState("");
+  const [usedEnvs, setUsedEnvs] = useState([]);
+
+  const fileType = localStorage.getItem("fileType");
 
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchSections();
+    // if (fileType === "DOCKER_FILE") {
+    // fetchEnvList();
+    // }
   }, []);
 
   const fetchSections = async () => {
@@ -42,6 +51,25 @@ const CreateMazeContent = () => {
         setSections(response.data);
       } else {
         toast.error("Failed to fetch sections");
+      }
+    } catch (error) {
+      toast.error(`Error: ${error.message}`);
+    }
+  };
+
+  const fetchEnvList = async () => {
+    const mazeId = localStorage.getItem("mazeId");
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+      const response = await customFetch.get(`maze/env-list/${mazeId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (response.status === 200) {
+        setEnvList(response.data);
+      } else {
+        toast.error("Failed to fetch environment list");
       }
     } catch (error) {
       toast.error(`Error: ${error.message}`);
@@ -132,7 +160,7 @@ const CreateMazeContent = () => {
         content: sectionQuestion,
         answer: sectionAnswer,
         hint: sectionHint,
-        type: "type",
+        type: type,
         points: parseInt(sectionPoints, 10),
       };
       let response;
@@ -174,6 +202,7 @@ const CreateMazeContent = () => {
         setSectionQuestion("");
         setSectionAnswer("");
         setSectionHint("");
+        setType("STATIC");
         setSectionPoints(0);
         response = await customFetch.post(
           `question/${sectionId}`,
@@ -185,6 +214,7 @@ const CreateMazeContent = () => {
             },
           }
         );
+        const questionId = response.data;
         const newQuestionWithId = { ...newQuestion, id: response.data };
         const updatedSections = [...sections];
         if (!updatedSections[selectedSectionIndex].questions) {
@@ -192,7 +222,20 @@ const CreateMazeContent = () => {
         }
         updatedSections[selectedSectionIndex].questions.push(newQuestionWithId);
         setSections(updatedSections);
-
+        if (type === "DYNAMIC") {
+          await customFetch.put(
+            `question/assign-key-to-question/${questionId}?key=${selectedEnv}`,
+            {},
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          setUsedEnvs([...usedEnvs, selectedEnv]);
+        }
+        setUsedEnvs([...usedEnvs, selectedEnv]);
         setIsEditingQuestion(false);
       }
       if (response.status === 200) {
@@ -216,6 +259,7 @@ const CreateMazeContent = () => {
     setSectionQuestion("");
     setSectionAnswer("");
     setSectionHint("");
+    setType("STATIC");
     setSectionPoints(0);
     setCreateQuestion(false);
   };
@@ -271,6 +315,7 @@ const CreateMazeContent = () => {
     setSectionQuestion("");
     setSectionAnswer("");
     setSectionHint("");
+    setType("STATIC");
     setSectionPoints(0);
     setCreateQuestion(false);
   };
@@ -321,6 +366,7 @@ const CreateMazeContent = () => {
         setSectionQuestion(questionData.content);
         setSectionAnswer(answerResponse.data);
         setSectionHint(hintResponse.data);
+        setType(questionData.type);
         setSectionPoints(questionData.points);
       } else {
         toast.error("Failed to fetch question data for editing");
@@ -514,6 +560,46 @@ const CreateMazeContent = () => {
                       setSectionPoints(e.target.value);
                     }}
                   />
+                  <div className="ml-4 flex items-center">
+                    <label className="text-xl font-semibold bg-transparent outline-none capitalize mr-4 text-gray-400">
+                      Type:
+                    </label>
+                    <select
+                      value={type}
+                      onChange={(e) => setType(e.target.value)}
+                      className="text-xl font-semibold bg-transparent outline-none capitalize border border-[#58745975] p-3 rounded-md cursor-pointer"
+                    >
+                      <option value="STATIC" className="bg-gray-800 text-white">
+                        Static
+                      </option>
+                      <option
+                        value="DYNAMIC"
+                        className="bg-gray-800 text-white"
+                      >
+                        Dynamic
+                      </option>
+                    </select>
+                  </div>
+                  {type === "DYNAMIC" && (
+                    <div className="ml-4 flex items-center">
+                      <label className="text-xl font-semibold bg-transparent outline-none capitalize mr-4 text-gray-400">
+                        Env:
+                      </label>
+                      <select
+                        value={selectedEnv}
+                        onChange={(e) => setSelectEnv(e.target.value)}
+                        className="text-xl font-semibold bg-transparent outline-none capitalize border border-[#58745975] p-3 rounded-md cursor-pointer"
+                      >
+                        {envList
+                          .filter((env) => !usedEnvs.includes(env))
+                          .map((env) => (
+                            <option key={env} value={env}>
+                              {env}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
 
                 <button

@@ -114,6 +114,7 @@ const CreateMaze = () => {
         },
       });
       localStorage.setItem("mazeId", response.data);
+      localStorage.setItem("fileType", type);
       toast.success("Maze preview created");
       navigate("/learn/createMaze/content");
     } catch (error) {
