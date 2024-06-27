@@ -224,6 +224,10 @@ const CreateMazeContent = () => {
         updatedSections[selectedSectionIndex].questions.push(newQuestionWithId);
         setSections(updatedSections);
         if (type === "DYNAMIC") {
+          if (selectedEnv === "") {
+            toast.error("Please select an environment for the question");
+            return;
+          }
           await customFetch.put(
             `question/assign-key-to-question/${questionId}?key=${selectedEnv}`,
             {},
