@@ -143,6 +143,7 @@ const CreateMazeContent = () => {
     }
     setSectionTitle("");
     setSectionContent("");
+    window.scrollTo(0, 0);
   };
 
   const handleAddOrUpdateQuestion = async () => {
@@ -263,6 +264,7 @@ const CreateMazeContent = () => {
     setType("STATIC");
     setSectionPoints(0);
     setCreateQuestion(false);
+    window.scrollTo(0, 0);
   };
 
   const handleDeleteContent = async (index) => {

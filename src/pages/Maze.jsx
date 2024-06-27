@@ -20,6 +20,7 @@ const Maze = () => {
   const [mazeData, setMazeData] = useState(null);
   const [answers, setAnswers] = useState({});
   const [hints, setHints] = useState({});
+  const [loading, setLoading] = useState(true);
   const [expandedQuestions, setExpandedQuestions] = useState({});
   const [progressData, setProgressData] = useState(null);
   const navigate = useNavigate();
@@ -69,6 +70,8 @@ const Maze = () => {
         }
       } catch (error) {
         console.log("Error fetching maze data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -91,14 +94,6 @@ const Maze = () => {
       );
     }
   }, [mazeData, mazePage]);
-
-  if (!mazeData) {
-    return (
-      <div className="text-center">
-        <LoadingItem />
-      </div>
-    );
-  }
 
   const section = mazeData[selectedSectionIndex];
 
@@ -226,6 +221,7 @@ const Maze = () => {
 
   const dockerLink = async () => {
     try {
+      setLoading(true);
       const response = await customFetch.post(
         `maze/run-container/${mazeId}`,
         {},
@@ -233,10 +229,12 @@ const Maze = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
-      const { data } = response;
+      const data = response.data;
       window.open(data, "_blank");
     } catch (error) {
       console.log("Error fetching docker link:", error.response.data);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -330,6 +328,14 @@ const Maze = () => {
           ))
     );
   };
+
+  if (loading) {
+    return (
+      <div className="text-center">
+        <LoadingItem />
+      </div>
+    );
+  }
 
   return (
     <div className="w-[75vw] min-h-[85vh] m-auto my-10 text-white">
