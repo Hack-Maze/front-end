@@ -23,11 +23,12 @@ const CreateMazeContent = () => {
   const [selectedSectionIndex, setSelectedSectionIndex] = useState(null);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
   const [createQuestion, setCreateQuestion] = useState(false);
-  const [envList, setEnvList] = useState(["flag", "test", "hi"]);
+  const [envList, setEnvList] = useState([]);
   const [selectedEnv, setSelectedEnv] = useState("");
   const [usedEnvs, setUsedEnvs] = useState([]);
 
   const fileType = localStorage.getItem("fileType");
+  console.log(fileType);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -561,7 +562,7 @@ const CreateMazeContent = () => {
                     }}
                   />
                   {fileType === "DOCKER_FILE" && (
-                    <div>
+                    <div className="flex">
                       <div className="ml-4 flex items-center">
                         <label className="text-xl font-semibold bg-transparent outline-none capitalize mr-4 text-gray-400">
                           Type:
