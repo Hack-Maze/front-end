@@ -495,7 +495,7 @@ const Maze = () => {
                 <FaCloudDownloadAlt size={25} className="ml-3" />
               </span>
             </a>
-          ) : (
+          ) : type === "DOCKER_FILE" ? (
             <button
               className="w-fit capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
               onClick={dockerLink}
@@ -505,7 +505,7 @@ const Maze = () => {
                 <FaCloudDownloadAlt size={25} className="ml-3" />
               </span>
             </button>
-          )}
+          ) : null}
 
           <div
             className={`border-2 ${
