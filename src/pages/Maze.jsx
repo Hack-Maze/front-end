@@ -81,7 +81,7 @@ const Maze = () => {
   }, [mazeId, accessToken]);
 
   useEffect(() => {
-    if (mazeData) {
+    if (mazeData && mazeData[selectedSectionIndex]?.id) {
       fetchProgressData(mazeData[selectedSectionIndex]?.id);
     }
   }, [mazeData, selectedSectionIndex, accessToken]);
@@ -197,7 +197,6 @@ const Maze = () => {
   };
 
   const isQuestionSolved = (questionId) => {
-    console.log(progressData?.solvedQuestions);
     return progressData?.solvedQuestions?.find(
       (q) => q.id === questionId && q.solvedAt
     );
