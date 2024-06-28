@@ -24,7 +24,8 @@ const Maze = () => {
   const [loading, setLoading] = useState(true);
   const [expandedQuestions, setExpandedQuestions] = useState({});
   const [progressData, setProgressData] = useState(null);
-  const [docker, setDocker] = useState(localStorage.getItem("docker"));
+  const [docker, setDocker] = useState({});
+
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
@@ -251,7 +252,6 @@ const Maze = () => {
           JSON.parse(localStorage.getItem("dockerLinks")) || {};
         dockerLinks[mazeId] = data;
         localStorage.setItem("dockerLinks", JSON.stringify(dockerLinks));
-        setDocker(data);
         toast.success(`Link fetched successfully`, { id: toastId });
       }
     } catch (error) {
@@ -534,7 +534,7 @@ const Maze = () => {
                 <FaCloudDownloadAlt size={25} className="ml-3" />
               </span>
             </a>
-          ) : type === "DOCKER_FILE" && !docker[mazeId] ? (
+          ) : type === "DOCKER_FILE" && !docker ? (
             <button
               className="w-fit capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
               onClick={dockerLink}
@@ -544,7 +544,7 @@ const Maze = () => {
                 <IoIosNavigate size={25} className="ml-3" />
               </span>
             </button>
-          ) : type === "DOCKER_FILE" && docker[mazeId] ? (
+          ) : type === "DOCKER_FILE" && docker ? (
             <div className="mb-4">
               <label className="text-lg block text-gray-300 font-bold mb-2">
                 Link:
@@ -553,9 +553,7 @@ const Maze = () => {
                 <input
                   type="text"
                   value={
-                    docker[mazeId].length > 30
-                      ? docker[mazeId].slice(0, 30) + "..."
-                      : docker[mazeId]
+                    docker.length > 30 ? docker.slice(0, 30) + "..." : docker
                   }
                   readOnly
                   className="shadow appearance-none border border-[#5EE848] rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-transparent"
@@ -564,7 +562,7 @@ const Maze = () => {
                   size={20}
                   className="absolute top-0 right-0 mt-2 mr-3 cursor-pointer hover:text-[#5EE848]"
                   onClick={() => {
-                    navigator.clipboard.writeText(docker[mazeId]);
+                    navigator.clipboard.writeText(docker);
                     toast.success("Link copied to clipboard!");
                   }}
                   title="copy link"
