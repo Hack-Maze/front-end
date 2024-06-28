@@ -99,18 +99,18 @@ const Maze = () => {
   }, [mazeData, mazePage]);
 
   useEffect(() => {
-    const handleStorageChange = (event) => {
-      if (event.key === `link-${mazeId}`) {
-        setDocker(event.newValue);
+    const checkLink = () => {
+      const dockerLink = localStorage.getItem(`link-${mazeId}`);
+      if (dockerLink) {
+        setDocker(dockerLink);
       }
     };
 
-    const dockerLink = localStorage.getItem(`link-${mazeId}`);
-    if (dockerLink) {
-      setDocker(dockerLink);
-    }
+    checkLink();
 
-    handleStorageChange();
+    const handleStorageChange = () => {
+      checkLink();
+    };
 
     window.addEventListener("storage", handleStorageChange);
     return () => {
