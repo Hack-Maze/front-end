@@ -363,7 +363,7 @@ const Maze = () => {
       </div>
     );
   }
-
+  console.log(docker);
   return (
     <div className="w-[75vw] min-h-[85vh] m-auto my-10 text-white">
       <div className="flex justify-between my-10 gap-10">
