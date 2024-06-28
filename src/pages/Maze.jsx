@@ -24,10 +24,10 @@ const Maze = () => {
   const [loading, setLoading] = useState(true);
   const [expandedQuestions, setExpandedQuestions] = useState({});
   const [progressData, setProgressData] = useState(null);
-  const [docker, setDocker] = useState({});
+  const [docker, setDocker] = useState();
 
   const navigate = useNavigate();
-  const links = localStorage.getItem("dockerLinks");
+
   const accessToken = localStorage.getItem("accessToken");
   const file = localStorage.getItem("file");
   const type = localStorage.getItem("type");
@@ -99,13 +99,13 @@ const Maze = () => {
   }, [mazeData, mazePage]);
 
   useEffect(() => {
-    const dockerLinks = JSON.parse(localStorage.getItem("dockerLinks"));
+    const dockerLink = localStorage.getItem(`link-${mazeId}`);
     const handleStorageChange = () => {
-      if (dockerLinks && dockerLinks[mazeId]) {
-        setDocker(dockerLinks[mazeId]);
+      if (dockerLink) {
+        setDocker(dockerLink);
       }
     };
-
+    handleStorageChange();
     window.addEventListener("storage", handleStorageChange);
     return () => {
       window.removeEventListener("storage", handleStorageChange);
@@ -248,10 +248,7 @@ const Maze = () => {
       );
       if (response.status === 200) {
         const data = response.data;
-        const dockerLinks =
-          JSON.parse(localStorage.getItem("dockerLinks")) || {};
-        dockerLinks[mazeId] = data;
-        localStorage.setItem("dockerLinks", JSON.stringify(dockerLinks));
+        localStorage.setItem(`link-${mazeId}`, data);
         toast.success(`Link fetched successfully`, { id: toastId });
       }
     } catch (error) {
@@ -534,7 +531,7 @@ const Maze = () => {
                 <FaCloudDownloadAlt size={25} className="ml-3" />
               </span>
             </a>
-          ) : type === "DOCKER_FILE" && !links ? (
+          ) : type === "DOCKER_FILE" && !docker ? (
             <button
               className="w-fit capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
               onClick={dockerLink}
@@ -544,7 +541,7 @@ const Maze = () => {
                 <IoIosNavigate size={25} className="ml-3" />
               </span>
             </button>
-          ) : type === "DOCKER_FILE" && links ? (
+          ) : type === "DOCKER_FILE" && docker ? (
             <div className="mb-4">
               <label className="text-lg block text-gray-300 font-bold mb-2">
                 Link:
