@@ -24,12 +24,12 @@ const Maze = () => {
   const [loading, setLoading] = useState(true);
   const [expandedQuestions, setExpandedQuestions] = useState({});
   const [progressData, setProgressData] = useState(null);
+  const [docker, setDocker] = useState(localStorage.getItem("dockerLink"));
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
   const file = localStorage.getItem("file");
   const type = localStorage.getItem("type");
-  const docker = localStorage.getItem("dockerLink");
 
   const fetchProgressData = async (pageId) => {
     try {
@@ -96,6 +96,17 @@ const Maze = () => {
       );
     }
   }, [mazeData, mazePage]);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setDocker(localStorage.getItem("dockerLink"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const section = mazeData && mazeData[selectedSectionIndex];
 
@@ -222,8 +233,8 @@ const Maze = () => {
   };
 
   const dockerLink = async () => {
+    const toastId = toast.loading("Getting DNS Link...");
     try {
-      toast.loading("Getting DNS Link...");
       const response = await customFetch.post(
         `maze/run-container/${mazeId}`,
         {},
@@ -234,13 +245,16 @@ const Maze = () => {
       if (response.status === 200) {
         const data = response.data;
         localStorage.setItem("dockerLink", data);
+        toast.success(`Link fetched successfully`, { id: toastId });
       }
-      toast.success(`Link fetched successfully`);
     } catch (error) {
       console.error("Error fetching docker link:", error);
       if (error.response && error.response.data) {
         console.error("Response data:", error.response.data);
       }
+      toast.error("Error fetching docker link", { id: toastId });
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 
@@ -526,12 +540,14 @@ const Maze = () => {
           ) : type === "DOCKER_FILE" && docker ? (
             <div className="mb-4">
               <label className="text-lg block text-gray-300 font-bold mb-2">
-                Docker Link
+                Link:
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  value={docker}
+                  value={
+                    docker.length > 30 ? docker.slice(0, 30) + "..." : docker
+                  }
                   readOnly
                   className="shadow appearance-none border border-[#5EE848] rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-transparent"
                 />
