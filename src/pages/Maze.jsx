@@ -99,13 +99,19 @@ const Maze = () => {
   }, [mazeData, mazePage]);
 
   useEffect(() => {
-    const dockerLink = localStorage.getItem(`link-${mazeId}`);
-    const handleStorageChange = () => {
-      if (dockerLink) {
-        setDocker(dockerLink);
+    const handleStorageChange = (event) => {
+      if (event.key === `link-${mazeId}`) {
+        setDocker(event.newValue);
       }
     };
+
+    const dockerLink = localStorage.getItem(`link-${mazeId}`);
+    if (dockerLink) {
+      setDocker(dockerLink);
+    }
+
     handleStorageChange();
+
     window.addEventListener("storage", handleStorageChange);
     return () => {
       window.removeEventListener("storage", handleStorageChange);
@@ -249,6 +255,7 @@ const Maze = () => {
       if (response.status === 200) {
         const data = response.data;
         localStorage.setItem(`link-${mazeId}`, data);
+        setDocker(data);
         toast.success(`Link fetched successfully`, { id: toastId });
       }
     } catch (error) {
@@ -360,7 +367,7 @@ const Maze = () => {
       </div>
     );
   }
-  console.log(docker);
+
   return (
     <div className="w-[75vw] min-h-[85vh] m-auto my-10 text-white">
       <div className="flex justify-between my-10 gap-10">
