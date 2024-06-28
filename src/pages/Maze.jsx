@@ -110,7 +110,7 @@ const Maze = () => {
   const handleAnswerChange = (questionId, value) => {
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [questionId]: value,
+      [questionId]: encodeURIComponent(value),
     }));
   };
 
