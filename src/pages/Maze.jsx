@@ -238,7 +238,10 @@ const Maze = () => {
         setDocker(data);
         toast.success(
           `Link fetched successfully. This link will be deleted after one hour.`,
-          { id: toastId }
+          {
+            id: toastId,
+            autoClose: 5000,
+          }
         );
 
         setTimeout(() => {
