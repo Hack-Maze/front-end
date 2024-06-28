@@ -27,7 +27,7 @@ const Maze = () => {
   const [docker, setDocker] = useState({});
 
   const navigate = useNavigate();
-
+  const links = localStorage.getItem("dockerLinks");
   const accessToken = localStorage.getItem("accessToken");
   const file = localStorage.getItem("file");
   const type = localStorage.getItem("type");
@@ -534,7 +534,7 @@ const Maze = () => {
                 <FaCloudDownloadAlt size={25} className="ml-3" />
               </span>
             </a>
-          ) : type === "DOCKER_FILE" && Object.keys(docker).length === 0 ? (
+          ) : type === "DOCKER_FILE" && !links ? (
             <button
               className="w-fit capitalize text-[#5EE848] border border-[#5EE848] py-2 px-5 text-lg font-semibold rounded-md hover:bg-slate-800 mr-5 flex items-center"
               onClick={dockerLink}
@@ -544,7 +544,7 @@ const Maze = () => {
                 <IoIosNavigate size={25} className="ml-3" />
               </span>
             </button>
-          ) : type === "DOCKER_FILE" && Object.keys(docker).length > 0 ? (
+          ) : type === "DOCKER_FILE" && links ? (
             <div className="mb-4">
               <label className="text-lg block text-gray-300 font-bold mb-2">
                 Link:
