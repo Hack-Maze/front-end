@@ -144,6 +144,7 @@ const Maze = () => {
         fetchProgressData(pageId);
       }
     } catch (error) {
+      console.log(error);
       toast.error(error.response.data);
     }
   };
@@ -265,7 +266,6 @@ const Maze = () => {
   };
 
   const handleMarkAsComplete = async (pageId) => {
-    a;
     try {
       const response = await customFetch.post(
         `progress/mark-page-as-complete/${pageId}`,
