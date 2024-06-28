@@ -24,7 +24,7 @@ const Maze = () => {
   const [loading, setLoading] = useState(true);
   const [expandedQuestions, setExpandedQuestions] = useState({});
   const [progressData, setProgressData] = useState(null);
-  const [docker, setDocker] = useState(null);
+  const [docker, setDocker] = useState(localStorage.getItem("docker"));
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
