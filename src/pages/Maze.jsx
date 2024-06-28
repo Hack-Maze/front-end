@@ -98,26 +98,6 @@ const Maze = () => {
     }
   }, [mazeData, mazePage]);
 
-  useEffect(() => {
-    const checkLink = () => {
-      const dockerLink = localStorage.getItem(`link-${mazeId}`);
-      if (dockerLink) {
-        setDocker(dockerLink);
-      }
-    };
-
-    checkLink();
-
-    const handleStorageChange = () => {
-      checkLink();
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, [mazeId]);
-
   const section = mazeData && mazeData[selectedSectionIndex];
 
   const handleSectionClick = (index) => {
@@ -256,7 +236,16 @@ const Maze = () => {
         const data = response.data;
         localStorage.setItem(`link-${mazeId}`, data);
         setDocker(data);
-        toast.success(`Link fetched successfully`, { id: toastId });
+        toast.success(
+          `Link fetched successfully. This link will be deleted after one hour.`,
+          { id: toastId }
+        );
+
+        setTimeout(() => {
+          localStorage.removeItem(`link-${mazeId}`);
+          setDocker(null);
+          toast.warning("Docker link has expired and has been deleted.");
+        }, 3600000);
       }
     } catch (error) {
       console.error("Error fetching docker link:", error);
